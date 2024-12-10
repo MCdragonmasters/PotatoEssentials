@@ -1,0 +1,8 @@
+name: PotatoEssentials
+description: fr
+authors: [ MCdragonmasters ]
+website: nahh
+version: @version@
+main: com.mcdragonmasters.potatoessentials.PotatoEssentials
+api-version: '1.21.3'
+load: STARTUP

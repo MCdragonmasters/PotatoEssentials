@@ -1,0 +1,58 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.3'
+}
+
+group = "com.mcdragonmasters"
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    //Paper
+    maven {url = "https://repo.papermc.io/repository/maven-public/"}
+}
+
+dependencies {
+    //Paper
+    compileOnly "io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT"
+    //CommandAPI
+    implementation "dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.6.1"
+    //MiniMessage
+    implementation "net.kyori:adventure-text-minimessage:4.17.0"
+}
+build {
+    dependsOn(shadowJar)
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs.add("-Xlint:unchecked")
+            options.compilerArgs.add("-Xlint:deprecation")
+        }
+    }
+}
+
+shadowJar {
+    archiveClassifier = null
+    relocate("dev.jorel.commandapi", "com.mcdragonmasters.potatoessentials.commandapi")
+}
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+def oldestJava = 21
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-source', '' + oldestJava, '-target', '' + oldestJava]
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+    "version": version
+  ]
+    from ("lang") {
+        include "**/*"
+        into "lang/"
+    }
+}
