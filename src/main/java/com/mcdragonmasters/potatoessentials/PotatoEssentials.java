@@ -13,8 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PotatoEssentials extends JavaPlugin {
 
     private static PotatoEssentials instance;
+    public final static String nameSpace = "potatoessentials";
     public static FileConfiguration config;
-    public static String prefixMini = "<gold>Potato Essentials<gray> ><reset>";
+    public final static String prefixMini = "<gold>Potato Essentials<gray> ><reset>";
 
     @Override
     public void onLoad() {
@@ -41,6 +42,9 @@ public class PotatoEssentials extends JavaPlugin {
     @Override
     public void onDisable() {
         CommandAPI.onDisable();
+    }
+    public static String getNameSpace() {
+        return nameSpace;
     }
     public static Plugin getInstance() {
         return instance;
