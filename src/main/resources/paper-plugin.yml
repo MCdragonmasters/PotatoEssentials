@@ -6,3 +6,59 @@ version: @version@
 main: com.mcdragonmasters.potatoessentials.PotatoEssentials
 api-version: '1.21.3'
 load: STARTUP
+dependencies:
+  server:
+    Vault:
+      load: BEFORE
+      required: false
+      join-classpath: true
+
+permissions:
+  potatoessentials.*:
+    description: Gives the user full access to all of PotatoEssentials' commands
+    children:
+
+      potatoessentials.message: true
+      potatoessentials.ping: true
+
+      potatoessentials.broadcast: true
+      potatoessentials.socialspy: true
+      potatoessentials.enchant: true
+      potatoessentials.hunger: true
+      potatoessentials.invsee: true
+      potatoessentials.smite: true
+      potatoessentials.tphere: true
+
+
+  potatoessentials.message:
+    description: Allows the user to use /msg and /r
+    default: true
+  potatoessentials.ping:
+    description: Allows the user to use /ping
+    default: true
+
+
+  potatoessentials.broadcast:
+    description: Allows the user to use /broadcast
+    default: op
+  potatoessentials.socialspy:
+    description: Allows the user to use /socialspy
+    default: op
+  potatoessentials.enchant:
+    description: Allows the user to use /enchant
+    default: op
+  potatoessentials.gamemode:
+    description: Allows the user to use /gm and /gamemode
+    default: op
+  potatoessentials.hunger:
+    description: Allows the user to use /hunger
+    default: op
+  potatoessentials.invsee:
+    description: Allows the user to use /invsee
+    default: op
+  potatoessentials.smite:
+    description: Allows the user to use /smite
+    default: op
+  potatoessentials.tphere:
+    description: Allows the user to use /tphere
+    default: op

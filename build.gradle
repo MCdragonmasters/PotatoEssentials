@@ -4,6 +4,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     id 'com.gradleup.shadow' version '8.3.3'
+    id 'io.freefair.lombok' version '8.12'
 }
 
 group = "com.mcdragonmasters"
@@ -12,17 +13,28 @@ version = "1.0.0"
 repositories {
     mavenCentral()
     mavenLocal()
-    //Paper
+    // Paper
     maven {url = "https://repo.papermc.io/repository/maven-public/"}
+
+    // VaultAPI
+    maven {url = "https://jitpack.io"}
+
+    // ConfigUpdater
+    maven {url = "https://oss.sonatype.org/content/groups/public"}
 }
 
 dependencies {
-    //Paper
-    compileOnly "io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT"
-    //CommandAPI
-    implementation "dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.6.1"
-    //MiniMessage
-    implementation "net.kyori:adventure-text-minimessage:4.17.0"
+    // Paper
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+
+    // CommandAPI
+    implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0")
+
+    // VaultAPI
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
+
+    // Config-Updater
+    implementation("com.tchristofferson:ConfigUpdater:2.2-SNAPSHOT")
 }
 build {
     dependsOn(shadowJar)
@@ -33,7 +45,6 @@ build {
         }
     }
 }
-
 shadowJar {
     archiveClassifier = null
     relocate("dev.jorel.commandapi", "com.mcdragonmasters.potatoessentials.commandapi")

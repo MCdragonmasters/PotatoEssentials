@@ -1,100 +1,100 @@
 package com.mcdragonmasters.potatoessentials.commands;
+import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.Argument;
+import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import static com.mcdragonmasters.potatoessentials.PotatoEssentials.prefixMini;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public class GameModeCommand {
     public static void register() {
-        Argument<String> gameModeArg = new MultiLiteralArgument("gameModeArg",
-                "adventure", "creative", "spectator", "survival");
-        Argument<String> gmArg = new MultiLiteralArgument("gmArg",
+
+        CommandAPI.unregister("gamemode");
+
+        Argument<String> gmArg = new MultiLiteralArgument("gamemode",
+                "adventure", "creative", "spectator", "survival",
                 "a", "c", "sp", "s", "0", "1", "2", "3");
-        CommandPermission permission = CommandPermission.fromString("potatoessentials.gamemode");
+        EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
+                .ManyPlayers("target");
+
+        String permission = PotatoEssentials.getNameSpace()+".gamemode";
         new CommandAPICommand("gamemode")
                 .withPermission(permission)
-                .withArguments(gameModeArg)
-                .executesPlayer((p, args) -> {
-                    switch (args.getByArgument(gameModeArg)) {
-                        case "adventure":
-                            p.setGameMode(GameMode.ADVENTURE);
-                            break;
-                        case "creative":
-                            p.setGameMode(GameMode.CREATIVE);
-                            break;
-                        case "spectator":
-                            p.setGameMode(GameMode.SPECTATOR);
-                            break;
-                        case "survival":
-                            p.setGameMode(GameMode.SURVIVAL);
-                            break;
-                        case null, default:
-                            Bukkit.broadcast(Component.text("Err: idk"));
-                            break;
-                    }
-                    sendGameModeMessage(p, p.getGameMode().translationKey());
-                })
-                .register();
-        new CommandAPICommand("gm")
-                .withPermission(permission)
                 .withArguments(gmArg)
-                .executesPlayer((p, args) -> {
+                .withAliases("gm")
+                .withOptionalArguments(playerArg)
+                .executesPlayer((player, args) -> {
+                    Collection<Player> players = args.getByArgument(playerArg) != null ?
+                            Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(player);
                     switch (args.getByArgument(gmArg)) {
-                        case "a", "2":
-                            p.setGameMode(GameMode.ADVENTURE);
+                        case "adventure", "2", "a":
+                            setGameModes(players, GameMode.ADVENTURE, player);
                             break;
-                        case "c", "1":
-                            p.setGameMode(GameMode.CREATIVE);
+                        case "creative", "1", "c":
+                            setGameModes(players, GameMode.CREATIVE, player);
                             break;
-                        case "sp", "3":
-                            p.setGameMode(GameMode.SPECTATOR);
+                        case "spectator", "3", "sp":
+                            setGameModes(players, GameMode.SPECTATOR, player);
                             break;
-                        case "s", "0":
-                            p.setGameMode(GameMode.SURVIVAL);
+                        case "survival", "0", "s":
+                            setGameModes(players, GameMode.SURVIVAL, player);
                             break;
                         case null, default:
                             Bukkit.broadcast(Component.text("Err: idk"));
                             break;
                     }
-                    sendGameModeMessage(p, p.getGameMode().translationKey());
                 })
                 .register();
         new CommandAPICommand("gma")
                 .withPermission(permission)
-                .executesPlayer((p, args) -> {
-                    p.setGameMode(GameMode.ADVENTURE);
-                    sendGameModeMessage(p, p.getGameMode().translationKey());
+                .withOptionalArguments(playerArg)
+                .executesPlayer((player, args) -> {
+                    Collection<Player> players = args.getByArgument(playerArg) != null ? Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(player);
+                    setGameModes(players, GameMode.ADVENTURE, player);
                 })
                 .register();
         new CommandAPICommand("gmc")
                 .withPermission(permission)
-                .executesPlayer((p, args) -> {
-                    p.setGameMode(GameMode.CREATIVE);
-                    sendGameModeMessage(p, p.getGameMode().translationKey());
+                .withOptionalArguments(playerArg)
+                .executesPlayer((player, args) -> {
+                    Collection<Player> players = args.getByArgument(playerArg) != null ? Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(player);
+                    setGameModes(players, GameMode.CREATIVE, player);
                 })
                 .register();
         new CommandAPICommand("gmsp")
                 .withPermission(permission)
-                .executesPlayer((p, args) -> {
-                    p.setGameMode(GameMode.SPECTATOR);
-                    sendGameModeMessage(p, p.getGameMode().translationKey());
+                .withOptionalArguments(playerArg)
+                .executesPlayer((player, args) -> {
+                    Collection<Player> players = args.getByArgument(playerArg) != null ? Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(player);
+                    setGameModes(players, GameMode.SPECTATOR, player);
                 })
                 .register();
         new CommandAPICommand("gms")
                 .withPermission(permission)
-                .executesPlayer((p, args) -> {
-                    p.setGameMode(GameMode.SURVIVAL);
-                    sendGameModeMessage(p, p.getGameMode().translationKey());
+                .withOptionalArguments(playerArg)
+                .executesPlayer((player, args) -> {
+                    Collection<Player> players = args.getByArgument(playerArg) != null ? Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(player);
+                    setGameModes(players, GameMode.SURVIVAL, player);
                 })
                 .register();
     }
-    private static void sendGameModeMessage(Player p, String translationKey) {
-        p.sendRichMessage(prefixMini +"<gray> Set Your Gamemode to<yellow> <translate:"+translationKey+">");
+    private static void setGameModes(Collection<Player> players, GameMode gameMode, Player senderPlayer) {
+        for (Player player : players) {
+            player.setGameMode(gameMode);
+        }
+        String msg = players.size() < 2 ? ((Player) players.toArray()[0]).getName()+"</yellow>'s"
+                : players.size()+" Players</yellow>'";
+
+        senderPlayer.sendRichMessage("<gray>Set<yellow> " + msg +
+                "<gray> Gamemode to<yellow> <translate:"+gameMode.translationKey()+">");
     }
 }

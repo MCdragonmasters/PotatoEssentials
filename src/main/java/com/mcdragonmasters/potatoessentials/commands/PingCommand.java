@@ -3,12 +3,12 @@ package com.mcdragonmasters.potatoessentials.commands;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
-import dev.jorel.commandapi.arguments.PlayerArgument;
+import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import org.bukkit.entity.Player;
 
 public class PingCommand {
     public static void register() {
-        Argument<Player> playerArgument = new PlayerArgument("player");
+        Argument<Player> playerArgument = new EntitySelectorArgument.OnePlayer("player");
         new CommandAPICommand("ping")
                 .withPermission(PotatoEssentials.getNameSpace() + ".ping")
                 .withOptionalArguments(playerArgument)
@@ -24,9 +24,9 @@ public class PingCommand {
                         ping = player.getPing();
                     }
                     if (isSender) {
-                        player.sendRichMessage("<yellow>Your<gray> ping is " + ping);
+                        player.sendRichMessage("<yellow>Your<gray> ping is <yellow>" + ping);
                     } else {
-                        player.sendRichMessage("<yellow>" + arg.getName() + "'s<gray> ping is " + ping);
+                        player.sendRichMessage("<yellow>" + arg.getName() + "<gray>'s ping is <yellow>" + ping);
                     }
                 }).register();
     }

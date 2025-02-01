@@ -1,6 +1,7 @@
 package com.mcdragonmasters.potatoessentials.listeners;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.commands.message.MessageCommand;
 import com.mcdragonmasters.potatoessentials.commands.VisibilityCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,6 +39,8 @@ public class PlayerJoinQuitListener implements Listener {
     }
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        VisibilityCommand.getPlayerVisibility().remove(e.getPlayer().getUniqueId());
+        Player player = e.getPlayer();
+        VisibilityCommand.getPlayerVisibility().remove(player.getUniqueId());
+        MessageCommand.getMessageMap().remove(player);
     }
 }

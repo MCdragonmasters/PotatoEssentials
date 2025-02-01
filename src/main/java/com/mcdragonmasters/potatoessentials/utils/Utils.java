@@ -2,15 +2,8 @@ package com.mcdragonmasters.potatoessentials.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.inventory.BlastingRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 public class Utils {
 //    @SuppressWarnings("deprecation")
@@ -31,5 +24,8 @@ public class Utils {
     public static String formatCoords(double x, double y, double z) {
         DecimalFormat df = new DecimalFormat("#.##");
         return df.format(x) + ", " + df.format(y) + ", " + df.format(z);
+    }
+    public static Component miniMessage(String s) {
+        return MiniMessage.miniMessage().deserialize(s);
     }
 }
