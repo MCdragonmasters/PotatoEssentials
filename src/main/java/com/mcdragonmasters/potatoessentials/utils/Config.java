@@ -34,13 +34,16 @@ public class Config {
         potatoEssentials.saveDefaultConfig();
         potatoEssentials.reloadConfig();
         config = potatoEssentials.getConfig();
+        PotatoEssentials.config = config;
     }
     public static Boolean chatEnabled() { return config.getBoolean("chat.enabled"); }
     public static String chatFormat() { return config.getString("chat.format"); }
-    public static String messageSender(){return config.getString("messages.commands.message.sender");}
-    public static String messageReceiver(){return config.getString("messages.commands.message.receiver");}
-    public static String messageSocialSpy(){return config.getString("messages.commands.message.social-spy");}
-    public static String broadcastFormat() { return config.getString("messages.broadcast"); }
+    public static String messageSender(){return config.getString("commands.message.sender");}
+    public static String messageReceiver(){return config.getString("commands.message.receiver");}
+    public static String messageSocialSpy(){return config.getString("commands.message.social-spy");}
+    public static String broadcastFormat() { return config.getString("commands.broadcast.message"); }
+
+
 
     public static Component replaceFormat(String format,Component message,@Nullable CommandSender sender, @Nullable CommandSender secondary) {
         Chat vaultChat = PotatoEssentials.getVaultChat();

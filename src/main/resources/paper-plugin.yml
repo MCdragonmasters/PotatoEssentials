@@ -34,7 +34,9 @@ permissions:
       potatoessentials.tpall: true
       potatoessentials.flyspeed: true
       potatoessentials.messagetoggle.bypass: true
-
+      potatoessentials.vanish: true
+      potatoessentials.vanish.bypass: true
+      potatoessentials.feed: true
 
   potatoessentials.message:
     description: Allows the user to use /msg and /r
@@ -91,4 +93,7 @@ permissions:
     default: op
   potatoessentials.vanish.bypass:
     description: Allows the user to see vanished players
+    default: op
+  potatoessentials.feed:
+    description: Allows the user to use /feed
     default: op

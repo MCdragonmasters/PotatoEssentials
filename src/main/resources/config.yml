@@ -9,12 +9,45 @@ chat:
   # - %name%
   # - %message%
   format: "%name%: %message%"
-messages:
-  broadcast: "<newline><red><bold>SERVER ANNOUNCEMENT</bold><white>: %message%<newline>"
-  commands:
-    message:
-      # name = sender
-      # name-2 = receiver
-      sender: "<gold>You <gray>» %name-2%<reset>: %message%"
-      receiver: "<gray>%name% » <gold>You<reset>: %message%"
-      social-spy: "<gray>[<gold>SS</gold>] » <yellow>%name%</yellow> -> <yellow>%name2%</yellow>:</gray> %message%"
+
+commands:
+  message:
+    enabled: true
+    # name = sender
+    # name-2 = receiver
+    sender: "<gold>You <gray>» %name-2%<reset>: %message%"
+    receiver: "<gray>%name% » <gold>You<reset>: %message%"
+    social-spy: "<gray>[<gold>SS</gold>] » <yellow>%name%</yellow> -> <yellow>%name-2%</yellow>:</gray> %message%"
+  broadcast:
+    enabled: true
+    message: "<newline><red><bold>SERVER ANNOUNCEMENT</bold><white>: %message%<newline>"
+  messagetoggle:
+    enabled: true
+  reply:
+    enabled: true
+  socialspy:
+    enabled: true
+  tphere:
+    enabled: true
+  tpall:
+    enabled: true
+  enchant:
+    enabled: true
+  feed:
+    enabled: true
+  flyspeed:
+    enabled: true
+  gamemode:
+    enabled: true
+  heal:
+    enabled: true
+  hunger:
+    enabled: true
+  invsee:
+    enabled: true
+  ping:
+    enabled: true
+  smite:
+    enabled: true
+  vanish:
+    enabled: true

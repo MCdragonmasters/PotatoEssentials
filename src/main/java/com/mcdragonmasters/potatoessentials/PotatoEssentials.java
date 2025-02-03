@@ -11,6 +11,7 @@ import dev.jorel.commandapi.CommandAPIBukkitConfig;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +30,7 @@ public class PotatoEssentials extends JavaPlugin {
     @Getter
     private static boolean hasVault = false;
     public static PluginManager pluginManager;
+    public static FileConfiguration config;
 
     @Override
     public void onLoad() {
@@ -59,24 +61,24 @@ public class PotatoEssentials extends JavaPlugin {
     private static void registerCommands() {
         MainCommand.register();
 
-        MessageCommand.register();
-        ReplyCommand.register();
-        SocialSpyCommand.register();
-        BroadcastCommand.register();
-        MessageToggleCommand.register();
+        if (config.getBoolean("commands.message.enabled")) MessageCommand.register();
+        if (config.getBoolean("commands.reply.enabled")) ReplyCommand.register();
+        if (config.getBoolean("commands.socialspy.enabled")) SocialSpyCommand.register();
+        if (config.getBoolean("commands.broadcast.enabled")) BroadcastCommand.register();
+        if (config.getBoolean("commands.messagetoggle.enabled")) MessageToggleCommand.register();
 
-        EnchantCommand.register();
-        GameModeCommand.register();
-        HealCommand.register();
-        HungerCommand.register();
-        InvSeeCommand.register();
-        PingCommand.register();
-        SmiteCommand.register();
-        TeleportHereCommand.register();
-        TeleportAllCommand.register();
-        FlySpeedCommand.register();
-        VanishCommand.register();
-        FeedCommand.register();
+        if (config.getBoolean("commands.enchant.enabled")) EnchantCommand.register();
+        if (config.getBoolean("commands.gamemode.enabled"))  GameModeCommand.register();
+        if (config.getBoolean("commands.heal.enabled")) HealCommand.register();
+        if (config.getBoolean("commands.hunger.enabled")) HungerCommand.register();
+        if (config.getBoolean("commands.invsee.enabled")) InvSeeCommand.register();
+        if (config.getBoolean("commands.ping.enabled")) PingCommand.register();
+        if (config.getBoolean("commands.smite.enabled")) SmiteCommand.register();
+        if (config.getBoolean("commands.tphere.enabled")) TeleportHereCommand.register();
+        if (config.getBoolean("commands.tpall.enabled")) TeleportAllCommand.register();
+        if (config.getBoolean("commands.flyspeed.enabled")) FlySpeedCommand.register();
+        if (config.getBoolean("commands.vanish.enabled")) VanishCommand.register();
+        if (config.getBoolean("commands.feed.enabled")) FeedCommand.register();
 
     }
     private boolean setupChat() {

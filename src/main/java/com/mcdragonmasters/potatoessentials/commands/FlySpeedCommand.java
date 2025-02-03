@@ -13,12 +13,12 @@ public class FlySpeedCommand {
 
         new CommandAPICommand("flyspeed")
                 .withPermission(PotatoEssentials.getNameSpace()+".flyspeed")
-                .withArguments(intArg)
+                .withOptionalArguments(intArg)
                 .executesPlayer((player, args) -> {
-                    int speed = Objects.requireNonNull(args.getByArgument(intArg));
+                    int speed = args.getByArgument(intArg)!=null?Objects.requireNonNull(args.getByArgument(intArg)):10;
                     float actualSpeed = speed/100.0f;
                     player.setFlySpeed(actualSpeed);
-                    player.sendRichMessage("<gray>Set fly speed to<yellow> "+speed);
+                    player.sendRichMessage("<gray>Set your fly speed to<yellow> "+speed);
                 }).register();
     }
 }
