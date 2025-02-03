@@ -11,3 +11,10 @@ chat:
   format: "%name%: %message%"
 messages:
   broadcast: "<newline><red><bold>SERVER ANNOUNCEMENT</bold><white>: %message%<newline>"
+  commands:
+    message:
+      # name = sender
+      # name-2 = receiver
+      sender: "<gold>You <gray>» %name-2%<reset>: %message%"
+      receiver: "<gray>%name% » <gold>You<reset>: %message%"
+      social-spy: "<gray>[<gold>SS</gold>] » <yellow>%name%</yellow> -> <yellow>%name2%</yellow>:</gray> %message%"

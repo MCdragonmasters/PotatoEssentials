@@ -1,7 +1,7 @@
-package com.mcdragonmasters.potatoessentials.commands.message;
+package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
-import com.mcdragonmasters.potatoessentials.utils.Utils;
+import com.mcdragonmasters.potatoessentials.utils.Config;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.mcdragonmasters.potatoessentials.commands.message.SocialSpyCommand.socialSpyEnabled;
+import static com.mcdragonmasters.potatoessentials.commands.messaging.MessageToggleCommand.messagesDisabled;
+import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyCommand.socialSpy;
 
 public class MessageCommand {
 
@@ -26,6 +27,8 @@ public class MessageCommand {
     public static void register() {
         CommandAPI.unregister("message");
         CommandAPI.unregister("msg");
+        CommandAPI.unregister("whisper");
+        CommandAPI.unregister("w");
 
         Argument<Player> playerArgument = new EntitySelectorArgument.OnePlayer("player");
         Argument<String> stringArgument = new GreedyStringArgument("message");
@@ -36,6 +39,11 @@ public class MessageCommand {
                 .withArguments(stringArgument)
                 .executesPlayer((player, args) -> {
                     Player receiver = Objects.requireNonNull(args.getByArgument(playerArgument));
+                    if (messagesDisabled.contains(receiver.getUniqueId())&&
+                            !player.hasPermission(PotatoEssentials.getNameSpace()+".messagetoggle.bypass")) {
+                        player.sendRichMessage("<red>"+receiver.getName()+"'s messages are disabled");
+                        return;
+                    }
                     String message = Objects.requireNonNull(args.getByArgument(stringArgument));
                     message(player, message, receiver);
                 }).register();
@@ -43,23 +51,17 @@ public class MessageCommand {
 
     public static void message(Player sender, String message, Player receiver) {
 
-        Component msg = Component.text(message.trim());
-
-        Component senderMsg = Utils.miniMessage
-                ("<gold>You <gray>» "+receiver.getName()+"<reset>: ").append(msg);
-        Component receiverMsg = Utils.miniMessage
-                ("<gray>"+sender.getName()+" » <gold>You<reset>: ").append(msg);
-        Component socialSpyMessage = Utils.miniMessage
-                ("<gray>[<gold>SS</gold>] » <yellow>"+sender.getName()+
-                        "</yellow> -> <yellow>"+receiver.getName()+"</yellow>:</gray><newline>").append(msg);
-        for (CommandSender socialSpyReceiver : socialSpyEnabled.keySet()) {
-            if(!socialSpyEnabled.get(socialSpyReceiver)) continue;
-            socialSpyReceiver.sendMessage(socialSpyMessage);
+        Component senderMsg = Config.replaceFormat(Config.messageSender(),message, sender,receiver);
+        Component receiverMsg = Config.replaceFormat(Config.messageReceiver(),message,sender, receiver);
+        Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(), message, sender, receiver);
+        for (CommandSender socialSpyReceiver : socialSpy.keySet()) {
+            if(!socialSpy.get(socialSpyReceiver)) continue;
+            socialSpyReceiver.sendMessage(socialSpyMsg);
         }
         messageMap.put(sender,receiver);
 
-        sender.sendMessage(senderMsg);
-        receiver.sendMessage(receiverMsg);
+        if (!socialSpy.get(sender)) sender.sendMessage(senderMsg);
+        if (!socialSpy.get(receiver)) receiver.sendMessage(receiverMsg);
     }
 
 }

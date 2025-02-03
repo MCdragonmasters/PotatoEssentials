@@ -6,7 +6,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 
 public class HungerCommand {
 
-    public static boolean hungerEnabled=false;
+    public static boolean hungerEnabled=true;
 
     public static void register() {
 

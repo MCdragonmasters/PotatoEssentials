@@ -1,26 +1,19 @@
-package com.mcdragonmasters.potatoessentials.commands;
+package com.mcdragonmasters.potatoessentials.commands.teleporting;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.EntitySelectorArgument;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("unchecked")
-public class TeleportHereCommand {
+public class TeleportAllCommand {
     public static void register() {
 
-        EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
-                .ManyPlayers("target");
-
-        new CommandAPICommand("tphere")
-                .withAliases("tphere")
-                .withPermission(PotatoEssentials.getNameSpace()+".tphere")
-                .withArguments(playerArg)
+        new CommandAPICommand("tpall")
+                .withAliases("tpall")
+                .withPermission(PotatoEssentials.getNameSpace()+".tpall")
                 .executesPlayer((sender, args) -> {
-                    Collection<Player> players = args.getByArgument(playerArg) != null ? Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(sender);
+                    Collection<? extends Player> players = Bukkit.getOnlinePlayers();
                     for (Player player : players) {
                         player.teleport(sender);
                         player.sendRichMessage("<white>You have been Teleported by <gold>"+sender.getName());

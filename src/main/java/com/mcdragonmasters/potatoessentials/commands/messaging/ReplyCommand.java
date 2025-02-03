@@ -1,4 +1,4 @@
-package com.mcdragonmasters.potatoessentials.commands.message;
+package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import dev.jorel.commandapi.CommandAPICommand;

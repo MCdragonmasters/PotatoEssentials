@@ -1,11 +1,10 @@
 package com.mcdragonmasters.potatoessentials;
 
 import com.mcdragonmasters.potatoessentials.commands.*;
-import com.mcdragonmasters.potatoessentials.commands.message.BroadcastCommand;
-import com.mcdragonmasters.potatoessentials.commands.message.MessageCommand;
-import com.mcdragonmasters.potatoessentials.commands.message.ReplyCommand;
-import com.mcdragonmasters.potatoessentials.commands.message.SocialSpyCommand;
+import com.mcdragonmasters.potatoessentials.commands.messaging.*;
+import com.mcdragonmasters.potatoessentials.commands.teleporting.TeleportAllCommand;
 import com.mcdragonmasters.potatoessentials.listeners.PlayerChatListener;
+import com.mcdragonmasters.potatoessentials.commands.teleporting.TeleportHereCommand;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
@@ -46,7 +45,7 @@ public class PotatoEssentials extends JavaPlugin {
 
         //Register Event Listeners
         pluginManager = Bukkit.getPluginManager();
-        if (Config.chatFormatEnabled()) pluginManager.registerEvents(new PlayerChatListener(), instance);
+        pluginManager.registerEvents(new PlayerChatListener(), instance);
 
         //Register Commands
         registerCommands();
@@ -58,18 +57,26 @@ public class PotatoEssentials extends JavaPlugin {
 
 
     private static void registerCommands() {
-        EnchantCommand.register();
-        GameModeCommand.register();
-        PingCommand.register();
-        SmiteCommand.register();
+        MainCommand.register();
+
         MessageCommand.register();
         ReplyCommand.register();
         SocialSpyCommand.register();
-        TeleportHereCommand.register();
-        HungerCommand.register();
         BroadcastCommand.register();
+        MessageToggleCommand.register();
+
+        EnchantCommand.register();
+        GameModeCommand.register();
+        HealCommand.register();
+        HungerCommand.register();
         InvSeeCommand.register();
-        //VisibilityCommand.register();
+        PingCommand.register();
+        SmiteCommand.register();
+        TeleportHereCommand.register();
+        TeleportAllCommand.register();
+        FlySpeedCommand.register();
+        VanishCommand.register();
+        FeedCommand.register();
 
     }
     private boolean setupChat() {

@@ -1,7 +1,7 @@
 name: PotatoEssentials
 description: fr
 authors: [ MCdragonmasters ]
-website: nahh
+website: https://github.com/MCdragonmasters/PotatoEssentials
 version: @version@
 main: com.mcdragonmasters.potatoessentials.PotatoEssentials
 api-version: '1.21.3'
@@ -20,6 +20,7 @@ permissions:
 
       potatoessentials.message: true
       potatoessentials.ping: true
+      potatoessentials.messagetoggle: true
 
       potatoessentials.broadcast: true
       potatoessentials.socialspy: true
@@ -28,6 +29,11 @@ permissions:
       potatoessentials.invsee: true
       potatoessentials.smite: true
       potatoessentials.tphere: true
+      potatoessentials.heal: true
+      potatoessentials.potatoessentials: true
+      potatoessentials.tpall: true
+      potatoessentials.flyspeed: true
+      potatoessentials.messagetoggle.bypass: true
 
 
   potatoessentials.message:
@@ -35,6 +41,9 @@ permissions:
     default: true
   potatoessentials.ping:
     description: Allows the user to use /ping
+    default: true
+  potatoessentials.messagetoggle:
+    description: Allows the user to use /msgtoggle
     default: true
 
 
@@ -61,4 +70,25 @@ permissions:
     default: op
   potatoessentials.tphere:
     description: Allows the user to use /tphere
+    default: op
+  potatoessentials.heal:
+    description: Allows the user to use /heal
+    default: op
+  potatoessentials.potatoessentials:
+    description: Allows the user to use /potatoessentials
+    default: op
+  potatoessentials.tpall:
+    description: Allows the user to use /tpall
+    default: op
+  potatoessentials.flyspeed:
+    description: Allows the user to use /flyspeed
+    default: op
+  potatoessentials.messagetoggle.bypass:
+    description: Allows the user to message users that have messages disabled via /msgtoggle
+    default: op
+  potatoessentials.vanish:
+    description: Allows the user to use /vanish
+    default: op
+  potatoessentials.vanish.bypass:
+    description: Allows the user to see vanished players
     default: op
