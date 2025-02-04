@@ -39,6 +39,7 @@ public class VanishCommand {
                                     +vanisher.getName()+"<gray> is now in vanish.");
                             continue;
                         }
+                        if (player == sender) continue
                         player.hidePlayer(PotatoEssentials.getInstance(), vanisher);
                     }
                 })
