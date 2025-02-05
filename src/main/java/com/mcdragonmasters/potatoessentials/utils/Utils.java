@@ -28,4 +28,7 @@ public class Utils {
     public static Component miniMessage(String s) {
         return MiniMessage.miniMessage().deserialize(s);
     }
+    public static String miniMessageDeserialize(Component s) {
+        return MiniMessage.miniMessage().serialize(s);
+    }
 }

@@ -32,16 +32,27 @@ public class VanishCommand {
                 .withOptionalArguments(vanishArg)
                 .executesPlayer((sender, args) -> {
                     Player vanisher = args.getByArgument(vanishArg)!=null?Objects.requireNonNull(args.getByArgument(vanishArg)):sender;
-                    vanisher.sendRichMessage("<dark_gray>[<gold>Vanish</gold>]<gray> You are now in<yellow> Vanish.");
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (player.hasPermission(namespace+".vanish.bypass")) {
-                            player.sendRichMessage("<dark_gray>[<gold>Vanish</gold>]<yellow> "
-                                    +vanisher.getName()+"<gray> is now in vanish.");
-                            continue;
-                        }
-                        if (player == sender) continue;
-                        player.hidePlayer(PotatoEssentials.getInstance(), vanisher);
+                    boolean vanished;
+                    if (!vanishedPlayers.contains(vanisher)) {
+                        vanishedPlayers.add(vanisher);
+                        vanished = true;
+                    } else {
+                        vanishedPlayers.remove(vanisher);
+                        vanished = false;
                     }
+                    String msg = vanished?"now":"no longer";
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (player == vanisher) continue;
+                        if (player.hasPermission(namespace+".vanish")) {
+                            player.sendRichMessage("<dark_gray>[<gold>Vanish</gold>]<yellow> "+
+                                    vanisher.getName()+"<gray> is "+msg+" in vanish.");
+                        }
+                        if (player.hasPermission(namespace+".vanish.bypass")) continue;
+                        if (vanished) player.hidePlayer(PotatoEssentials.getInstance(), vanisher);
+                        if (!vanished) player.showPlayer(PotatoEssentials.getInstance(), vanisher);
+                    }
+                    vanisher.sendRichMessage(
+                            "<dark_gray>[<gold>Vanish</gold>]<gray> You are "+msg+" in<yellow> Vanish.");
                 })
                 .register();
     }

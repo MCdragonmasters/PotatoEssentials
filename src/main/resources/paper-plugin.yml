@@ -37,6 +37,11 @@ permissions:
       potatoessentials.vanish: true
       potatoessentials.vanish.bypass: true
       potatoessentials.feed: true
+      potatoessentials.clearinventory: true
+      potatoessentials.warp: true
+      potatoessentials.setwarp: true
+      potatoessentials.deletewarp: true
+      potatoessentials.chat.minimessage: true
 
   potatoessentials.message:
     description: Allows the user to use /msg and /r
@@ -96,4 +101,20 @@ permissions:
     default: op
   potatoessentials.feed:
     description: Allows the user to use /feed
+    default: op
+  potatoessentials.clearinventory:
+    description: Allows the user to use /ci
+    default: op
+
+  potatoessentials.warp:
+    description: Allows the user to use /warp
+    default: op
+  potatoessentials.deletewarp:
+    description: Allows the user to use /delwarp
+    default: op
+  potatoessentials.setwarp:
+    description: Allows the user to use /setwarp
+    default: op
+  potatoessentials.chat.minimessage:
+    description: Allows the user to use MiniMessage color codes and formating in chat
     default: op

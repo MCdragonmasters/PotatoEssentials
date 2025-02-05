@@ -2,6 +2,7 @@ package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
+import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
@@ -21,8 +22,8 @@ public class BroadcastCommand {
                 .withArguments(arg)
                 .executes((sender, args) -> {
                     String text = Objects.requireNonNull(args.getByArgument(arg));
-                    Component message = Config.replaceFormatMiniMessage(
-                            Config.broadcastFormat(),text,sender,null);
+                    Component message = Config.replaceFormat(Config.broadcastFormat(), true,
+                            new Replacer("message", text));
                     Bukkit.broadcast(message);
                 }).register();
 

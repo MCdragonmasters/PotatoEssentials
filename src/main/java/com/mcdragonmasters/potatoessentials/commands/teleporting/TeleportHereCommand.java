@@ -23,12 +23,12 @@ public class TeleportHereCommand {
                     Collection<Player> players = args.getByArgument(playerArg) != null ? Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(sender);
                     for (Player player : players) {
                         player.teleport(sender);
-                        player.sendRichMessage("<white>You have been Teleported by <gold>"+sender.getName());
+                        player.sendRichMessage("<gray>You have been Teleported to <yellow>"+sender.getName());
                     }
-                    String msg = players.size()<2?((Player) players.toArray()[0]).getName()+"</gold>'s"
-                            : players.size()+" Players</gold>'";
+                    String msg = players.size()<2?((Player) players.toArray()[0]).getName()+"</yellow>"
+                            : players.size()+" Players</yellow>";
                     sender.sendRichMessage
-                            ("<white>You have Teleported <gold>"+msg+" to <gold>Yourself");
+                            ("<gray>You have Teleported <yellow>"+msg+" to <yellow>Yourself");
 
                 })
                 .register();

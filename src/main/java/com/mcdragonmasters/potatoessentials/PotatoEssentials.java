@@ -2,9 +2,11 @@ package com.mcdragonmasters.potatoessentials;
 
 import com.mcdragonmasters.potatoessentials.commands.*;
 import com.mcdragonmasters.potatoessentials.commands.messaging.*;
-import com.mcdragonmasters.potatoessentials.commands.teleporting.TeleportAllCommand;
+import com.mcdragonmasters.potatoessentials.commands.teleporting.*;
+import com.mcdragonmasters.potatoessentials.commands.warping.DelWarpCommand;
+import com.mcdragonmasters.potatoessentials.commands.warping.SetWarpCommand;
+import com.mcdragonmasters.potatoessentials.commands.warping.WarpCommand;
 import com.mcdragonmasters.potatoessentials.listeners.PlayerChatListener;
-import com.mcdragonmasters.potatoessentials.commands.teleporting.TeleportHereCommand;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
@@ -18,7 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.chat.Chat;
 
-@SuppressWarnings("unused")
 public class PotatoEssentials extends JavaPlugin {
 
     @Getter
@@ -61,24 +62,30 @@ public class PotatoEssentials extends JavaPlugin {
     private static void registerCommands() {
         MainCommand.register();
 
-        if (config.getBoolean("commands.message.enabled")) MessageCommand.register();
-        if (config.getBoolean("commands.reply.enabled")) ReplyCommand.register();
-        if (config.getBoolean("commands.socialspy.enabled")) SocialSpyCommand.register();
-        if (config.getBoolean("commands.broadcast.enabled")) BroadcastCommand.register();
-        if (config.getBoolean("commands.messagetoggle.enabled")) MessageToggleCommand.register();
+        if (Config.commandEnabled("message")) MessageCommand.register();
+        if (Config.commandEnabled("reply")) ReplyCommand.register();
+        if (Config.commandEnabled("socialspy")) SocialSpyCommand.register();
+        if (Config.commandEnabled("broadcast")) BroadcastCommand.register();
+        if (Config.commandEnabled("messagetoggle")) MessageToggleCommand.register();
 
-        if (config.getBoolean("commands.enchant.enabled")) EnchantCommand.register();
-        if (config.getBoolean("commands.gamemode.enabled"))  GameModeCommand.register();
-        if (config.getBoolean("commands.heal.enabled")) HealCommand.register();
-        if (config.getBoolean("commands.hunger.enabled")) HungerCommand.register();
-        if (config.getBoolean("commands.invsee.enabled")) InvSeeCommand.register();
-        if (config.getBoolean("commands.ping.enabled")) PingCommand.register();
-        if (config.getBoolean("commands.smite.enabled")) SmiteCommand.register();
-        if (config.getBoolean("commands.tphere.enabled")) TeleportHereCommand.register();
-        if (config.getBoolean("commands.tpall.enabled")) TeleportAllCommand.register();
-        if (config.getBoolean("commands.flyspeed.enabled")) FlySpeedCommand.register();
-        if (config.getBoolean("commands.vanish.enabled")) VanishCommand.register();
-        if (config.getBoolean("commands.feed.enabled")) FeedCommand.register();
+        if (Config.commandEnabled("enchant")) EnchantCommand.register();
+        if (Config.commandEnabled("gamemode"))  GameModeCommand.register();
+        if (Config.commandEnabled("heal")) HealCommand.register();
+        if (Config.commandEnabled("hunger")) HungerCommand.register();
+        if (Config.commandEnabled("invsee")) InvSeeCommand.register();
+        if (Config.commandEnabled("ping")) PingCommand.register();
+        if (Config.commandEnabled("smite")) SmiteCommand.register();
+        if (config.getBoolean("commands.tpcommands.tphere-enabled")) TeleportHereCommand.register();
+        if (config.getBoolean("commands.tpcommands.tpall-enabled")) TeleportAllCommand.register();
+        if (Config.commandEnabled("flyspeed")) FlySpeedCommand.register();
+        if (Config.commandEnabled("vanish")) VanishCommand.register();
+        if (Config.commandEnabled("feed")) FeedCommand.register();
+        if (Config.commandEnabled("clearinventory")) ClearInventoryCommand.register();
+
+        // ---- Warps ----
+        if (Config.commandEnabled("warp")) WarpCommand.register();
+        if (Config.commandEnabled("setwarp")) SetWarpCommand.register();
+        if (Config.commandEnabled("deletewarp")) DelWarpCommand.register();
 
     }
     private boolean setupChat() {

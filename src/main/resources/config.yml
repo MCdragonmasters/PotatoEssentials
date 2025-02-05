@@ -13,11 +13,9 @@ chat:
 commands:
   message:
     enabled: true
-    # name = sender
-    # name-2 = receiver
-    sender: "<gold>You <gray>» %name-2%<reset>: %message%"
-    receiver: "<gray>%name% » <gold>You<reset>: %message%"
-    social-spy: "<gray>[<gold>SS</gold>] » <yellow>%name%</yellow> -> <yellow>%name-2%</yellow>:</gray> %message%"
+    sender: "<gold>You <gray>»</gray> %receiver%<reset>: %message%"
+    receiver: "<gold>%sender% <gray>»</gray> You<reset>: %message%"
+    social-spy: "<gray>[<gold>SS</gold>] » <yellow>%sender%</yellow> -> <yellow>%receiver%</yellow>:</gray> %message%"
   broadcast:
     enabled: true
     message: "<newline><red><bold>SERVER ANNOUNCEMENT</bold><white>: %message%<newline>"
@@ -27,10 +25,9 @@ commands:
     enabled: true
   socialspy:
     enabled: true
-  tphere:
-    enabled: true
-  tpall:
-    enabled: true
+  tpcommands:
+    tpall-enabled: true
+    tphere-enabled: true
   enchant:
     enabled: true
   feed:
@@ -51,3 +48,12 @@ commands:
     enabled: true
   vanish:
     enabled: true
+  clearinventory: # /ci
+    enabled: true
+  warp:
+    enabled: true
+  setwarp:
+    enabled: true
+  deletewarp:
+    enabled: true
+

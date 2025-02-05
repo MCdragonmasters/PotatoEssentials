@@ -2,6 +2,7 @@ package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
+import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
@@ -17,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.mcdragonmasters.potatoessentials.commands.messaging.MessageToggleCommand.messagesDisabled;
-import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyCommand.socialSpy;
+import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyCommand.socialSpyPlayers;
 
 public class MessageCommand {
 
@@ -51,17 +52,29 @@ public class MessageCommand {
 
     public static void message(Player sender, String message, Player receiver) {
 
-        Component senderMsg = Config.replaceFormat(Config.messageSender(),message, sender,receiver);
-        Component receiverMsg = Config.replaceFormat(Config.messageReceiver(),message,sender, receiver);
-        Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(), message, sender, receiver);
-        for (CommandSender socialSpyReceiver : socialSpy.keySet()) {
-            if(!socialSpy.get(socialSpyReceiver)) continue;
+        Component senderMsg = Config.replaceFormat(Config.messageSender(),
+                new Replacer("message", message),
+                new Replacer("sender", sender.getName()),
+                new Replacer("receiver", receiver.getName()));
+
+        Component receiverMsg = Config.replaceFormat(Config.messageReceiver(),
+                new Replacer("message", message),
+                new Replacer("sender", sender.getName()),
+                new Replacer("receiver", receiver.getName()));
+
+        Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(),
+                new Replacer("message", message),
+                new Replacer("sender", sender.getName()),
+                new Replacer("receiver", receiver.getName()));
+
+        for (CommandSender socialSpyReceiver : socialSpyPlayers) {
+            if(!socialSpyPlayers.contains(socialSpyReceiver)) continue;
             socialSpyReceiver.sendMessage(socialSpyMsg);
         }
-        messageMap.put(sender,receiver);
+        messageMap.put(receiver, sender);
 
-        if (!socialSpy.get(sender)) sender.sendMessage(senderMsg);
-        if (!socialSpy.get(receiver)) receiver.sendMessage(receiverMsg);
+        if (!socialSpyPlayers.contains(sender)) sender.sendMessage(senderMsg);
+        if (!socialSpyPlayers.contains(receiver)) receiver.sendMessage(receiverMsg);
     }
 
 }

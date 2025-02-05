@@ -13,11 +13,8 @@ public class PlayerJoinQuitListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-
         Player joiner = e.getPlayer();
-
         if (joiner.hasPermission(PotatoEssentials.getNameSpace()+".vanish.bypass")) return;
-
         for (Player player : VanishCommand.getVanishedPlayers()) {
             joiner.hidePlayer(PotatoEssentials.getInstance(), player);
         }
