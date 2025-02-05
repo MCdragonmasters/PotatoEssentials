@@ -23,7 +23,7 @@ public class PlayerChatListener implements Listener {
         Player player = e.getPlayer();
         boolean miniMessage = player.hasPermission(PotatoEssentials.getNameSpace()+".chat.minimessage");
         Component message;
-        if (PotatoEssentials.hasVault()) {
+        if (!PotatoEssentials.hasVault()) {
             message = Config.replaceFormat(Config.chatFormat(), miniMessage,
                     new Replacer("message", Utils.miniMessageDeserialize(e.message())),
                     new Replacer("name", e.getPlayer().getName()));
