@@ -3,6 +3,8 @@ package com.mcdragonmasters.potatoessentials.commands.messaging;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
+
+import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
@@ -51,21 +53,27 @@ public class MessageCommand {
     }
 
     public static void message(Player sender, String message, Player receiver) {
+        Replacer[] replacers;
+        if (PotatoEssentials.hasVault()) {
+            replacers = new Replacer[]{
+                    new Replacer("sender", sender.getName()),
+                    new Replacer("sender-prefix", Utils.getPrefix(sender)),
+                    new Replacer("sender-suffix", Utils.getSuffix(sender)),
+                    new Replacer("receiver", receiver.getName()),
+                    new Replacer("receiver-prefix", Utils.getPrefix(receiver)),
+                    new Replacer("receiver-suffix", Utils.getSuffix(receiver)),
+                    new Replacer("message", message, false) };
+              } else { replacers = new Replacer[]{
+                    new Replacer("sender", sender.getName()),
+                    new Replacer("receiver", receiver.getName()),
+                    new Replacer("message", message, false) };
+        }
 
-        Component senderMsg = Config.replaceFormat(Config.messageSender(),
-                new Replacer("sender", sender.getName()),
-                new Replacer("receiver", receiver.getName()),
-                new Replacer("message", message, false));
+        Component senderMsg = Config.replaceFormat(Config.messageSender(), replacers);
 
-        Component receiverMsg = Config.replaceFormat(Config.messageReceiver(),
-                new Replacer("sender", sender.getName()),
-                new Replacer("receiver", receiver.getName()),
-                new Replacer("message", message, false));
+        Component receiverMsg = Config.replaceFormat(Config.messageReceiver(), replacers);
 
-        Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(),
-                new Replacer("sender", sender.getName()),
-                new Replacer("receiver", receiver.getName()),
-                new Replacer("message", message, false));
+        Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(), replacers);
 
         for (CommandSender socialSpyReceiver : socialSpyPlayers) {
             if(!socialSpyPlayers.contains(socialSpyReceiver)) continue;

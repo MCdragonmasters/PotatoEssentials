@@ -17,7 +17,10 @@ public class MainCommand {
                 .executes((sender, args) -> {
                     switch (args.getByArgument(stringArg)) {
                         case "reload":
-                            Config.reload();
+                            if (!Config.reload()) {
+                                sender.sendRichMessage("<gold>PotatoEssentials<gray> ><red> Invalid config! Please restart your server for the config to regenerate");
+                                return;
+                            }
                             sender.sendRichMessage(
                                     "<gold>PotatoEssentials<gray> ><green> Successfully reloaded config!<newline>"+
                                     "<gold>Note: If you have enabled/disabled any <b>commands</b> in the <bold>config</bold> a <bold>restart</bold> is required to actually enable/disable them.");
