@@ -9,6 +9,11 @@ chat:
   # - <name>
   # - <message>
   format: "<name>: <message>"
+  emoji-token: ":"
+  emojis:
+    skull: "☠"
+    smile: "☺"
+
 
 commands:
   message:

@@ -7,10 +7,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
     @Getter
@@ -35,6 +38,12 @@ public class Config {
         potatoEssentials.reloadConfig();
         config = potatoEssentials.getConfig();
         PotatoEssentials.config = config;
+        if (!config.isConfigurationSection("chat.emojis")) return;
+        ConfigurationSection section = config.getConfigurationSection("chat.emojis");
+        if (section!=null)
+        for (String key : config.getConfigurationSection("chat.emojis").getKeys(false)) {
+            emojis.put(key,config.getString("chat.emojis"+key));
+        }
     }
     public static Boolean chatEnabled() { return config.getBoolean("chat.enabled"); }
     public static String chatFormat() { return config.getString("chat.format"); }
@@ -43,6 +52,7 @@ public class Config {
     public static String messageSocialSpy(){return config.getString("commands.message.social-spy");}
     public static String broadcastFormat() { return config.getString("commands.broadcast.message"); }
     public static boolean commandEnabled(String s) { return config.getBoolean("commands."+s+".enabled"); }
+    public static Map<String, String> emojis = new HashMap<>();
 
     @SuppressWarnings("PatternValidation")
     public static Component replaceFormat(String format, Replacer... replacers) {
