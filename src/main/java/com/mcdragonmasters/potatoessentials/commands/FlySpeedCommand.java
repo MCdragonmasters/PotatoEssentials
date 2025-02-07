@@ -9,14 +9,14 @@ import java.util.Objects;
 
 public class FlySpeedCommand {
     public static void register() {
-        Argument<Integer> intArg = new IntegerArgument("speed", 1, 100);
+        Argument<Integer> intArg = new IntegerArgument("speed", 1, 10);
 
         new CommandAPICommand("flyspeed")
                 .withPermission(PotatoEssentials.getNameSpace()+".flyspeed")
                 .withOptionalArguments(intArg)
                 .executesPlayer((player, args) -> {
-                    int speed = args.getByArgument(intArg)!=null?Objects.requireNonNull(args.getByArgument(intArg)):10;
-                    float actualSpeed = speed/100.0f;
+                    int speed = args.getByArgument(intArg)!=null?Objects.requireNonNull(args.getByArgument(intArg)):2;
+                    float actualSpeed = speed/10.0f;
                     player.setFlySpeed(actualSpeed);
                     player.sendRichMessage("<gray>Set your fly speed to<yellow> "+speed);
                 }).register();

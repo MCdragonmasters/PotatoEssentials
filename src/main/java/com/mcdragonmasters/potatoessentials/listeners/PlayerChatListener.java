@@ -24,15 +24,15 @@ public class PlayerChatListener implements Listener {
         boolean miniMessage = player.hasPermission(PotatoEssentials.getNameSpace()+".chat.minimessage");
         Component message;
         if (!PotatoEssentials.hasVault()) {
-            message = Config.replaceFormat(Config.chatFormat(), miniMessage,
-                    new Replacer("message", Utils.miniMessageDeserialize(e.message())),
-                    new Replacer("name", e.getPlayer().getName()));
+            message = Config.replaceFormat(Config.chatFormat(),
+                    new Replacer("name", e.getPlayer().getName()),
+                    new Replacer("message", Utils.serialize(e.message()), miniMessage));
         } else {
-            message = Config.replaceFormat(Config.chatFormat(), miniMessage,
-                    new Replacer("message", Utils.miniMessageDeserialize(e.message())),
+            message = Config.replaceFormat(Config.chatFormat(),
                     new Replacer("name", e.getPlayer().getName()),
                     new Replacer("prefix", vaultChat.getPlayerPrefix(player)),
-                    new Replacer("suffix", vaultChat.getPlayerSuffix(player)));
+                    new Replacer("suffix", vaultChat.getPlayerSuffix(player)),
+                    new Replacer("message", Utils.serialize(e.message()), miniMessage));
         }
         e.setCancelled(true);
         Bukkit.broadcast(message);

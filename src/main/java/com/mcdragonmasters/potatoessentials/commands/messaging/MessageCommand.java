@@ -34,7 +34,7 @@ public class MessageCommand {
         Argument<Player> playerArgument = new EntitySelectorArgument.OnePlayer("player");
         Argument<String> stringArgument = new GreedyStringArgument("message");
         new CommandAPICommand("message")
-                .withAliases("msg")
+                .withAliases("msg","whisper", "w")
                 .withPermission(PotatoEssentials.getNameSpace()+".message")
                 .withArguments(playerArgument)
                 .withArguments(stringArgument)
@@ -53,19 +53,19 @@ public class MessageCommand {
     public static void message(Player sender, String message, Player receiver) {
 
         Component senderMsg = Config.replaceFormat(Config.messageSender(),
-                new Replacer("message", message),
                 new Replacer("sender", sender.getName()),
-                new Replacer("receiver", receiver.getName()));
+                new Replacer("receiver", receiver.getName()),
+                new Replacer("message", message, false));
 
         Component receiverMsg = Config.replaceFormat(Config.messageReceiver(),
-                new Replacer("message", message),
                 new Replacer("sender", sender.getName()),
-                new Replacer("receiver", receiver.getName()));
+                new Replacer("receiver", receiver.getName()),
+                new Replacer("message", message, false));
 
         Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(),
-                new Replacer("message", message),
                 new Replacer("sender", sender.getName()),
-                new Replacer("receiver", receiver.getName()));
+                new Replacer("receiver", receiver.getName()),
+                new Replacer("message", message, false));
 
         for (CommandSender socialSpyReceiver : socialSpyPlayers) {
             if(!socialSpyPlayers.contains(socialSpyReceiver)) continue;

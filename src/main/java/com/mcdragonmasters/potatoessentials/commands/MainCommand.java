@@ -20,7 +20,7 @@ public class MainCommand {
                             Config.reload();
                             sender.sendRichMessage(
                                     "<gold>PotatoEssentials<gray> ><green> Successfully reloaded config!<newline>"+
-                                    "<gold>Note: If you have <bold>disabled any commands</bold> in <bold>config<bold> a <bold>restart</bold> is required to actually disable them.");
+                                    "<gold>Note: If you have enabled/disabled any <b>commands</b> in the <bold>config</bold> a <bold>restart</bold> is required to actually enable/disable them.");
                             break;
                         case null, default:
                             break;

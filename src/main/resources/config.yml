@@ -4,21 +4,21 @@
 chat:
   enabled: false
   # variables:
-  # - %prefix% - requires Vault
-  # - %suffix% - requires Vault
-  # - %name%
-  # - %message%
-  format: "%name%: %message%"
+  # - <prefix> - requires Vault
+  # - <suffix> - requires Vault
+  # - <name>
+  # - <message>
+  format: "<name>: <message>"
 
 commands:
   message:
     enabled: true
-    sender: "<gold>You <gray>»</gray> %receiver%<reset>: %message%"
-    receiver: "<gold>%sender% <gray>»</gray> You<reset>: %message%"
-    social-spy: "<gray>[<gold>SS</gold>] » <yellow>%sender%</yellow> -> <yellow>%receiver%</yellow>:</gray> %message%"
+    sender: "<gold>You <gray>»</gray> <receiver><reset>: <message>"
+    receiver: "<gold><sender> <gray>»</gray> You<reset>: <message>"
+    social-spy: "<gray>[<gold>SS</gold>] » <yellow><sender></yellow> -> <yellow><receiver></yellow>:</gray> <message>"
   broadcast:
     enabled: true
-    message: "<newline><red><bold>SERVER ANNOUNCEMENT</bold><white>: %message%<newline>"
+    message: "<newline><red><bold>SERVER ANNOUNCEMENT</bold><white>: <message><newline>"
   messagetoggle:
     enabled: true
   reply:

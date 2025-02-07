@@ -48,6 +48,7 @@ build {
 shadowJar {
     archiveClassifier = null
     relocate("dev.jorel.commandapi", "com.mcdragonmasters.potatoessentials.commandapi")
+    relocate("com.tchristofferson.configupdater", "com.mcdragonmasters.potatoessentials.configupdater")
 }
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
@@ -56,6 +57,11 @@ java {
 def oldestJava = 21
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += ['-source', '' + oldestJava, '-target', '' + oldestJava]
+}
+tasks.register('server', Copy) {
+    from shadowJar
+    // Change this to wherever you want your jar to build
+    into '\\\\192.168.1.46\\dev\\plugins'
 }
 
 processResources {

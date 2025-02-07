@@ -4,6 +4,9 @@ import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.tchristofferson.configupdater.ConfigUpdater;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
@@ -41,19 +44,22 @@ public class Config {
     public static String broadcastFormat() { return config.getString("commands.broadcast.message"); }
     public static boolean commandEnabled(String s) { return config.getBoolean("commands."+s+".enabled"); }
 
-    public static Component replaceFormat(String format, boolean miniMessage, Replacer... replacers) {
-        Component formatComponent = Utils.miniMessage(format);
-        for (Replacer replacer : replacers) {
-            formatComponent =  formatComponent.replaceText(builder ->
-               builder.match("%"+replacer.getOldText()+"%")
-                 .replacement(miniMessage?Utils.miniMessage(replacer.getNewText())
-                    :Component.text(replacer.getNewText())));
-        }
-
-        return formatComponent;
-    }
+    @SuppressWarnings("PatternValidation")
     public static Component replaceFormat(String format, Replacer... replacers) {
-        return replaceFormat(format, false, replacers);
+        MiniMessage miniMessage = MiniMessage.miniMessage();
+
+        TagResolver.Builder resolverBuilder = TagResolver.builder();
+
+        for (Replacer r : replacers) {
+            String newText = r.getNewText();
+            Component replacement = r.isMiniMsg()
+                    ? miniMessage.deserialize(newText)
+                    : Component.text(newText);
+            resolverBuilder.resolver(TagResolver.resolver(r.getOldText(), Tag.inserting(replacement)));
+        }
+        TagResolver resolver = resolverBuilder.build();
+
+        return Utils.miniMessage(format, resolver);
     }
 
 }

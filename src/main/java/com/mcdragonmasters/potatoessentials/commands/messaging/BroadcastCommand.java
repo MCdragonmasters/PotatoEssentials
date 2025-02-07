@@ -22,8 +22,8 @@ public class BroadcastCommand {
                 .withArguments(arg)
                 .executes((sender, args) -> {
                     String text = Objects.requireNonNull(args.getByArgument(arg));
-                    Component message = Config.replaceFormat(Config.broadcastFormat(), true,
-                            new Replacer("message", text));
+                    Component message = Config.replaceFormat(Config.broadcastFormat(),
+                            new Replacer("message", text, true));
                     Bukkit.broadcast(message);
                 }).register();
 

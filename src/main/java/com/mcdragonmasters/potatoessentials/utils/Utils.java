@@ -2,6 +2,8 @@ package com.mcdragonmasters.potatoessentials.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.text.DecimalFormat;
 
@@ -28,7 +30,8 @@ public class Utils {
     public static Component miniMessage(String s) {
         return MiniMessage.miniMessage().deserialize(s);
     }
-    public static String miniMessageDeserialize(Component s) {
-        return MiniMessage.miniMessage().serialize(s);
+    public static Component miniMessage(String s, TagResolver... tagResolvers) {
+        return MiniMessage.miniMessage().deserialize(s, tagResolvers);
     }
+    public static String serialize(Component c) {return PlainTextComponentSerializer.plainText().serialize(c);}
 }
