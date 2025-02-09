@@ -118,3 +118,6 @@ permissions:
   potatoessentials.chat.minimessage:
     description: Allows the user to use MiniMessage color codes and formating in chat
     default: op
+  potatoessentials.chat.emojis:
+    description: Allows the user to use emojis in chat
+    default: op

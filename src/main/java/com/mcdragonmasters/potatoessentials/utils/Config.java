@@ -4,7 +4,6 @@ import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.tchristofferson.configupdater.ConfigUpdater;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.configuration.ConfigurationSection;
@@ -61,22 +60,32 @@ public class Config {
     public static boolean emojisEnabled() { return config.getBoolean("chat.emojis-enabled"); }
     public static String getEmojiToken() { return config.getString("chat.emoji-token"); }
 
+    public static String teleportedMsg() { return config.getString("commands.tp.teleported-message"); }
+    public static String teleporterMsg() { return config.getString("commands.tp.teleporter-message"); }
+    public static String muteChatMuted() { return config.getString("commands.mutechat.mute"); }
+    public static String muteChatUnmuted() { return config.getString("commands.mutechat.unmute"); }
+
     @SuppressWarnings("PatternValidation")
     public static Component replaceFormat(String format, Replacer... replacers) {
-        MiniMessage miniMessage = MiniMessage.miniMessage();
-
         TagResolver.Builder resolverBuilder = TagResolver.builder();
-
         for (Replacer r : replacers) {
             String newText = r.getNewText();
-            Component replacement = r.isMiniMsg()
-                    ? miniMessage.deserialize(newText)
-                    : Component.text(newText);
+            Component newComp = r.getNewComp();
+            if (newText == null && newComp == null) continue;
+            Component toBeReplaced = (r.isComponent() && newComp != null)
+                    ? newComp
+                    : Component.text(newText!=null?newText:"Error: newText was null.");
+            Component toBeReplacedMiniMsg = (r.isComponent() && newComp != null)
+                    ? Utils.miniMessage(Utils.serialize(newComp).replace("\\<", "<")
+                    .replace("\\\\","\\"))
+                    : Utils.miniMessage(newText);
+            Component replacement = r.usesMiniMsg() ? toBeReplacedMiniMsg : toBeReplaced;
             resolverBuilder.resolver(TagResolver.resolver(r.getOldText(), Tag.inserting(replacement)));
         }
-        TagResolver resolver = resolverBuilder.build();
 
+        TagResolver resolver = resolverBuilder.build();
         return Utils.miniMessage(format, resolver);
     }
+
 
 }

@@ -13,9 +13,9 @@ chat:
   emojis-enabled: true
   emoji-token: ":"
   emojis:
-    skull: ☠
-    smile: ☺
-    frown: ☹
+    skull: "☠"
+    smile: "☺"
+    frown: "☹"
     heart: "<red>❤</red>"
 commands:
   message:
@@ -33,16 +33,18 @@ commands:
     social-spy: "<gray>[<gold>SS</gold>] » <yellow><sender></yellow> -> <yellow><receiver></yellow>:</gray> <message>"
   broadcast:
     enabled: true
-    message: "<newline>    <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</bold></red>]<white> <message><newline>"
+    message: "<newline>    <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</red></bold>]<white> <message><newline>"
   messagetoggle:
     enabled: true
   reply:
     enabled: true
   socialspy:
     enabled: true
-  tpcommands:
+  tp:
     tpall-enabled: true
     tphere-enabled: true
+    teleported-message: "<gray>You have been Teleported by <yellow><teleporter>"
+    teleporter-message: "<gray>You have Teleported <yellow><teleported></yellow> to <yellow>Yourself"
   enchant:
     enabled: true
   feed:
@@ -71,4 +73,8 @@ commands:
     enabled: true
   deletewarp:
     enabled: true
+  mutechat:
+    enabled: true
+    mute: "<red>Chat muted by <yellow><player>"
+    unmute: "<green>Chat unmuted by <yellow><player>"
 

@@ -23,7 +23,7 @@ public class SmiteCommand {
                         PotatoEssentials.getNameSpace()+".smite"))
                 .withArguments(playerArg)
                 .withOptionalArguments(doubleArgument)
-                .executesPlayer((commandSender, args) -> {
+                .executes((sender, args) -> {
                     Collection<Player> players = Objects.requireNonNull(args.getByArgument(playerArg));
                     double damage = args.getByArgument(doubleArgument)!=null?
                             Objects.requireNonNull(args.getByArgument(doubleArgument)):2;

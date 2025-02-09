@@ -75,8 +75,8 @@ public class PotatoEssentials extends JavaPlugin {
         if (Config.commandEnabled("invsee")) InvSeeCommand.register();
         if (Config.commandEnabled("ping")) PingCommand.register();
         if (Config.commandEnabled("smite")) SmiteCommand.register();
-        if (config.getBoolean("commands.tpcommands.tphere-enabled")) TeleportHereCommand.register();
-        if (config.getBoolean("commands.tpcommands.tpall-enabled")) TeleportAllCommand.register();
+        if (config.getBoolean("commands.tp.tphere-enabled")) TeleportHereCommand.register();
+        if (config.getBoolean("commands.tp.tpall-enabled")) TeleportAllCommand.register();
         if (Config.commandEnabled("flyspeed")) FlySpeedCommand.register();
         if (Config.commandEnabled("vanish")) VanishCommand.register();
         if (Config.commandEnabled("feed")) FeedCommand.register();

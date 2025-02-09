@@ -24,31 +24,33 @@ public class PlayerChatListener implements Listener {
         if (!Config.chatEnabled()) return;
         if (e.isCancelled()) return;
         Player player = e.getPlayer();
+        boolean canBypassMuteChat = player.hasPermission(PotatoEssentials.getNameSpace()+".mutechat.bypass");
+
+
         boolean miniMessage = player.hasPermission(PotatoEssentials.getNameSpace()+".chat.minimessage");
+        boolean canUseEmojis = player.hasPermission(PotatoEssentials.getNameSpace()+".chat.emojis");
         Component message = e.message();
 
-        if (Config.emojisEnabled()) {
+        if (Config.emojisEnabled() && canUseEmojis) {
             Map<String, String> emojis = Config.getEmojis();
             String emojiChar = Config.getEmojiToken();
             for (Map.Entry<String, String> entry : emojis.entrySet()) {
                 TextReplacementConfig replacementConfig = TextReplacementConfig.builder()
-                        .matchLiteral(emojiChar+entry.getKey()+emojiChar)
+                        .match("(?i)"+emojiChar+entry.getKey()+emojiChar)
                         .replacement(Utils.miniMessage(entry.getValue()))
                         .build();
                 message = message.replaceText(replacementConfig);
             }
-
         }
-        String finalMsg = Utils.serialize(message);
         Component finalMessage = PotatoEssentials.hasVault()
             ? Config.replaceFormat(Config.chatFormat(),
                 new Replacer("name", player.getName()),
                 new Replacer("prefix", vaultChat.getPlayerPrefix(player)),
                 new Replacer("suffix", vaultChat.getPlayerSuffix(player)),
-                new Replacer("message", finalMsg, miniMessage))
+                new Replacer("message", message, miniMessage))
             : Config.replaceFormat(Config.chatFormat(),
                 new Replacer("name", player.getName()),
-                new Replacer("message", finalMsg, miniMessage));
+                new Replacer("message", message, miniMessage));
 
         e.setCancelled(true);
         Bukkit.broadcast(finalMessage);
