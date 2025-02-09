@@ -75,6 +75,6 @@ commands:
     enabled: true
   mutechat:
     enabled: true
-    mute: "<red>Chat muted by <yellow><player>"
-    unmute: "<green>Chat unmuted by <yellow><player>"
+    mute: "<red>Chat muted by <yellow><sender>"
+    unmute: "<green>Chat unmuted by <yellow><sender>"
 

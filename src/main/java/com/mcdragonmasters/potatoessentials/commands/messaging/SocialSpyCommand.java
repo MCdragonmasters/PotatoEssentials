@@ -22,7 +22,7 @@ public class SocialSpyCommand {
                     }
                     boolean enabled = socialSpyPlayers.contains(sender);
                     sender.sendRichMessage("<gray>[<gold>SocialSpy<gray>] "
-                        +(!enabled?"<green>Enabled":"<red>Disabled"));
+                        +(enabled?"<green>Enabled":"<red>Disabled"));
                 }).register();
     }
 }

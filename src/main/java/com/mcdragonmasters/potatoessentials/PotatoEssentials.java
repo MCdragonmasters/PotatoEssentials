@@ -87,6 +87,8 @@ public class PotatoEssentials extends JavaPlugin {
         if (Config.commandEnabled("setwarp")) SetWarpCommand.register();
         if (Config.commandEnabled("deletewarp")) DelWarpCommand.register();
 
+        if (Config.commandEnabled("mutechat")) MuteChatCommand.register();
+
     }
     private boolean setupChat() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

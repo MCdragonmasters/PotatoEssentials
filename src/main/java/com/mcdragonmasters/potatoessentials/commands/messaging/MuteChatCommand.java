@@ -2,6 +2,7 @@ package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
+import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import dev.jorel.commandapi.CommandAPICommand;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -16,7 +17,8 @@ public class MuteChatCommand {
                 .withPermission(PotatoEssentials.getNameSpace()+".mutechat")
                 .executes((sender, args) -> {
                     chatMuted = !chatMuted;
-                    Component msg = Config.replaceFormat(Config.muteChatMuted());
+                    Component msg = Config.replaceFormat(chatMuted?Config.muteChatMuted():Config.muteChatUnmuted(),
+                            new Replacer("player", sender.getName()));
                     Bukkit.broadcast(msg);
                 }).register();
     }

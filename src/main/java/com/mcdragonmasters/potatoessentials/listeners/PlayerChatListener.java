@@ -1,6 +1,7 @@
 package com.mcdragonmasters.potatoessentials.listeners;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.commands.messaging.MuteChatCommand;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
@@ -25,7 +26,10 @@ public class PlayerChatListener implements Listener {
         if (e.isCancelled()) return;
         Player player = e.getPlayer();
         boolean canBypassMuteChat = player.hasPermission(PotatoEssentials.getNameSpace()+".mutechat.bypass");
-
+        if (MuteChatCommand.chatMuted && !canBypassMuteChat) {
+            e.setCancelled(true);
+            player.sendRichMessage("<red>The chat is currently muted!");
+        }
 
         boolean miniMessage = player.hasPermission(PotatoEssentials.getNameSpace()+".chat.minimessage");
         boolean canUseEmojis = player.hasPermission(PotatoEssentials.getNameSpace()+".chat.emojis");
