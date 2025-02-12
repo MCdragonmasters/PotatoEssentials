@@ -51,19 +51,22 @@ public class Config {
         return true;
     }
     public static Boolean chatEnabled() { return config.getBoolean("chat.enabled"); }
+    public static Boolean formatURLs() { return config.getBoolean("chat.format-urls"); }
     public static String chatFormat() { return config.getString("chat.format"); }
     public static String messageSender() { return config.getString("commands.message.sender");}
     public static String messageReceiver() { return config.getString("commands.message.receiver");}
-    public static String messageSocialSpy() { return config.getString("commands.message.social-spy");}
+    public static String messageSocialSpy() { return config.getString("commands.socialspy.message");}
     public static String broadcastFormat() { return config.getString("commands.broadcast.message"); }
     public static boolean commandEnabled(String s) { return config.getBoolean("commands."+s+".enabled"); }
     public static boolean emojisEnabled() { return config.getBoolean("chat.emojis-enabled"); }
-    public static String getEmojiToken() { return config.getString("chat.emoji-token"); }
+    public static String emojiToken() { return config.getString("chat.emoji-token"); }
 
     public static String teleportedMsg() { return config.getString("commands.tp.teleported-message"); }
     public static String teleporterMsg() { return config.getString("commands.tp.teleporter-message"); }
-    public static String muteChatMuted() { return config.getString("commands.mutechat.mute"); }
-    public static String muteChatUnmuted() { return config.getString("commands.mutechat.unmute"); }
+    public static String muteChatMutedMsg() { return config.getString("commands.mutechat.mute"); }
+    public static String muteChatUnmutedMsg() { return config.getString("commands.mutechat.unmute"); }
+    public static String sudoSayMsg() { return config.getString("commands.sudo.say-message"); }
+    public static String sudoCmdMsg() { return config.getString("commands.sudo.command-message"); }
 
     @SuppressWarnings("PatternValidation")
     public static Component replaceFormat(String format, Replacer... replacers) {

@@ -3,6 +3,8 @@ package com.mcdragonmasters.potatoessentials.commands;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.listeners.HungerChangeListener;
 import dev.jorel.commandapi.CommandAPICommand;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class HungerCommand {
 
@@ -17,8 +19,11 @@ public class HungerCommand {
                 .withPermission(PotatoEssentials.getNameSpace()+".hunger")
                 .executes((sender, args) -> {
                     hungerEnabled=!hungerEnabled;
-                    sender.sendRichMessage("<gray>[<gold>Hunger</gold>] "+
-                            (hungerEnabled?"<green>Enabled":"<red>Disabled"));
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (!player.hasPermission(PotatoEssentials.getNameSpace()+".hunger")) continue;
+                        sender.sendRichMessage("<gray>[<gold>Hunger</gold>] " +
+                                (hungerEnabled ? "<green>Enabled" : "<red>Disabled"));
+                    }
                 }).register();
     }
 }

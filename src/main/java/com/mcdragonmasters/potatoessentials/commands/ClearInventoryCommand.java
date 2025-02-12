@@ -25,8 +25,8 @@ public class ClearInventoryCommand {
                     for (Player player : players) {
                         player.getInventory().clear();
                     }
-                    String msg = players.size()>1?((Player)players.toArray()[0]).getName()+"</yellow>'s"
-                            : players.size()+" Players</yellow>'";
+                    String msg = players.size()<2?((Player) players.toArray()[0]).getName()
+                            : players.size()+" Players";
                     sender.sendRichMessage("<gray>Cleared<yellow> "+msg+" Inventory");
                 }).register();
 

@@ -24,6 +24,6 @@ public class PlayerJoinQuitListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         VanishCommand.getVanishedPlayers().remove(player);
-        MessageCommand.getMessageMap().remove(player);
+        MessageCommand.getMessages().remove(player);
     }
 }

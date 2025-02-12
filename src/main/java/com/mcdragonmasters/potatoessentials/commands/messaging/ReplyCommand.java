@@ -18,7 +18,7 @@ public class ReplyCommand {
                 .withPermission(PotatoEssentials.getNameSpace()+".message")
                 .withArguments(stringArgument)
                 .executesPlayer((sender, args) -> {
-                    Map<Player,Player> messageMap = MessageCommand.getMessageMap();
+                    Map<Player,Player> messageMap = MessageCommand.getMessages();
                     if (!messageMap.containsKey(sender)) {
                         sender.sendRichMessage("<red>You don't have anyone to reply to!");
                         return;

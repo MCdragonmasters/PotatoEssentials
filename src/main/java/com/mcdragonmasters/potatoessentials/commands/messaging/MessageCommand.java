@@ -25,7 +25,7 @@ import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyC
 public class MessageCommand {
 
     @Getter
-    private static final Map<Player, Player> messageMap = new HashMap<>();
+    private static final Map<Player, Player> messages = new HashMap<>();
 
     public static void register() {
         CommandAPI.unregister("message");
@@ -79,7 +79,8 @@ public class MessageCommand {
             if(!socialSpyPlayers.contains(socialSpyReceiver)) continue;
             socialSpyReceiver.sendMessage(socialSpyMsg);
         }
-        messageMap.put(receiver, sender);
+        messages.put(receiver, sender);
+        messages.put(sender, receiver);
 
         if (!socialSpyPlayers.contains(sender)) sender.sendMessage(senderMsg);
         if (!socialSpyPlayers.contains(receiver)) receiver.sendMessage(receiverMsg);

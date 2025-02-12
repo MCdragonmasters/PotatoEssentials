@@ -43,11 +43,11 @@ public class VanishCommand {
                     String msg = vanished?"now":"no longer";
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (player == vanisher) continue;
-                        if (player.hasPermission(namespace+".vanish")) {
+                        if (player.hasPermission(namespace+".vanish.bypass")){
                             player.sendRichMessage("<dark_gray>[<gold>Vanish</gold>]<yellow> "+
                                     vanisher.getName()+"<gray> is "+msg+" in vanish.");
+                            continue;
                         }
-                        if (player.hasPermission(namespace+".vanish.bypass")) continue;
                         if (vanished) player.hidePlayer(PotatoEssentials.getInstance(), vanisher);
                         if (!vanished) player.showPlayer(PotatoEssentials.getInstance(), vanisher);
                     }

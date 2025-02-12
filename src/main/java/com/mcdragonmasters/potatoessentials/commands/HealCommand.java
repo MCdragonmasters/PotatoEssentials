@@ -31,7 +31,7 @@ public class HealCommand {
                     for (Player player : players) {
                         player.heal(amount);
                     }
-                    String msg = players.size()==1?((Player) players.toArray()[0]).getName()
+                    String msg = players.size()<2?((Player) players.toArray()[0]).getName()
                             : players.size()+" Players";
 
                     sender.sendRichMessage("<green>Successfully<gray> healed <yellow>"+msg);

@@ -10,6 +10,7 @@ chat:
     # - <message>
   format: "<name>: <message>"
 
+  format-urls: true
   emojis-enabled: true
   emoji-token: ":"
   emojis:
@@ -30,16 +31,16 @@ commands:
       # - <message>
     sender: "<gold>You <gray>»</gray> <receiver><reset>: <message>"
     receiver: "<gold><sender> <gray>»</gray> You<reset>: <message>"
-    social-spy: "<gray>[<gold>SS</gold>] » <yellow><sender></yellow> -> <yellow><receiver></yellow>:</gray> <message>"
   broadcast:
     enabled: true
-    message: "<newline>    <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</red></bold>]<white> <message><newline>"
+    message: "<newline>  <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</red></bold>]<white> <message><newline>"
   messagetoggle:
     enabled: true
   reply:
     enabled: true
   socialspy:
     enabled: true
+    message: "<gray>[<gold>SS</gold>] » <yellow><sender></yellow> -> <yellow><receiver></yellow>:</gray> <message>"
   tp:
     tpall-enabled: true
     tphere-enabled: true
@@ -48,6 +49,8 @@ commands:
   enchant:
     enabled: true
   feed:
+    enabled: true
+  back:
     enabled: true
   flyspeed:
     enabled: true
@@ -77,4 +80,8 @@ commands:
     enabled: true
     mute: "<red>Chat muted by <yellow><sender>"
     unmute: "<green>Chat unmuted by <yellow><sender>"
+  sudo:
+    enabled: true
+    say-message: "<gray>Making<yellow> <sudoed-players><gray> say: '<yellow><input></yellow>'"
+    command-message: "<gray>Making<yellow> <sudoed-players><gray> execute: '<yellow><input></yellow>'"
 

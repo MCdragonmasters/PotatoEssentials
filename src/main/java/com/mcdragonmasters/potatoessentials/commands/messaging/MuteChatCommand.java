@@ -17,8 +17,9 @@ public class MuteChatCommand {
                 .withPermission(PotatoEssentials.getNameSpace()+".mutechat")
                 .executes((sender, args) -> {
                     chatMuted = !chatMuted;
-                    Component msg = Config.replaceFormat(chatMuted?Config.muteChatMuted():Config.muteChatUnmuted(),
-                            new Replacer("player", sender.getName()));
+                    Component msg = Config.replaceFormat(chatMuted?Config.muteChatMutedMsg()
+                                    : Config.muteChatUnmutedMsg(),
+                            new Replacer("sender", sender.getName()));
                     Bukkit.broadcast(msg);
                 }).register();
     }

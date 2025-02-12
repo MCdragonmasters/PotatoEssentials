@@ -26,7 +26,7 @@ public class WarpCommand {
                         sender.teleport(warpLocation);
                         sender.sendRichMessage("<gold>Warping to <yellow>"+warpName);
                     } else {
-                        sender.sendRichMessage("<red>Warp<yellow>"+warpName+"</yellow> is not set!");
+                        sender.sendRichMessage("<red>Warp<yellow> "+warpName+"<red> is not set!");
                     }
                 }).register();
     }
