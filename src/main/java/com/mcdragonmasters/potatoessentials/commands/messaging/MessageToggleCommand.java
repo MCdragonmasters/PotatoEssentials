@@ -13,17 +13,17 @@ public class MessageToggleCommand {
 
     public static void register() {
         new CommandAPICommand("messagetoggle")
-                .withAliases("msgtoggle")
+                .withAliases("msgtoggle", "tpm")
                 .withPermission(PotatoEssentials.getNameSpace()+".messagetoggle")
                 .executesPlayer((player, args) -> {
                     UUID uuid = player.getUniqueId();
                     String message;
                     if (messagesDisabled.contains(uuid)) {
                         messagesDisabled.remove(uuid);
-                        message = "<red>Disabled";
+                        message = "<green>Enabled";
                     } else {
                         messagesDisabled.add(uuid);
-                        message = "<green>Enabled";
+                        message = "<red>Disabled";
                     }
                     player.sendRichMessage("<gray>Private Messages have been "+message);
                 }).register();
