@@ -90,6 +90,7 @@ public class PotatoEssentials extends JavaPlugin {
         if (Config.commandEnabled("mutechat")) MuteChatCommand.register();
         if (Config.commandEnabled("sudo")) SudoCommand.register();
         if (Config.commandEnabled("back")) BackCommand.register();
+        if (Config.commandEnabled("report")) ReportCommand.register();
     }
     private boolean setupChat() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

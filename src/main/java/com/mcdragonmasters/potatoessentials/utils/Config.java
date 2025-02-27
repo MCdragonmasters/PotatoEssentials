@@ -67,6 +67,10 @@ public class Config {
     public static String muteChatUnmutedMsg() { return config.getString("commands.mutechat.unmute"); }
     public static String sudoSayMsg() { return config.getString("commands.sudo.say-message"); }
     public static String sudoCmdMsg() { return config.getString("commands.sudo.command-message"); }
+    public static String reportLogFormat() { return config.getString("commands.report.report-log-format");}
+    public static String reportFormat() { return config.getString("commands.report.report-format");}
+    public static String joinMessageFormat() {return config.getString("join-message");}
+    public static String quitMessageFormat() {return config.getString("quit-message");}
 
     @SuppressWarnings("PatternValidation")
     public static Component replaceFormat(String format, Replacer... replacers) {

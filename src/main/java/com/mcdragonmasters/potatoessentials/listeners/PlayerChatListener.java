@@ -12,7 +12,6 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +24,6 @@ public class PlayerChatListener implements Listener {
 
     private static final Pattern DOMAIN_PATTERN = Pattern.compile(
             "(https?://)?([a-zA-Z0-9-]{2,}\\.[a-zA-Z]{2,})");
-    private static final Chat vaultChat = PotatoEssentials.getVaultChat();
 
     @EventHandler
     public void onPlayerChat(AsyncChatEvent e) {
@@ -71,9 +69,9 @@ public class PlayerChatListener implements Listener {
         }
         Component finalMessage = PotatoEssentials.hasVault()
             ? Config.replaceFormat(Config.chatFormat(),
+                new Replacer("prefix", Utils.getPrefix(player)),
                 new Replacer("name", player.getName()),
-                new Replacer("prefix", vaultChat.getPlayerPrefix(player)),
-                new Replacer("suffix", vaultChat.getPlayerSuffix(player)),
+                new Replacer("suffix", Utils.getSuffix(player)),
                 new Replacer("message", message, miniMessage))
             : Config.replaceFormat(Config.chatFormat(),
                 new Replacer("name", player.getName()),

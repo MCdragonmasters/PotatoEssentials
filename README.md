@@ -171,6 +171,20 @@
         </ul>
     </li>
     <br>
+    <li>potatoessentials.report
+        <ul>
+            <li>Description: Allows the user to use /report</li>
+            <li>Default needed to use: none</li>
+        </ul>
+    </li>
+    <br>
+    <li>potatoessentials.report.log
+        <ul>
+            <li>Description: Allows the user to use /report log</li>
+            <li>Default needed to use: op</li>
+        </ul>
+    </li>
+    <br>
     <li>potatoessentials.setwarp
         <ul>
             <li>Description: Allows the user to use /setwarp</li>

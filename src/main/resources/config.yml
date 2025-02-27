@@ -18,6 +18,13 @@ chat:
     smile: "☺"
     frown: "☹"
     heart: "<red>❤</red>"
+
+# - <prefix> - requires Vault
+# - <suffix> - requires Vault
+# - <name>
+join-message: "<yellow><name> joined the game"
+quit-message: "<yellow><name> left the game"
+
 commands:
   message:
     enabled: true
@@ -84,4 +91,8 @@ commands:
     enabled: true
     say-message: "<gray>Making<yellow> <sudoed-players><gray> say: '<yellow><input></yellow>'"
     command-message: "<gray>Making<yellow> <sudoed-players><gray> execute: '<yellow><input></yellow>'"
-
+  report:
+    enabled: false
+    report-log-title: "<color:dark_gray><st>=====</color><gold><bold>Report Logs</gold><st><dark_gray>====="
+    report-log-format: "<yellow><reported><gray> was reported by</gray> '<reporter>'<gray> for<yellow> '<reason>'"
+    report-format: "<yellow><reported><gray> has been reported by</gray> '<reporter>'<gray> for<yellow> '<reason>'"

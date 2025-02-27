@@ -75,15 +75,17 @@ public class MessageCommand {
 
         Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(), replacers);
 
-        for (CommandSender socialSpyReceiver : socialSpyPlayers) {
-            if(!socialSpyPlayers.contains(socialSpyReceiver)) continue;
-            socialSpyReceiver.sendMessage(socialSpyMsg);
+        for (CommandSender potentialSocialSpyReceiver : socialSpyPlayers) {
+            if(!socialSpyPlayers.contains(potentialSocialSpyReceiver)) continue;
+            if(receiver==potentialSocialSpyReceiver) continue;
+            if(sender==potentialSocialSpyReceiver) continue;
+            potentialSocialSpyReceiver.sendMessage(socialSpyMsg);
         }
         messages.put(receiver, sender);
         messages.put(sender, receiver);
 
-        if (!socialSpyPlayers.contains(sender)) sender.sendMessage(senderMsg);
-        if (!socialSpyPlayers.contains(receiver)) receiver.sendMessage(receiverMsg);
+        sender.sendMessage(senderMsg);
+        receiver.sendMessage(receiverMsg);
     }
 
 }
