@@ -18,7 +18,7 @@ public class BroadcastCommand {
 
         new CommandAPICommand("broadcast")
                 .withAliases("bc")
-                .withPermission(PotatoEssentials.getNameSpace()+".broadcast")
+                .withPermission(PotatoEssentials.NAMESPACE+".broadcast")
                 .withArguments(arg)
                 .executes((sender, args) -> {
                     String text = Objects.requireNonNull(args.getByArgument(arg));

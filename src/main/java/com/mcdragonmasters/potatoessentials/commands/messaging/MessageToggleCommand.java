@@ -14,7 +14,7 @@ public class MessageToggleCommand {
     public static void register() {
         new CommandAPICommand("messagetoggle")
                 .withAliases("msgtoggle", "tpm")
-                .withPermission(PotatoEssentials.getNameSpace()+".messagetoggle")
+                .withPermission(PotatoEssentials.NAMESPACE+".messagetoggle")
                 .executesPlayer((player, args) -> {
                     UUID uuid = player.getUniqueId();
                     String message;

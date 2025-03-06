@@ -26,7 +26,7 @@ public class GameModeCommand {
         EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
                 .ManyPlayers("target");
 
-        String permission = PotatoEssentials.getNameSpace()+".gamemode";
+        String permission = PotatoEssentials.NAMESPACE+".gamemode";
         new CommandAPICommand("gamemode")
                 .withPermission(permission)
                 .withArguments(gmArg)

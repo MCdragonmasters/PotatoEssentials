@@ -1,3 +1,5 @@
+//import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
+//import io.papermc.paperweight.util.constants.REOBF_CONFIG
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.tasks.Copy
 import org.gradle.jvm.toolchain.JavaLanguageVersion
@@ -6,6 +8,7 @@ plugins {
     java
     id("com.gradleup.shadow") version "8.3.3"
     id("io.freefair.lombok") version "8.12.1"
+    //id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
 }
 
 group = "com.mcdragonmasters"
@@ -25,8 +28,12 @@ repositories {
 dependencies {
     // Paper
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    //// Paper NMS
+    //paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     // CommandAPI
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0")
+    compileOnly("dev.jorel:commandapi-annotations:9.7.0")
+    annotationProcessor("dev.jorel:commandapi-annotations:9.7.0")
     // VaultAPI
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     // Config-Updater
@@ -36,7 +43,9 @@ dependencies {
 tasks.build {
     dependsOn(tasks.shadowJar)
 }
-
+//paperweight {
+//    reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION
+//}
 tasks.shadowJar {
     archiveClassifier.set(null as String?)
     relocate("dev.jorel.commandapi", "com.mcdragonmasters.potatoessentials.commandapi")
@@ -57,5 +66,6 @@ tasks.register<Copy>("server") {
 }
 
 tasks.processResources {
-    filter<ReplaceTokens>("tokens" to mapOf("version" to project.version.toString()))
+    filter<ReplaceTokens>("tokens" to mapOf(
+        "version" to project.version.toString()))
 }

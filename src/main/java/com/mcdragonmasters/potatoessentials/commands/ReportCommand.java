@@ -20,24 +20,6 @@ public class ReportCommand {
 
     @SuppressWarnings("DataFlowIssue")
     public static void register() {
-        CommandAPICommand subCmd = new CommandAPICommand("log")
-                .withPermission(PotatoEssentials.getNameSpace()+".report.log")
-                .executes((sender, args) -> {
-                    if (reports.isEmpty()) {
-                        sender.sendRichMessage("<red>No reports to list.");
-                        return;
-                    }
-                    sender.sendMessage(Config.getConfig().getRichMessage("commands.report.report-log-title"));
-                    int i = 0;
-                    for (Report rpt : reports) {
-                        i++;
-                        sender.sendMessage(Config.replaceFormat(Config.reportLogFormat(),
-                                new Replacer("reported", rpt.getReported().getName()),
-                                new Replacer("reporter", rpt.getReporter().getName()),
-                                new Replacer("reason", rpt.getReason())));
-                        if (i==15) break;
-                    }
-                });
 
         Argument<Player> playerArg = new PlayerArgument("target")
                 .replaceSafeSuggestions(SafeSuggestions.suggest(info ->
@@ -46,7 +28,7 @@ public class ReportCommand {
 
         Argument<String> reasonArg = new GreedyStringArgument("reason");
         new CommandAPICommand("report")
-                .withPermission(PotatoEssentials.getNameSpace()+".report")
+                .withPermission(PotatoEssentials.NAMESPACE+".report")
                 .withArguments(playerArg)
                 .withArguments(reasonArg)
                 .executes((sender, args) -> {
@@ -58,13 +40,32 @@ public class ReportCommand {
                         return;
                     }
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (!player.hasPermission(PotatoEssentials.getNameSpace()+".report.log")) continue;
+                        if (!player.hasPermission(PotatoEssentials.NAMESPACE+".report.log")) continue;
                         Component msg = Config.replaceFormat(Config.reportFormat(),
                                 new Replacer("reported", reported.getName()),
                                 new Replacer("reporter", sender.getName()),
                                 new Replacer("reason", reason));
                         player.sendMessage(msg);
                     }
-                }).withSubcommand(subCmd).register();
+                }).withSubcommand(
+                        new CommandAPICommand("log")
+                        .withPermission(PotatoEssentials.NAMESPACE+".report.log")
+                        .executes((sender, args) -> {
+                            if (reports.isEmpty()) {
+                                sender.sendRichMessage("<red>No reports to list.");
+                                return;
+                            }
+                            sender.sendMessage(Config.getConfig().getRichMessage("commands.report.report-log-title"));
+                            int i = 0;
+                            for (Report rpt : reports) {
+                                i++;
+                                sender.sendMessage(Config.replaceFormat(Config.reportLogFormat(),
+                                        new Replacer("reported", rpt.getReported().getName()),
+                                        new Replacer("reporter", rpt.getReporter().getName()),
+                                        new Replacer("reason", rpt.getReason())));
+                                if (i==15) break;
+                            }
+                        }))
+                .register();
     }
 }

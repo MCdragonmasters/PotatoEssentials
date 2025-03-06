@@ -21,7 +21,11 @@ permissions:
       potatoessentials.message: true
       potatoessentials.ping: true
       potatoessentials.messagetoggle: true
+      potatoessentials.channel: true
 
+      potatoessentials.chat.*: true
+
+      potatoessentials.chat.urls: true
       potatoessentials.broadcast: true
       potatoessentials.socialspy: true
       potatoessentials.enchant: true
@@ -34,19 +38,42 @@ permissions:
       potatoessentials.tpall: true
       potatoessentials.flyspeed: true
       potatoessentials.messagetoggle.bypass: true
+
       potatoessentials.vanish: true
       potatoessentials.vanish.bypass: true
+
       potatoessentials.feed: true
       potatoessentials.clearinventory: true
       potatoessentials.warp: true
       potatoessentials.setwarp: true
       potatoessentials.deletewarp: true
+
+      potatoessentials.mutechat: true
+      potatoessentials.sudo: true
+      potatoessentials.back: true
+
+      potatoessentials.report.log: true
+      potatoessentials.report: true
+
+      potatoessentials.uptime: true
+
+      potatoessentials.kit.*: true
+      potatoessentials.kit.clearchat: true
+      potatoessentials.kit.skin: true
+
+  potatoessentials.chat.*:
+    description: Gives to user full access for all chat related permissions
+    children:
+      potatoessentials.chat.bypassFilter: true
       potatoessentials.chat.minimessage: true
       potatoessentials.chat.emojis: true
-      potatoessentials.mutechat: true
-      potatoessentials.mutechat.bypass: true
-      potatoessentials.sudo: true
-      potatoessentials.chat.urls: true
+      potatoessentials.chat.bypassMutedChat: true
+  potatoessentials.kit.*:
+    description: Allows the user to use all /kit subcommands
+    children:
+      potatoessentials.kit.create: true
+      potatoessentials.kit.give: true
+      potatoessentials.kit.delete: true
   potatoessentials.message:
     description: Allows the user to use /msg and /r
     default: true
@@ -55,6 +82,9 @@ permissions:
     default: true
   potatoessentials.messagetoggle:
     description: Allows the user to use /msgtoggle
+    default: true
+  potatoessentials.channel:
+    description: Allows the user to use /channel (/chat)
     default: true
 
 
@@ -127,7 +157,7 @@ permissions:
   potatoessentials.mutechat:
     description: Allows the user to use /mutechat
     default: op
-  potatoessentials.mutechat.bypass:
+  potatoessentials.chat.bypassMutedChat:
     description: Allows the user to talk what chat is muted
     default: op
   potatoessentials.sudo:
@@ -144,4 +174,25 @@ permissions:
     default: true
   potatoessentials.report.log:
     description: Allows the user to use /report log
+    default: op
+  potatoessentials.uptime:
+    description: Allows the user to use /uptime
+    default: op
+  potatoessentials.chat.bypassFilter:
+    description: Allows the user to bypass the chat filter
+    default: op
+  potatoessentials.kit.give:
+    description: Allows the user to use /kit give
+    default: op
+  potatoessentials.kit.create:
+    description: Allows the user to use /kit create
+    default: op
+  potatoessentials.kit.delete:
+    description: Allows the user to use /kit delete
+    default: op
+  potatoessentials.clearchat:
+    description: Allows the user to use /clearchat
+    default: op
+  potatoessentials.skin:
+    description: Allows the user to use /skin
     default: op

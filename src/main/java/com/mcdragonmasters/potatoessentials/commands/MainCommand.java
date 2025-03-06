@@ -2,32 +2,43 @@ package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.Argument;
-import dev.jorel.commandapi.arguments.MultiLiteralArgument;
+import dev.jorel.commandapi.annotations.Command;
+import dev.jorel.commandapi.annotations.Permission;
+import dev.jorel.commandapi.annotations.Subcommand;
+import org.bukkit.command.CommandSender;
 
+@SuppressWarnings("UnstableApiUsage")
+@Command("potatoessentials")
 public class MainCommand {
-    public static void register() {
 
-        Argument<String> stringArg = new MultiLiteralArgument("argument","reload");
+    private final static String prefix = "<gold>PotatoEssentials<gray> >";
 
-        new CommandAPICommand("potatoessentials")
-                .withPermission(PotatoEssentials.getNameSpace()+".potatoessentials")
-                .withArguments(stringArg)
-                .executes((sender, args) -> {
-                    switch (args.getByArgument(stringArg)) {
-                        case "reload":
-                            if (!Config.reload()) {
-                                sender.sendRichMessage("<gold>PotatoEssentials<gray> ><red> Invalid config! Please restart your server for the config to regenerate");
-                                return;
-                            }
-                            sender.sendRichMessage(
-                                    "<gold>PotatoEssentials<gray> ><green> Successfully reloaded config!<newline>"+
-                                    "<gold>Note: If you have enabled/disabled any <b>commands</b> in the <bold>config</bold> a <bold>restart</bold> is required to actually enable/disable them.");
-                            break;
-                        case null, default:
-                            break;
-                    }
-                }).register();
+    @Subcommand("reload")
+    @Permission(PotatoEssentials.NAMESPACE+".potatoessentials")
+    public static void reload(CommandSender sender) {
+        if (!sender.hasPermission(PotatoEssentials.NAMESPACE+".potatoessentials")) {
+            sender.sendRichMessage("<red>You don't have permission!");
+            return;
+        }
+        String reload = Config.reload();
+        if (!reload.equals("passed")) {
+            sender.sendRichMessage(
+                    prefix+" <red>Invalid config! Error:<newline>" +
+                            reload);
+            return;
+        }
+        sender.sendRichMessage(
+                prefix+" <green>Successfully reloaded config!<newline>"+
+                        "<gold>Note: If you have enabled/disabled any <b>commands</b> in the " +
+                        "<bold>config</bold> a <bold>restart</bold> is required to actually enable/disable them.");
+
+    }
+    @Subcommand("info")
+    public static void info(CommandSender sender) {
+        String ver = PotatoEssentials.INSTANCE.getPluginMeta().getVersion();
+        sender.sendRichMessage(prefix+"<gold> Version:<green> "+ver);
+        sender.sendRichMessage(prefix+
+                "<gold> Github: <#00b1fc><click:open_url:'https://github.com/MCdragonmasters/PotatoEssentials'>" +
+                "https://github.com/MCdragonmasters/PotatoEssentials");
     }
 }

@@ -17,7 +17,7 @@ public class ClearInventoryCommand {
 
         new CommandAPICommand("clearinventory")
                 .withAliases("ci")
-                .withPermission(PotatoEssentials.getNameSpace()+".clearinventory")
+                .withPermission(PotatoEssentials.NAMESPACE+".clearinventory")
                 .withOptionalArguments(playerArg)
                 .executesPlayer((sender,args) -> {
                     Collection<Player> players = args.getByArgument(playerArg) != null ?

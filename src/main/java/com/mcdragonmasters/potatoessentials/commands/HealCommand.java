@@ -18,7 +18,7 @@ public class HealCommand {
                 .ManyPlayers("target");
         Argument<Double> doubleArg = new DoubleArgument("amount");
         new CommandAPICommand("heal")
-                .withPermission(PotatoEssentials.getNameSpace() + ".heal")
+                .withPermission(PotatoEssentials.NAMESPACE + ".heal")
                 .withOptionalArguments(playerArg)
                 .withOptionalArguments(doubleArg)
                 .executesPlayer((sender, args) -> {

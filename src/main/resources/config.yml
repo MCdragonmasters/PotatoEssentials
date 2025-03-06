@@ -3,6 +3,7 @@
 
 chat:
   enabled: false
+
     # variables:
     # - <prefix> - requires Vault
     # - <suffix> - requires Vault
@@ -10,20 +11,46 @@ chat:
     # - <message>
   format: "<name>: <message>"
 
+  filterWords: true
+  filteredWords:
+    - "shit"
+    - "5hit"
+
   format-urls: true
   emojis-enabled: true
-  emoji-token: ":"
+  addEmojisToCustomChatCompletions: true
   emojis:
-    skull: "☠"
-    smile: "☺"
-    frown: "☹"
-    heart: "<red>❤</red>"
+    ":skull:": "☠"
+    ":smile:": "☺"
+    ":frown:": "☹"
+    ":heart:": "<red>❤</red>"
+    ":fire:": "<gold>🔥</gold>"
+    ":(": "☹"
+    ":)": "☺"
 
-# - <prefix> - requires Vault
-# - <suffix> - requires Vault
-# - <name>
-join-message: "<yellow><name> joined the game"
-quit-message: "<yellow><name> left the game"
+connectionMessages:
+  modifyConnectionMessages: true
+
+  # - <prefix> - requires Vault
+  # - <suffix> - requires Vault
+  # - <name>
+  # - <join-number> - only available in firstJoinMessage
+  firstJoinMessage: "<yellow><name> joined the game for the first time! [#<join-number>]"
+  joinMessage: "<yellow><name> joined the game"
+  quitMessage: "<yellow><name> left the game"
+
+chats:
+  enabled: true
+  format: "<chat-name> <dark_gray>»<white> <prefix><name><white>: <message>"
+  customChats:
+    staff:
+      name: "<gold>Staff Chat"
+      permission: "potatoessentials.chats.exampleStaff"
+      # optional field
+      command: "sc" # (needs server restart when first added)
+    #vip:
+    #  name: "<green>VIP Chat"
+    #  permission: "potatoessentials.chats.exampleVIP"
 
 commands:
   message:
@@ -47,6 +74,7 @@ commands:
     enabled: true
   socialspy:
     enabled: true
+    # same vars as /message
     message: "<gray>[<gold>SS</gold>] » <yellow><sender></yellow> -> <yellow><receiver></yellow>:</gray> <message>"
   tp:
     tpall-enabled: true
@@ -55,10 +83,13 @@ commands:
     teleporter-message: "<gray>You have Teleported <yellow><teleported></yellow> to <yellow>Yourself"
   enchant:
     enabled: true
+    message: "<gray>Applied<yellow> <enchantment></yellow> to<yellow> <target></yellow> held item"
   feed:
     enabled: true
+    message: "<green>Successfully<gray> fed<yellow> <target>"
   back:
     enabled: true
+    message: "<gold>You have teleported to <yellow>your <gold>previous location<dark_gray>!"
   flyspeed:
     enabled: true
   gamemode:
@@ -96,3 +127,25 @@ commands:
     report-log-title: "<color:dark_gray><st>=====</color><gold><bold>Report Logs</gold><st><dark_gray>====="
     report-log-format: "<yellow><reported><gray> was reported by</gray> '<reporter>'<gray> for<yellow> '<reason>'"
     report-format: "<yellow><reported><gray> has been reported by</gray> '<reporter>'<gray> for<yellow> '<reason>'"
+  uptime:
+    enabled: true
+    message: "<aqua><b>Uptime</b>: <gold><uptime>"
+  channel:
+    enabled: true
+    message: "<yellow>Chat channel</yellow><gray> set to </gray><chat-name>"
+    chatNotFound: "<red>Chat <chat-name> does not exist!"
+  kit:
+    enabled: true
+    emptyInventory: "<red>You cannot create a kit with an empty inventory!"
+    kitCreate: "<green>Created kit '<kit-name>'"
+    kitNotFound: "<red>Kit with name '<kit-name>' does not exist!"
+    kitAlreadyExists: "<red>A kit with the name '<kit-name>' already exists!"
+    kitDelete: "<red>Deleted kit '<kit-name>'"
+    kitGiveTo: "<green>Gave kit '<kit-name>' to <target>"
+  clearchat:
+    enabled: true
+    message: "<green><name> cleared the chat"
+  skin:
+    enabled: true
+    setSkin: "<green>Set skin to '<skin>'"
+    skinNotFound: "<red>Skin not found!"

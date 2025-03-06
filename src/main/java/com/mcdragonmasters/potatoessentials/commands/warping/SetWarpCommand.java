@@ -1,6 +1,6 @@
 package com.mcdragonmasters.potatoessentials.commands.warping;
 
-import com.mcdragonmasters.potatoessentials.JSONDatabase.WarpsManager;
+import com.mcdragonmasters.potatoessentials.database.WarpsManager;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
@@ -14,7 +14,7 @@ public class SetWarpCommand {
         Argument<String> warpNameArg = new StringArgument("warp-name");
 
         new CommandAPICommand("setwarp")
-                .withPermission(PotatoEssentials.getNameSpace()+".setwarp")
+                .withPermission(PotatoEssentials.NAMESPACE+".setwarp")
                 .withArguments(warpNameArg)
                 .executesPlayer((sender, args) -> {
                     String warpName = args.getByArgument(warpNameArg);

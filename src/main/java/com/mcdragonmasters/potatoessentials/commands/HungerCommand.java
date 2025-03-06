@@ -13,14 +13,14 @@ public class HungerCommand {
     public static void register() {
 
         PotatoEssentials.pluginManager
-                .registerEvents(new HungerChangeListener(), PotatoEssentials.getInstance());
+                .registerEvents(new HungerChangeListener(), PotatoEssentials.INSTANCE);
 
         new CommandAPICommand("hunger")
-                .withPermission(PotatoEssentials.getNameSpace()+".hunger")
+                .withPermission(PotatoEssentials.NAMESPACE+".hunger")
                 .executes((sender, args) -> {
                     hungerEnabled=!hungerEnabled;
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (!player.hasPermission(PotatoEssentials.getNameSpace()+".hunger")) continue;
+                        if (!player.hasPermission(PotatoEssentials.NAMESPACE+".hunger")) continue;
                         sender.sendRichMessage("<gray>[<gold>Hunger</gold>] " +
                                 (hungerEnabled ? "<green>Enabled" : "<red>Disabled"));
                     }

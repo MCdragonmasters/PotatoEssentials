@@ -23,7 +23,7 @@ public class SudoCommand {
                 .ManyPlayers("target");
         Argument<String> stringArg = new GreedyStringArgument("input");
         new CommandAPICommand("sudo")
-                .withPermission(PotatoEssentials.getNameSpace()+".sudo")
+                .withPermission(PotatoEssentials.NAMESPACE+".sudo")
                 .withArguments(playerArg)
                 .withArguments(stringArg)
                 .executes((sender, args) -> {

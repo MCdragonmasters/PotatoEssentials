@@ -1,10 +1,14 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.utils.Config;
+import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import dev.jorel.commandapi.arguments.IntegerArgument;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -18,23 +22,21 @@ public class FeedCommand {
                 .ManyPlayers("target");
         Argument<Integer> intArg = new IntegerArgument("amount");
         new CommandAPICommand("feed")
-                .withPermission(PotatoEssentials.getNameSpace() + ".feed")
+                .withPermission(PotatoEssentials.NAMESPACE + ".feed")
                 .withOptionalArguments(playerArg)
                 .withOptionalArguments(intArg)
                 .executesPlayer((sender, args) -> {
                     Collection<Player> players = args.getByArgument(playerArg) != null ?
                             Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(sender);
 
-                    int amount = args.getByArgument(intArg) != null ?
-                            Objects.requireNonNull(args.getByArgument(intArg)) : 20;
-
+                    int amount = args.getByArgumentOrDefault(intArg, 20);
                     for (Player player : players) {
                         player.setFoodLevel(player.getFoodLevel()+amount);
                     }
-                    String msg = players.size()==1?((Player) players.toArray()[0]).getName()
-                            : players.size()+" Players";
+                    Component msg = Config.replaceFormat(Config.getCmdMsg("feed", "message"),
+                            new Replacer("target", Utils.playerNameFormat(players)));
 
-                    sender.sendRichMessage("<green>Successfully<gray> fed<yellow> "+msg);
+                    sender.sendMessage(msg);
 
                 }).register();
     }

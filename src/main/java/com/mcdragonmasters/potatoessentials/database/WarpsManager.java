@@ -1,4 +1,4 @@
-package com.mcdragonmasters.potatoessentials.JSONDatabase;
+package com.mcdragonmasters.potatoessentials.database;
 
 import com.google.gson.*;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
@@ -12,9 +12,9 @@ import java.util.logging.Logger;
 
 public class WarpsManager {
 
-    private static final File warpsFile = new File(PotatoEssentials.getInstance().getDataFolder(), "warps.json");
+    private static final File warpsFile = new File(PotatoEssentials.INSTANCE.getDataFolder(), "warps.json");
     private static final Map<String, Location> warpsMap = new HashMap<>();
-    private static final Logger logger = PotatoEssentials.getInstance().getLogger();
+    private static final Logger logger = PotatoEssentials.LOGGER;
     static {
         loadWarps();
     }

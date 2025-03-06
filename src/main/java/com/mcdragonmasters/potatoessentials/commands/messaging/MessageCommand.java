@@ -20,12 +20,12 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.mcdragonmasters.potatoessentials.commands.messaging.MessageToggleCommand.messagesDisabled;
-import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyCommand.socialSpyPlayers;
+import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyCommand.socialSpyList;
 
 public class MessageCommand {
 
     @Getter
-    private static final Map<Player, Player> messages = new HashMap<>();
+    private static final Map<CommandSender, CommandSender> messages = new HashMap<>();
 
     public static void register() {
         CommandAPI.unregister("message");
@@ -37,24 +37,24 @@ public class MessageCommand {
         Argument<String> stringArgument = new GreedyStringArgument("message");
         new CommandAPICommand("message")
                 .withAliases("msg","whisper", "w")
-                .withPermission(PotatoEssentials.getNameSpace()+".message")
+                .withPermission(PotatoEssentials.NAMESPACE+".message")
                 .withArguments(playerArgument)
                 .withArguments(stringArgument)
-                .executesPlayer((player, args) -> {
+                .executes((sender, args) -> {
                     Player receiver = Objects.requireNonNull(args.getByArgument(playerArgument));
                     if (messagesDisabled.contains(receiver.getUniqueId())&&
-                            !player.hasPermission(PotatoEssentials.getNameSpace()+".messagetoggle.bypass")) {
-                        player.sendRichMessage("<red>"+receiver.getName()+"'s messages are disabled");
+                            !sender.hasPermission(PotatoEssentials.NAMESPACE+".messagetoggle.bypass")) {
+                        sender.sendRichMessage("<red>"+receiver.getName()+"'s messages are disabled");
                         return;
                     }
                     String message = Objects.requireNonNull(args.getByArgument(stringArgument));
-                    message(player, message, receiver);
+                    message(sender, message, receiver);
                 }).register();
     }
 
-    public static void message(Player sender, String message, Player receiver) {
+    public static void message(CommandSender sender, String message, CommandSender receiver) {
         Replacer[] replacers;
-        if (PotatoEssentials.hasVault()) {
+        if (PotatoEssentials.isVaultInstalled()) {
             replacers = new Replacer[]{
                     new Replacer("sender", sender.getName()),
                     new Replacer("sender-prefix", Utils.getPrefix(sender)),
@@ -62,11 +62,12 @@ public class MessageCommand {
                     new Replacer("receiver", receiver.getName()),
                     new Replacer("receiver-prefix", Utils.getPrefix(receiver)),
                     new Replacer("receiver-suffix", Utils.getSuffix(receiver)),
-                    new Replacer("message", message, false) };
-              } else { replacers = new Replacer[]{
+                    new Replacer("message", message, false, false) };
+        } else {
+            replacers = new Replacer[]{
                     new Replacer("sender", sender.getName()),
                     new Replacer("receiver", receiver.getName()),
-                    new Replacer("message", message, false) };
+                    new Replacer("message", message, false, false) };
         }
 
         Component senderMsg = Config.replaceFormat(Config.messageSender(), replacers);
@@ -75,8 +76,8 @@ public class MessageCommand {
 
         Component socialSpyMsg = Config.replaceFormat(Config.messageSocialSpy(), replacers);
 
-        for (CommandSender potentialSocialSpyReceiver : socialSpyPlayers) {
-            if(!socialSpyPlayers.contains(potentialSocialSpyReceiver)) continue;
+        for (CommandSender potentialSocialSpyReceiver : socialSpyList) {
+            if(!socialSpyList.contains(potentialSocialSpyReceiver)) continue;
             if(receiver==potentialSocialSpyReceiver) continue;
             if(sender==potentialSocialSpyReceiver) continue;
             potentialSocialSpyReceiver.sendMessage(socialSpyMsg);

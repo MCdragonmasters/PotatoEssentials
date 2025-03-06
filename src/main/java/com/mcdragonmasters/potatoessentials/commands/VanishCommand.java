@@ -21,11 +21,11 @@ public class VanishCommand {
     private final static Set<Player> vanishedPlayers = new HashSet<>();
 
     public static void register() {
-        pluginManager.registerEvents(new PlayerJoinQuitListener(), PotatoEssentials.getInstance());
+        pluginManager.registerEvents(new PlayerJoinQuitListener(), PotatoEssentials.INSTANCE);
 
         Argument<Player> vanishArg = new EntitySelectorArgument.OnePlayer("target");
 
-        String namespace = PotatoEssentials.getNameSpace();
+        String namespace = PotatoEssentials.NAMESPACE;
 
         new CommandAPICommand("vanish")
                 .withPermission(namespace+".vanish")
@@ -48,8 +48,8 @@ public class VanishCommand {
                                     vanisher.getName()+"<gray> is "+msg+" in vanish.");
                             continue;
                         }
-                        if (vanished) player.hidePlayer(PotatoEssentials.getInstance(), vanisher);
-                        if (!vanished) player.showPlayer(PotatoEssentials.getInstance(), vanisher);
+                        if (vanished) player.hidePlayer(PotatoEssentials.INSTANCE, vanisher);
+                        if (!vanished) player.showPlayer(PotatoEssentials.INSTANCE, vanisher);
                     }
                     vanisher.sendRichMessage(
                             "<dark_gray>[<gold>Vanish</gold>]<gray> You are "+msg+" in<yellow> Vanish.");

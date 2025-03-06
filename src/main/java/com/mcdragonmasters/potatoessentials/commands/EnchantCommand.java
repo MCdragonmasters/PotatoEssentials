@@ -1,10 +1,14 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.utils.Config;
+import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.*;
+import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
@@ -24,11 +28,11 @@ public class EnchantCommand {
 
         new CommandAPICommand("enchant")
                 .withPermission(CommandPermission.fromString(
-                        PotatoEssentials.getNameSpace()+".enchant"))
+                        PotatoEssentials.NAMESPACE+".enchant"))
                 .withArguments(playerArg)
                 .withArguments(enchantmentArgument)
                 .withOptionalArguments(integerArgument)
-                .executes((commandSender, args) -> {
+                .executes((sender, args) -> {
                     Collection<Player> players = Objects.requireNonNull(args.getByArgument(playerArg));
                     int level = args.getByArgument(integerArgument)!=null?
                             Objects.requireNonNull(args.getByArgument(integerArgument)):1;
@@ -37,11 +41,12 @@ public class EnchantCommand {
                         player.getInventory().getItemInMainHand()
                                 .addUnsafeEnchantment(ench, level);
                     }
-                    String msg = players.size()==1 ? " to <yellow>" +
-                            ((Player) players.toArray()[0]).getName()+"</yellow>'s"
-                            : " to <yellow>"+players.size()+" players</yellow>'";
-                    commandSender.sendRichMessage("Applied enchantment<yellow> <translate:"+ench.translationKey()+
-                            "> "+level+"</yellow>"+msg+" held item");
+                    String target = Utils.possessivePlayerNameFormat(players);
+                    Component msg = Config.replaceFormat(Config.enchantmentFormat(),
+                            new Replacer("enchantment",
+                                    Utils.serialize(ench.displayName(level)).replace("enchantment.level.", "")),
+                            new Replacer("target", target));
+                    sender.sendMessage(msg);
                 })
                 .register();
     }

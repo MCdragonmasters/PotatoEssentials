@@ -1,6 +1,6 @@
 package com.mcdragonmasters.potatoessentials.commands.warping;
 
-import com.mcdragonmasters.potatoessentials.JSONDatabase.WarpsManager;
+import com.mcdragonmasters.potatoessentials.database.WarpsManager;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
@@ -13,7 +13,7 @@ public class DelWarpCommand {
 
         new CommandAPICommand("deletewarp")
                 .withAliases("delwarp")
-                .withPermission(PotatoEssentials.getNameSpace()+".deletewarp")
+                .withPermission(PotatoEssentials.NAMESPACE+".deletewarp")
                 .withArguments(warpNameArg)
                 .executesPlayer((sender, args) -> {
                     String warpName = args.getByArgument(warpNameArg);

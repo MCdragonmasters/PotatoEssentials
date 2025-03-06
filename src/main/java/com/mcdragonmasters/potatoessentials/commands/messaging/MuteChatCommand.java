@@ -14,7 +14,7 @@ public class MuteChatCommand {
     public static void register() {
 
         new CommandAPICommand("mutechat")
-                .withPermission(PotatoEssentials.getNameSpace()+".mutechat")
+                .withPermission(PotatoEssentials.NAMESPACE+".mutechat")
                 .executes((sender, args) -> {
                     chatMuted = !chatMuted;
                     Component msg = Config.replaceFormat(chatMuted?Config.muteChatMutedMsg()

@@ -10,7 +10,7 @@ public class PingCommand {
     public static void register() {
         Argument<Player> playerArgument = new EntitySelectorArgument.OnePlayer("player");
         new CommandAPICommand("ping")
-                .withPermission(PotatoEssentials.getNameSpace() + ".ping")
+                .withPermission(PotatoEssentials.NAMESPACE + ".ping")
                 .withOptionalArguments(playerArgument)
                 .executesPlayer((player, args) -> {
                     Player arg = args.getByArgument(playerArgument);

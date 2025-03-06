@@ -14,7 +14,7 @@ public class TeleportAllCommand {
 
         new CommandAPICommand("tpall")
                 .withAliases("tpall")
-                .withPermission(PotatoEssentials.getNameSpace()+".tpall")
+                .withPermission(PotatoEssentials.NAMESPACE+".tpall")
                 .executesPlayer((sender, args) -> {
                     Collection<? extends Player> players = Bukkit.getOnlinePlayers();
                     Component tpedMsg = Config.replaceFormat(Config.teleportedMsg(),

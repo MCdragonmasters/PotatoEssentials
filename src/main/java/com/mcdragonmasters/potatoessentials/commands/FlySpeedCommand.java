@@ -12,7 +12,7 @@ public class FlySpeedCommand {
         Argument<Integer> intArg = new IntegerArgument("speed", 1, 10);
 
         new CommandAPICommand("flyspeed")
-                .withPermission(PotatoEssentials.getNameSpace()+".flyspeed")
+                .withPermission(PotatoEssentials.NAMESPACE+".flyspeed")
                 .withOptionalArguments(intArg)
                 .executesPlayer((player, args) -> {
                     int speed = args.getByArgument(intArg)!=null?Objects.requireNonNull(args.getByArgument(intArg)):2;

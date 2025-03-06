@@ -15,7 +15,7 @@ public class InvSeeCommand {
         Argument<Player> arg = new EntitySelectorArgument.OnePlayer("target");
 
         new CommandAPICommand("invsee")
-                .withPermission(PotatoEssentials.getNameSpace()+".invsee")
+                .withPermission(PotatoEssentials.NAMESPACE+".invsee")
                 .withArguments(arg)
                 .executesPlayer((sender, args) -> {
                     Player player = Objects.requireNonNull(args.getByArgument(arg));

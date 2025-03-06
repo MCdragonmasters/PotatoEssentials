@@ -20,7 +20,7 @@ public class TeleportHereCommand {
 
         new CommandAPICommand("tphere")
                 .withAliases("tphere")
-                .withPermission(PotatoEssentials.getNameSpace()+".tphere")
+                .withPermission(PotatoEssentials.NAMESPACE+".tphere")
                 .withArguments(playerArg)
                 .executesPlayer((sender, args) -> {
                     Collection<Player> players = args.getByArgument(playerArg) != null ? Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(sender);
