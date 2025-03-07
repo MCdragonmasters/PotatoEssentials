@@ -70,6 +70,8 @@ commands:
     message: "<newline>  <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</red></bold>]<white> <message><newline>"
   messagetoggle:
     enabled: true
+    toggledOff: "<gray>Private Messages have been<red> Disabled"
+    toggledOn: "<gray>Private Messages have been<green> Enabled"
   reply:
     enabled: true
   socialspy:
@@ -132,7 +134,7 @@ commands:
     message: "<aqua><b>Uptime</b>: <gold><uptime>"
   channel:
     enabled: true
-    message: "<yellow>Chat channel</yellow><gray> set to </gray><chat-name>"
+    chatChannelChange: "<yellow>Chat channel</yellow><gray> set to </gray><chat-name>"
     chatNotFound: "<red>Chat <chat-name> does not exist!"
   kit:
     enabled: true
@@ -147,5 +149,7 @@ commands:
     message: "<green><name> cleared the chat"
   skin:
     enabled: true
-    setSkin: "<green>Set skin to '<skin>'"
+    skinSet: "<green>Set skin to '<skin>'"
     skinNotFound: "<red>Skin not found!"
+  skull:
+    enabled: true

@@ -34,7 +34,7 @@ public class ChatCommand {
                     String chatStr = args.getByArgument(chatArgument);
                     if ("global".equals(chatStr)||"all".equals(chatStr)) {
                         CustomChat.getPlayerChat().remove(player);
-                        Component msg = Config.replaceFormat(Config.chatChannelChangeFormat(),
+                        Component msg = Config.replaceFormat(Config.getCmdMsg("channel", "chatChannelChange"),
                                 new Replacer("chat-name", "<yellow>Global"));
                         player.sendMessage(msg);
                         return;
@@ -52,7 +52,7 @@ public class ChatCommand {
                         return;
                     }
                     CustomChat.getPlayerChat().put(player, chat);
-                    Component msg = Config.replaceFormat(Config.chatChannelChangeFormat(),
+                    Component msg = Config.replaceFormat(Config.getCmdMsg("channel", "chatChannelChange"),
                             new Replacer("chat-name", chat.getName()));
                     player.sendMessage(msg);
                 }).register();

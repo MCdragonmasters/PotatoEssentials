@@ -44,11 +44,11 @@ public class Config {
             PotatoEssentials.LOGGER.log(Level.SEVERE, "Error updating config", e);
             return;
         }
-        String reload = reload();
+        String reload = reload(true);
         if (!"passed".equals(reload)) LOGGER.severe("Error loading config\n"+reload);
 
     }
-    public static String reload() {
+    public static String reload(boolean firstBoot) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.removeCustomChatCompletions(Config.getEmojis().keySet());
         }
@@ -60,19 +60,17 @@ public class Config {
         emojiConfig();
 
         ConfigurationSection chatsSection = config.getConfigurationSection("chats.customChats");
-        CustomChat.getCustomChats().clear();
+        CustomChat.clearAll(firstBoot);
         if (customChatsEnabled()&&chatsSection!=null) {
             for (String key : chatsSection.getKeys(false)) {
                 if ("global".equals(key) || "all".equals(key)) {
                     return "keys 'global' and 'all' are reserved for global chat.";
                 }
                 String chatConfPrefix = "chats.customChats."+key+".";
-                CustomChat.addChat(
-                        new CustomChat(key,
-                                getString(chatConfPrefix+"name"),
-                                getString(chatConfPrefix+"permission"),
-                                getString(chatConfPrefix+"command"))
-                );
+                new CustomChat(key,
+                        getString(chatConfPrefix+"name"),
+                        getString(chatConfPrefix+"permission"),
+                        getString(chatConfPrefix+"command"));
             }
         }
         return "passed";
@@ -174,9 +172,6 @@ public class Config {
     public static boolean customChatsEnabled() {
         return getBoolean("chats.enabled");
     }
-    public static String chatChannelChangeFormat() {
-        return getString("commands.channel.message");
-    }
     public static boolean addEmojisToCustomChatCompletions() {
         return getBoolean("chat.addEmojisToCustomChatCompletions");
     }
@@ -187,8 +182,8 @@ public class Config {
     public static boolean getBoolean(String s) {
         return config.getBoolean(s);
     }
-    public static String getCmdMsg(String cmdName, String field) {
-        return getString("commands."+cmdName+"."+field);
+    public static String getCmdMsg(String cmd, String field) {
+        return getString("commands."+cmd+"."+field);
     }
 
 

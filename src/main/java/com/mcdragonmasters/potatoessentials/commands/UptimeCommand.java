@@ -16,10 +16,10 @@ import java.time.Duration;
 import java.time.Instant;
 
 @Command("uptime")
+@Permission(PotatoEssentials.NAMESPACE+".uptime")
 public class UptimeCommand extends PotatoCommand {
     public String getName() { return "uptime"; }
     @Default
-    @Permission(PotatoEssentials.NAMESPACE+".uptime")
     public static void uptime(CommandSender sender) {
         Component msg = Config.replaceFormat(Config.uptimeMessageFormat(),
                 new Replacer("uptime", timeSinceBoot()));

@@ -20,7 +20,7 @@ public class MainCommand {
             sender.sendRichMessage("<red>You don't have permission!");
             return;
         }
-        String reload = Config.reload();
+        String reload = Config.reload(false);
         if (!reload.equals("passed")) {
             sender.sendRichMessage(
                     prefix+" <red>Invalid config! Error:<newline>" +
@@ -37,6 +37,7 @@ public class MainCommand {
     public static void info(CommandSender sender) {
         String ver = PotatoEssentials.INSTANCE.getPluginMeta().getVersion();
         sender.sendRichMessage(prefix+"<gold> Version:<green> "+ver);
+        sender.sendRichMessage(prefix+"<gold>Author:<yellow> MCdragonmasters");
         sender.sendRichMessage(prefix+
                 "<gold> Github: <#00b1fc><click:open_url:'https://github.com/MCdragonmasters/PotatoEssentials'>" +
                 "https://github.com/MCdragonmasters/PotatoEssentials");

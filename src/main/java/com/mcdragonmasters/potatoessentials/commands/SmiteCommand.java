@@ -16,12 +16,12 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 
 @Command("smite")
+@Permission(PotatoEssentials.NAMESPACE+".smite")
 public class SmiteCommand extends PotatoCommand {
     @Override
     public String getName() { return "smite"; }
 
     @Default
-    @Permission(PotatoEssentials.NAMESPACE+".smite")
     public static void smite(CommandSender sender, @ManyPlayers Collection<Player> players, @ADoubleArgument double damage) {
         players.forEach((player -> {
             Location loc = player.getLocation();
@@ -33,7 +33,6 @@ public class SmiteCommand extends PotatoCommand {
         sender.sendMessage(msg);
     }
     @Default
-    @Permission(PotatoEssentials.NAMESPACE+".smite")
     public static void smite(CommandSender sender, @ManyPlayers Collection<Player> players) {
         smite(sender, players, 1);
     }

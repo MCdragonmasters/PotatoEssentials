@@ -37,11 +37,14 @@ public class CustomChat {
         this.permission = permission;
         this.command = command;
         chatMap.put(key, this);
+        customChats.add(this);
         if (command==null) return;
         for (RegisteredCommand registeredCmd : CommandAPI.getRegisteredCommands()) {
             if (registeredCmd.commandName().equals(command)) {
                 PotatoEssentials.LOGGER.severe(
-                        "Command '%s' for custom chat '%s' was already taken.".formatted(command, key));
+                        "Command '%s' for custom chat '%s' was already taken, not registering chat".formatted(command, key));
+                chatMap.remove(key, this);
+                customChats.remove(this);
                 return;
 
             }
@@ -66,7 +69,14 @@ public class CustomChat {
 
         Bukkit.broadcast(msg, chat.getPermission());
     }
-    public static void addChat(CustomChat chat) {
-        customChats.add(chat);
+    public static void clearAll(boolean firstBoot) {
+        if (!firstBoot) {
+            for (CustomChat cc : customChats) {
+                if (cc.getCommand()!=null) CommandAPI.unregister(cc.getCommand(), true);
+            }
+        }
+        customChats.clear();
+        chatMap.clear();
+        playerChat.clear();
     }
 }

@@ -1,6 +1,7 @@
 package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.utils.Config;
 import dev.jorel.commandapi.CommandAPICommand;
 
 import java.util.HashSet;
@@ -17,15 +18,16 @@ public class MessageToggleCommand {
                 .withPermission(PotatoEssentials.NAMESPACE+".messagetoggle")
                 .executesPlayer((player, args) -> {
                     UUID uuid = player.getUniqueId();
-                    String message;
+                    String toggle;
                     if (messagesDisabled.contains(uuid)) {
                         messagesDisabled.remove(uuid);
-                        message = "<green>Enabled";
+                        toggle = "toggledOn";
                     } else {
                         messagesDisabled.add(uuid);
-                        message = "<red>Disabled";
+                        toggle = "toggledOff";
                     }
-                    player.sendRichMessage("<gray>Private Messages have been "+message);
+                    var msg = Config.replaceFormat(Config.getCmdMsg("messagetoggle", toggle));
+                    player.sendMessage(msg);
                 }).register();
 
     }

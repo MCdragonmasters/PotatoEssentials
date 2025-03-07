@@ -12,12 +12,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @Command("clearchat")
+@Permission(PotatoEssentials.NAMESPACE+".clearchat")
 public class ClearChatCommand extends PotatoCommand {
     @Override
     public String getName() { return "clearchat"; }
 
     @Default
-    @Permission(PotatoEssentials.NAMESPACE+".clearchat")
     public static void clearChat(CommandSender sender) {
         String lineBreaks = "\n ".repeat(256);
         for (Player player : Bukkit.getOnlinePlayers()) {

@@ -21,12 +21,12 @@ import java.net.URI;
 import java.net.URL;
 
 @Command("skin")
+@Permission(PotatoEssentials.NAMESPACE+".skin")
 public class SkinCommand extends PotatoCommand {
     @Override
     public String getName() { return "skin"; }
 
     @Default
-    @Permission(PotatoEssentials.NAMESPACE+".skin")
     public static void setSkinCmd(Player player, @AStringArgument String skin) {
         var newSkinFromPlayer = Bukkit.getPlayer(skin);
         String skinName = "skinName not found";
@@ -42,12 +42,11 @@ public class SkinCommand extends PotatoCommand {
                 return;
             }
         }
-        var msg = Config.replaceFormat(Config.getCmdMsg("skin", "setSkin"),
+        var msg = Config.replaceFormat(Config.getCmdMsg("skin", "skinSet"),
                 new Replacer("skin", skinName));
         player.sendMessage(msg);
     }
     @Subcommand("reset")
-    @Permission(PotatoEssentials.NAMESPACE+".skin")
     public static void resetSkin(Player player) {
         try {
             setSkin(player, player.getName());
@@ -56,7 +55,7 @@ public class SkinCommand extends PotatoCommand {
         }
     }
 
-    private static String setSkin(Player player, String name) throws Exception {
+    public static String setSkin(Player player, String name) throws Exception {
         PlayerProfile playerProfile = player.getPlayerProfile();
         var uuidUrl = new URI("https://api.mojang.com/users/profiles/minecraft/"+name).toURL();
 
@@ -80,7 +79,7 @@ public class SkinCommand extends PotatoCommand {
 
         return realName;
     }
-    private static void setSkin(Player player, Player newSkin) {
+    public static void setSkin(Player player, Player newSkin) {
         var profile = player.getPlayerProfile();
         var newProfile = newSkin.getPlayerProfile();
 
