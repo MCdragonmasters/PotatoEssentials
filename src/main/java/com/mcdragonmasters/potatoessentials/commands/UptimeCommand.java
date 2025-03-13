@@ -1,12 +1,10 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.executors.CommandArguments;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 
@@ -15,17 +13,24 @@ import java.time.Duration;
 
 import java.time.Instant;
 
-@Command("uptime")
-@Permission(PotatoEssentials.NAMESPACE+".uptime")
 public class UptimeCommand extends PotatoCommand {
-    public String getName() { return "uptime"; }
-    @Default
-    public static void uptime(CommandSender sender) {
+    public UptimeCommand() {
+        super("uptime");
+        setPermission(NAMESPACE+".uptime");
+    }
+    @Override
+    public void register() {
+        new CommandAPICommand(name)
+                .withPermission(permission)
+                .executes(this::execute)
+                .register();
+    }
+    private void execute(CommandSender sender, CommandArguments args) {
         Component msg = Config.replaceFormat(Config.uptimeMessageFormat(),
                 new Replacer("uptime", timeSinceBoot()));
         sender.sendMessage(msg);
     }
-    private static String timeSinceBoot() {
+    private String timeSinceBoot() {
         long uptimeMillis = ManagementFactory.getRuntimeMXBean().getUptime();
 
         Instant startTime = Instant.now().minusMillis(uptimeMillis);

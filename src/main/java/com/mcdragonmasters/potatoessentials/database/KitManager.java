@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
+import static com.mcdragonmasters.potatoessentials.PotatoEssentials.LOGGER;
+
 public class KitManager {
     private final File kitFile;
     private final FileConfiguration kitConfig;
@@ -28,14 +30,15 @@ public class KitManager {
     }
 
     private void loadKits() {
-        var section1 = kitConfig.getConfigurationSection("kits");
-        if (section1==null) return;
+        var section = kitConfig.getConfigurationSection("kits");
+        if (section==null) return;
 
-        for (String kitName : section1.getKeys(false)) {
+        for (String kitName : section.getKeys(false)) {
             Map<Integer, ItemStack> kitContents = new HashMap<>();
-            var section = kitConfig.getConfigurationSection("kits." + kitName);
-            if (section != null) {
-                for (String key : section.getKeys(false)) {
+            var section1 = kitConfig.getConfigurationSection("kits." + kitName);
+            LOGGER.debug("Registering kit '%s'".formatted(kitName));
+            if (section1 != null) {
+                for (String key : section1.getKeys(false)) {
                     int slot = Integer.parseInt(key);
                     kitContents.put(slot, kitConfig.getItemStack("kits."+kitName+"."+key));
                 }
@@ -47,7 +50,7 @@ public class KitManager {
 
     public void saveKit(String kitName, Player player) {
         if (kitCache.containsKey(kitName)) {
-            PotatoEssentials.LOGGER.warning("Kit '" + kitName + "' already exists. Not saving.");
+            PotatoEssentials.LOGGER.warning("Kit '%s' already exists. Not saving.".formatted(kitName));
             return ;
         }
 

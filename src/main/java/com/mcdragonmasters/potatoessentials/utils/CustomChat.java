@@ -54,27 +54,23 @@ public class CustomChat {
                 .withPermission(permission)
                 .withArguments(messageArg)
                 .executes((sender, args) -> {
-                    boolean miniMsg = sender.hasPermission(PotatoEssentials.NAMESPACE+".chat.minimessage");
                     String message = args.getByArgument(messageArg);
-                    sendMessage(sender,message,miniMsg,this);
+                    sendMessage(sender,message,this);
                 }).register();
     }
-    public static void sendMessage(CommandSender sender, String message, boolean miniMsg, CustomChat chat) {
+    public static void sendMessage(CommandSender sender, String message, CustomChat chat) {
+        boolean miniMsg = sender.hasPermission(PotatoEssentials.NAMESPACE+".chat.minimessage");
         if (!miniMsg) message = Utils.escapeTags(message);
+        message = Utils.formatChatMessage(sender, message);
         Component msg = Config.replaceFormat(Config.customChatFormat(),
                 new Replacer("chat-name", chat.getName()),
                 new Replacer("prefix", Utils.getPrefix(sender)),
                 new Replacer("name", sender.getName()),
-                new Replacer("message", message, true, false));
+                new Replacer("message", message, false));
 
         Bukkit.broadcast(msg, chat.getPermission());
     }
-    public static void clearAll(boolean firstBoot) {
-        if (!firstBoot) {
-            for (CustomChat cc : customChats) {
-                if (cc.getCommand()!=null) CommandAPI.unregister(cc.getCommand(), true);
-            }
-        }
+    public static void clearAll() {
         customChats.clear();
         chatMap.clear();
         playerChat.clear();

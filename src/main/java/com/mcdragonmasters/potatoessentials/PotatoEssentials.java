@@ -7,9 +7,12 @@ import com.mcdragonmasters.potatoessentials.commands.warping.DelWarpCommand;
 import com.mcdragonmasters.potatoessentials.commands.warping.SetWarpCommand;
 import com.mcdragonmasters.potatoessentials.commands.warping.WarpCommand;
 import com.mcdragonmasters.potatoessentials.database.KitManager;
+import com.mcdragonmasters.potatoessentials.experimental.NametagManager;
 import com.mcdragonmasters.potatoessentials.listeners.PlayerChatListener;
+import com.mcdragonmasters.potatoessentials.listeners.ServerListPingListener;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 
@@ -22,10 +25,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.chat.Chat;
 
-import java.util.logging.Level;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
-@SuppressWarnings("SameParameterValue")
 public class PotatoEssentials extends JavaPlugin {
 
     public static PotatoEssentials INSTANCE;
@@ -34,9 +36,9 @@ public class PotatoEssentials extends JavaPlugin {
     private static Chat vaultChat = null;
     @Getter
     private static boolean vaultInstalled = false;
-    public static Logger LOGGER;
     public static PluginManager pluginManager;
     public static FileConfiguration config;
+    public static PotatoLogger LOGGER;
 
     @Override
     public void onLoad() {
@@ -45,15 +47,19 @@ public class PotatoEssentials extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Config.config(this);
-        INSTANCE = this;
-        CommandAPI.onEnable();
 
-        LOGGER = getLogger();
+        LOGGER = new PotatoLogger(getLogger());
+
+        INSTANCE = this;
+
+        Config.config(this);
+
+        CommandAPI.onEnable();
 
         pluginManager = Bukkit.getPluginManager();
 
         pluginManager.registerEvents(new PlayerChatListener(), INSTANCE);
+        pluginManager.registerEvents(new ServerListPingListener(), INSTANCE);
 
         vaultInstalled = setupVaultChat();
 
@@ -61,11 +67,15 @@ public class PotatoEssentials extends JavaPlugin {
 
         LOGGER.info("Enabled");
         LOGGER.info(vaultInstalled ? "Vault found" : "Vault not found");
+
+        if (config.getBoolean("experimentalFeatures")) new NametagManager();
     }
 
 
     private static void registerCommands() {
-        CommandAPI.registerCommand(MainCommand.class);
+        var kits = new KitManager(INSTANCE.getDataFolder());
+
+        registerCommand(new MainCommand(), true);
 
         if (Config.commandEnabled("message")) MessageCommand.register();
         if (Config.commandEnabled("reply")) ReplyCommand.register();
@@ -79,7 +89,7 @@ public class PotatoEssentials extends JavaPlugin {
         if (Config.commandEnabled("hunger")) HungerCommand.register();
         if (Config.commandEnabled("invsee")) InvSeeCommand.register();
         if (Config.commandEnabled("ping")) PingCommand.register();
-        registerCommand(SmiteCommand.class);
+        registerCommand(new SmiteCommand());
         if (config.getBoolean("commands.tp.tphere-enabled")) TeleportHereCommand.register();
         if (config.getBoolean("commands.tp.tpall-enabled")) TeleportAllCommand.register();
         if (Config.commandEnabled("flyspeed")) FlySpeedCommand.register();
@@ -95,32 +105,27 @@ public class PotatoEssentials extends JavaPlugin {
         if (Config.commandEnabled("sudo")) SudoCommand.register();
         if (Config.commandEnabled("back")) BackCommand.register();
         if (Config.commandEnabled("report")) ReportCommand.register();
-        registerCommand(UptimeCommand.class);
+        registerCommand(new UptimeCommand());
         if (Config.commandEnabled("channel")) ChatCommand.register();
-        if (Config.commandEnabled("kit")) {
-            new KitCommand(new KitManager(INSTANCE.getDataFolder())).register();
-        }
-        registerCommand(ClearChatCommand.class);
-        registerCommand(SkinCommand.class);
-    }
-    private static void registerCommand(Class<? extends PotatoCommand> clazz) {
-        registerCommand(clazz, () -> {});
-    }
-    private static void registerCommand(Class<? extends PotatoCommand> clazz, Runnable runnable) {
-        try {
-            PotatoCommand commandInstance = clazz.getDeclaredConstructor().newInstance();
-            String name = commandInstance.getName();
-            if (Config.commandEnabled(name)) {
-                CommandAPI.registerCommand(clazz);
-                LOGGER.info("'"+name+"' enabled in config");
+        if (Config.commandEnabled("kit")) new KitCommand(kits).register();
 
-            } else {
-                LOGGER.info("'"+name+"' disabled in config");
-            }
-            runnable.run();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error registering command", e);
+        registerCommand(new ClearChatCommand());
+        registerCommand(new SkinCommand());
+        registerCommand(new SkullCommand());
+        registerCommand(new TrollCommand());
+    }
+    private static void registerCommand(PotatoCommand command, boolean forced) {
+        String name = command.getName();
+        if (Config.commandEnabled(name) || forced) {
+            command.register();
+            LOGGER.debug("Registering command '%s' with aliases '%s'".formatted(name, Arrays.toString(command.getAliases())));
+
+        } else {
+            LOGGER.debug("Command '%s' disabled in config, not registering".formatted(name));
         }
+    }
+    private static void registerCommand(PotatoCommand command) {
+        registerCommand(command, false);
     }
     private boolean setupVaultChat() {
         if (pluginManager.getPlugin("Vault") == null) {
@@ -130,11 +135,37 @@ public class PotatoEssentials extends JavaPlugin {
         if (rsp != null) {
             vaultChat = rsp.getProvider();
         }
+        Utils.vaultChat = vaultChat;
         return vaultChat != null;
     }
 
     @Override
     public void onDisable() {
         CommandAPI.onDisable();
+    }
+    public static class PotatoLogger extends Logger{
+
+        private final Logger logger;
+
+        public PotatoLogger(Logger logger) {
+            super(logger.getName(), logger.getResourceBundleName());
+            this.logger = logger;
+        }
+        public void debug(String msg) {
+            if (!Config.isDebug()) return;
+            logger.info("[DEBUG] "+msg);
+        }
+//        public void info(String msg) {
+//            logger.info(msg);
+//        }
+//        public void log(Level level, String msg, Throwable thrown) {
+//            logger.log(level, msg, thrown);
+//        }
+//        public void severe(String msg) {
+//            logger.severe(msg);
+//        }
+//        public void warning(String msg) {
+//            logger.warning(msg);
+//        }
     }
 }

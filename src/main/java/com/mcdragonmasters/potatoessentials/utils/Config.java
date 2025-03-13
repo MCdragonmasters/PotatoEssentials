@@ -1,6 +1,7 @@
 package com.mcdragonmasters.potatoessentials.utils;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.listeners.ServerListPingListener;
 import com.tchristofferson.configupdater.ConfigUpdater;
 
 import lombok.Getter;
@@ -9,24 +10,32 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.ServerLinks;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.logging.Level;
 
 import static com.mcdragonmasters.potatoessentials.PotatoEssentials.LOGGER;
 
+@SuppressWarnings("UnstableApiUsage")
 public class Config {
     @Getter
     private static FileConfiguration config;
     private static PotatoEssentials potatoEssentials;
     @Getter
     private static final Map<String, String> emojis = new HashMap<>();
+    public static boolean motdEnabled;
+    public static boolean hoverInfoEnabled;
+    public static boolean serverLinksEnabled;
+    private static final List<ServerLinks.ServerLink> serverLinks = new ArrayList<>();
 
     public static void config(PotatoEssentials plugin) {
         potatoEssentials = plugin;
@@ -35,20 +44,24 @@ public class Config {
         config = plugin.getConfig();
         try {
             List<String> ignoredList = new ArrayList<>();
-            if (config.isConfigurationSection("chat.emojis")) ignoredList.add("chat.emojis");
-            if (config.isConfigurationSection("chat.filteredWords")) ignoredList.add("chat.filteredWords");
-            if (config.isConfigurationSection("chats.customChats")) ignoredList.add("chats.customChats");
+            addToIgnoredListIfExists("chat.emojis", ignoredList);
+            addToIgnoredListIfExists("chat.filteredWords", ignoredList);
+            addToIgnoredListIfExists("chats.customChats", ignoredList);
+            addToIgnoredListIfExists("serverList.motd", ignoredList);
+            addToIgnoredListIfExists("serverList.hoverInfo", ignoredList);
+            addToIgnoredListIfExists("serverLinks.serverLinks", ignoredList);
             ConfigUpdater.update(plugin,"config.yml",
-                    new File(plugin.getDataFolder(), "config.yml"), ignoredList.isEmpty()?null:ignoredList);
+                    new File(plugin.getDataFolder(), "config.yml"), ignoredList);
         } catch (IOException e) {
             PotatoEssentials.LOGGER.log(Level.SEVERE, "Error updating config", e);
             return;
         }
-        String reload = reload(true);
+        String reload = reload();
         if (!"passed".equals(reload)) LOGGER.severe("Error loading config\n"+reload);
 
     }
-    public static String reload(boolean firstBoot) {
+    public static String reload() {
+        LOGGER.debug("Reloading config");
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.removeCustomChatCompletions(Config.getEmojis().keySet());
         }
@@ -60,32 +73,65 @@ public class Config {
         emojiConfig();
 
         ConfigurationSection chatsSection = config.getConfigurationSection("chats.customChats");
-        CustomChat.clearAll(firstBoot);
-        if (customChatsEnabled()&&chatsSection!=null) {
+        CustomChat.clearAll();
+        if (customChatsEnabled() && chatsSection != null) {
             for (String key : chatsSection.getKeys(false)) {
                 if ("global".equals(key) || "all".equals(key)) {
                     return "keys 'global' and 'all' are reserved for global chat.";
                 }
                 String chatConfPrefix = "chats.customChats."+key+".";
+                LOGGER.debug("Registering custom chat '%s'".formatted(key));
                 new CustomChat(key,
                         getString(chatConfPrefix+"name"),
                         getString(chatConfPrefix+"permission"),
                         getString(chatConfPrefix+"command"));
             }
         }
+
+        motdEnabled = getBoolean("serverList.motdEnabled");
+        hoverInfoEnabled = getBoolean("serverList.hoverInfoEnabled");
+        List<String> motd = config.getStringList("serverList.motd");
+        ServerListPingListener.motd = Utils.miniMessage(motd.getFirst()+"<reset><newline>"+motd.getLast());
+        ServerListPingListener.hoverInfo.clear();
+        config.getStringList("serverList.hoverInfo").forEach(s ->
+                ServerListPingListener.hoverInfo.add(
+                        LegacyComponentSerializer.legacySection()
+                                .serialize(Utils.miniMessage(s))));
+
+        for (ServerLinks.ServerLink serverLink : serverLinks) {
+            Bukkit.getServerLinks().removeLink(serverLink);
+        }
+        serverLinks.clear();
+        serverLinksEnabled = getBoolean("serverLinks.enabled");
+        var serverLinksSection = config.getConfigurationSection("serverLinks.serverLinks");
+        if (serverLinksEnabled && serverLinksSection!=null) {
+            for (String key : serverLinksSection.getKeys(false)) {
+                String linkConfPrefix = "serverLinks.serverLinks."+key+".";
+                var name = getString(linkConfPrefix+"name");
+                var compName = Utils.miniMessage(name);
+                var link = URI.create(getString(linkConfPrefix+"url"));
+                serverLinks.add(Bukkit.getServerLinks().addLink(compName, link));
+                LOGGER.debug("Registering server link '%s' with name '%s', URL '%s'".formatted(key, name, link.toString()));
+            }
+        }
         return "passed";
     }
     private static void emojiConfig() {
-        ConfigurationSection emojiSection = config.getConfigurationSection("chat.emojis");
+        var emojiSection = config.getConfigurationSection("chat.emojis");
         emojis.clear();
-        if (emojisEnabled()&&emojiSection!=null) {
+        if (emojisEnabled() && emojiSection!=null) {
             for (String key : emojiSection.getKeys(false)) {
                 emojis.put(key,config.getString("chat.emojis."+key));
+                LOGGER.debug("Registering emoji '%s'".formatted(key));
             }
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!p.hasPermission(PotatoEssentials.NAMESPACE+".chat.emojis")) continue;
             p.addCustomChatCompletions(Config.getEmojis().keySet());
         }
+    }
+    public static boolean isDebug() {
+        return getBoolean("debug");
     }
     public static Boolean chatEnabled() {
         return config.getBoolean("chat.enabled");
@@ -185,6 +231,9 @@ public class Config {
     public static String getCmdMsg(String cmd, String field) {
         return getString("commands."+cmd+"."+field);
     }
+    public static int getInt(String path) {
+        return config.getInt(path);
+    }
 
 
     @SuppressWarnings("PatternValidation")
@@ -193,18 +242,18 @@ public class Config {
         for (Replacer r : replacers) {
             String newText = r.getNewText();
             String oldText = r.getOldText();
-            Component replacement;
             if (r.replaceRaw()) {
                 format = format.replace("<"+oldText+">", newText);
                 continue;
             }
-            if (r.usesMiniMsg()) {
-                replacement = Utils.miniMessage(newText);
-            } else replacement = Component.text(newText);
+            Component replacement = Utils.miniMessage(newText);
             resolverBuilder.resolver(TagResolver.resolver(oldText, Tag.inserting(replacement)));
         }
 
         TagResolver resolver = resolverBuilder.build();
         return Utils.miniMessage(format, resolver);
+    }
+    private static void addToIgnoredListIfExists(String s, List<String> list) {
+        if (config.isConfigurationSection(s)) list.add(s);
     }
 }

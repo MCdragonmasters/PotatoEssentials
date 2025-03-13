@@ -1,6 +1,7 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import org.bukkit.entity.Player;
@@ -25,9 +26,8 @@ public class ClearInventoryCommand {
                     for (Player player : players) {
                         player.getInventory().clear();
                     }
-                    String msg = players.size()<2?((Player) players.toArray()[0]).getName()
-                            : players.size()+" Players";
-                    sender.sendRichMessage("<gray>Cleared<yellow> "+msg+" Inventory");
+                    String msg = Utils.possessivePlayerNameFormat(players);
+                    sender.sendRichMessage("<gray>Cleared<yellow> "+msg+"</yellow> Inventory");
                 }).register();
 
     }

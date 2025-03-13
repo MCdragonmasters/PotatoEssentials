@@ -4,30 +4,44 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.Subcommand;
-import dev.jorel.commandapi.annotations.arguments.AStringArgument;
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.arguments.StringArgument;
+import dev.jorel.commandapi.executors.CommandArguments;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 
-@Command("skin")
-@Permission(PotatoEssentials.NAMESPACE+".skin")
 public class SkinCommand extends PotatoCommand {
-    @Override
-    public String getName() { return "skin"; }
 
-    @Default
-    public static void setSkinCmd(Player player, @AStringArgument String skin) {
+    private final StringArgument skinArg = new StringArgument("skin");
+
+    public SkinCommand() {
+        super("skin");
+        setPermission(NAMESPACE+".skin");
+    }
+
+    @Override
+    public void register() {
+        new CommandAPICommand(name)
+                .withPermission(permission)
+                .withArguments(skinArg)
+                .executesPlayer(this::executeMain)
+                .withSubcommand(
+                        new CommandAPICommand("reset")
+                                .executesPlayer(this::executeReset)
+                )
+                .register();
+    }
+
+    private void executeMain(Player player, CommandArguments args) {
+        var skin = args.getByArgumentOrDefault(skinArg, "Error");
         var newSkinFromPlayer = Bukkit.getPlayer(skin);
         String skinName = "skinName not found";
         if (newSkinFromPlayer!=null) {
@@ -38,7 +52,7 @@ public class SkinCommand extends PotatoCommand {
             } catch (Exception e) {
                 var msg = Config.replaceFormat(Config.getCmdMsg("skin", "skinNotFound"));
                 player.sendMessage(msg);
-                resetSkin(player);
+                executeReset(player, null);
                 return;
             }
         }
@@ -46,8 +60,8 @@ public class SkinCommand extends PotatoCommand {
                 new Replacer("skin", skinName));
         player.sendMessage(msg);
     }
-    @Subcommand("reset")
-    public static void resetSkin(Player player) {
+
+    private void executeReset(Player player, @Nullable CommandArguments ca) {
         try {
             setSkin(player, player.getName());
         } catch (Exception e) {
@@ -55,7 +69,7 @@ public class SkinCommand extends PotatoCommand {
         }
     }
 
-    public static String setSkin(Player player, String name) throws Exception {
+    private String setSkin(Player player, String name) throws Exception {
         PlayerProfile playerProfile = player.getPlayerProfile();
         var uuidUrl = new URI("https://api.mojang.com/users/profiles/minecraft/"+name).toURL();
 

@@ -25,7 +25,7 @@ import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyC
 public class MessageCommand {
 
     @Getter
-    private static final Map<CommandSender, CommandSender> messages = new HashMap<>();
+    private static final Map<CommandSender, Player> messages = new HashMap<>();
 
     public static void register() {
         CommandAPI.unregister("message");
@@ -52,23 +52,16 @@ public class MessageCommand {
                 }).register();
     }
 
-    public static void message(CommandSender sender, String message, CommandSender receiver) {
-        Replacer[] replacers;
-        if (PotatoEssentials.isVaultInstalled()) {
-            replacers = new Replacer[]{
-                    new Replacer("sender", sender.getName()),
-                    new Replacer("sender-prefix", Utils.getPrefix(sender)),
-                    new Replacer("sender-suffix", Utils.getSuffix(sender)),
-                    new Replacer("receiver", receiver.getName()),
-                    new Replacer("receiver-prefix", Utils.getPrefix(receiver)),
-                    new Replacer("receiver-suffix", Utils.getSuffix(receiver)),
-                    new Replacer("message", message, false, false) };
-        } else {
-            replacers = new Replacer[]{
-                    new Replacer("sender", sender.getName()),
-                    new Replacer("receiver", receiver.getName()),
-                    new Replacer("message", message, false, false) };
-        }
+    public static void message(CommandSender sender, String message, Player receiver) {
+        message = Utils.formatChatMessage(sender, message);
+        Replacer[] replacers = new Replacer[]{
+                new Replacer("sender", sender.getName()),
+                new Replacer("sender-prefix", Utils.getPrefix(sender)),
+                new Replacer("sender-suffix", Utils.getSuffix(sender)),
+                new Replacer("receiver", receiver.getName()),
+                new Replacer("receiver-prefix", Utils.getPrefix(receiver)),
+                new Replacer("receiver-suffix", Utils.getSuffix(receiver)),
+                new Replacer("message", message, false) };
 
         Component senderMsg = Config.replaceFormat(Config.messageSender(), replacers);
 
@@ -82,7 +75,9 @@ public class MessageCommand {
             if(sender==potentialSocialSpyReceiver) continue;
             potentialSocialSpyReceiver.sendMessage(socialSpyMsg);
         }
-        messages.put(receiver, sender);
+        if (sender instanceof Player senderP) {
+            messages.put(receiver, senderP);
+        }
         messages.put(sender, receiver);
 
         sender.sendMessage(senderMsg);

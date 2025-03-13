@@ -1,30 +1,40 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import dev.jorel.commandapi.annotations.Alias;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.arguments.AOfflinePlayerArgument;
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.arguments.OfflinePlayerArgument;
+import dev.jorel.commandapi.executors.CommandArguments;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.SkullMeta;
 
-@SuppressWarnings("UnstableApiUsage")
-@Command("skull")
-@Alias("head")
-@Permission(PotatoEssentials.NAMESPACE+".skull")
 public class SkullCommand extends PotatoCommand {
-    @Override
-    public String getName() { return "skull"; }
 
-    @Default
-    public static void getSkull(Player player, @AOfflinePlayerArgument OfflinePlayer name) {
-        ItemStack is = ItemType.PLAYER_HEAD.createItemStack();
+    private final OfflinePlayerArgument arg = new OfflinePlayerArgument("owner");
+    public SkullCommand() {
+        super("skull","head");
+        setPermission(NAMESPACE+".skull");
+    }
+    @Override
+    public void register() {
+        new CommandAPICommand(name)
+                .withPermission(permission)
+                .withAliases(aliases)
+                .withArguments(arg)
+                .executesPlayer(this::getSkull)
+                .register();
+    }
+    private void getSkull(Player player, CommandArguments args) {
+        OfflinePlayer offlinePlayer = args.getByArgument(arg);
+        if (offlinePlayer==null) return;
+        ItemStack is = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) is.getItemMeta();
-        meta.setOwningPlayer(name);
+        var profile = offlinePlayer.getPlayerProfile();
+        profile.complete(true);
+        meta.setPlayerProfile(profile);
+        is.setItemMeta(meta);
+        player.give(is);
     }
 }

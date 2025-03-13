@@ -1,6 +1,6 @@
 # ALL STRINGS IN THIS CONFIG USE MINI MESSAGE FORMAT
 # https://docs.advntr.dev/minimessage/format.html
-
+debug: false
 chat:
   enabled: false
 
@@ -10,6 +10,9 @@ chat:
     # - <name>
     # - <message>
   format: "<name>: <message>"
+  # in seconds
+  cooldown: 3
+  cooldownMessage: "<red>Please wait <cooldown> seconds before chatting again"
 
   filterWords: true
   filteredWords:
@@ -45,12 +48,34 @@ chats:
   customChats:
     staff:
       name: "<gold>Staff Chat"
-      permission: "potatoessentials.chats.exampleStaff"
+      permission: "potatoessentials.chats.examplestaff"
       # optional field
       command: "sc" # (needs server restart when first added)
     #vip:
     #  name: "<green>VIP Chat"
-    #  permission: "potatoessentials.chats.exampleVIP"
+    #  permission: "potatoessentials.chats.examplevip"
+
+serverLinks:
+  enabled: false
+  serverLinks:
+    example:
+      name: "<rainbow>Test Example Thingy"
+      # requires the 'https://' at the start of the string
+      url: "https://mcdragonmasters.com/PotatoEssentials"
+
+serverList:
+  motdEnabled: false
+  motd:
+    - "<rainbow>Example Line 1"
+    - "<rainbow>Example Line 2"
+  hoverInfoEnabled: false
+  # gradients don't work for this and idk y
+  hoverInfo:
+    - "<aqua>Example 1"
+    - "<red>Example 2: <blue>fr"
+
+# features currently in development. Not recommended for production
+experimentalFeatures: false
 
 commands:
   message:
@@ -108,7 +133,7 @@ commands:
     enabled: true
   vanish:
     enabled: true
-  clearinventory: # /ci
+  clearinventory:
     enabled: true
   warp:
     enabled: true
@@ -153,3 +178,5 @@ commands:
     skinNotFound: "<red>Skin not found!"
   skull:
     enabled: true
+  troll:
+    enabled: false

@@ -13,6 +13,7 @@ dependencies:
       required: false
       join-classpath: true
 
+
 permissions:
   potatoessentials.*:
     description: Gives the user full access to all of PotatoEssentials' commands
@@ -195,4 +196,13 @@ permissions:
     default: op
   potatoessentials.skin:
     description: Allows the user to use /skin
+    default: op
+  potatoessentials.skull:
+    description: Allows the user to use /skull
+    default: op
+  potatoessentials.troll.crash:
+    description: Allows the user to use /troll crash
+    default: false
+  potatoessentials.chat.bypass-cooldown:
+    description: Allows the user to bypass the chat cooldown
     default: op

@@ -1,13 +1,11 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.arguments.ADoubleArgument;
-import dev.jorel.commandapi.annotations.arguments.AEntitySelectorArgument.ManyPlayers;
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyPlayers;
+import dev.jorel.commandapi.arguments.IntegerArgument;
+import dev.jorel.commandapi.executors.CommandArguments;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -15,14 +13,30 @@ import org.bukkit.entity.Player;
 
 import java.util.Collection;
 
-@Command("smite")
-@Permission(PotatoEssentials.NAMESPACE+".smite")
 public class SmiteCommand extends PotatoCommand {
-    @Override
-    public String getName() { return "smite"; }
 
-    @Default
-    public static void smite(CommandSender sender, @ManyPlayers Collection<Player> players, @ADoubleArgument double damage) {
+    public SmiteCommand() {
+        super("smite");
+        setPermission(NAMESPACE+".smite");
+    }
+
+    private final ManyPlayers manyPlayersArg = new ManyPlayers("targets");
+    private final IntegerArgument integerArg = new IntegerArgument("damage",1,1000);
+
+    @Override
+    public void register() {
+        new CommandAPICommand(name)
+                .withPermission(permission)
+                .withArguments(manyPlayersArg)
+                .withOptionalArguments(integerArg)
+                .executes(this::execute)
+                .register();
+    }
+    @SuppressWarnings("unchecked")
+    public void execute(CommandSender sender, CommandArguments args) {
+        Collection<Player> players = args.getByArgument(manyPlayersArg);
+        int damage = args.getByArgumentOrDefault(integerArg, 1);
+        if (players==null) return;
         players.forEach((player -> {
             Location loc = player.getLocation();
             loc.getWorld().strikeLightningEffect(loc);
@@ -31,9 +45,5 @@ public class SmiteCommand extends PotatoCommand {
         String playerMsg = Utils.playerNameFormat(players);
         Component msg = Utils.miniMessage("Smiting <yellow>"+playerMsg);
         sender.sendMessage(msg);
-    }
-    @Default
-    public static void smite(CommandSender sender, @ManyPlayers Collection<Player> players) {
-        smite(sender, players, 1);
     }
 }

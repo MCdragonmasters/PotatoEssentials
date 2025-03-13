@@ -22,8 +22,9 @@ public class PlayerJoinQuitListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player joiner = e.getPlayer();
-
-        if (Config.addEmojisToCustomChatCompletions()) joiner.addCustomChatCompletions(Config.getEmojis().keySet());
+        if (Config.addEmojisToCustomChatCompletions()
+                && joiner.hasPermission(PotatoEssentials.NAMESPACE+".chat.emojis"))
+            joiner.addCustomChatCompletions(Config.getEmojis().keySet());
 
         if (joiner.hasPermission(PotatoEssentials.NAMESPACE+".vanish.bypass")) return;
         for (Player player : VanishCommand.getVanishedPlayers()) {
@@ -37,10 +38,8 @@ public class PlayerJoinQuitListener implements Listener {
         boolean isFirstJoin = !joiner.hasPlayedBefore();
         List<Replacer> replacers = new ArrayList<>();
         replacers.add(new Replacer("name", joiner.getName()));
-        if (PotatoEssentials.isVaultInstalled()) {
-            replacers.add(new Replacer("prefix", Utils.getPrefix(joiner)));
-            replacers.add(new Replacer("suffix", Utils.getSuffix(joiner)));
-        }
+        replacers.add(new Replacer("prefix", Utils.getPrefix(joiner)));
+        replacers.add(new Replacer("suffix", Utils.getSuffix(joiner)));
         if (isFirstJoin) {
             replacers.add(new Replacer("join-number", Bukkit.getOfflinePlayers().length+""));
         }
