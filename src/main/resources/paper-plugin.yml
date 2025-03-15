@@ -1,6 +1,6 @@
 name: PotatoEssentials
 description: fr
-authors: [ MCdragonmasters ]
+authors: [ MCdragonmasters, ScytheMedia(WIKI) ]
 website: https://github.com/MCdragonmasters/PotatoEssentials
 version: @version@
 main: com.mcdragonmasters.potatoessentials.PotatoEssentials
