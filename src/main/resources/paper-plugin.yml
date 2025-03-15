@@ -41,7 +41,6 @@ permissions:
       potatoessentials.messagetoggle.bypass: true
 
       potatoessentials.vanish: true
-      potatoessentials.vanish.bypass: true
 
       potatoessentials.feed: true
       potatoessentials.clearinventory: true
@@ -130,9 +129,6 @@ permissions:
     default: op
   potatoessentials.vanish:
     description: Allows the user to use /vanish
-    default: op
-  potatoessentials.vanish.bypass:
-    description: Allows the user to see vanished players
     default: op
   potatoessentials.feed:
     description: Allows the user to use /feed

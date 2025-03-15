@@ -90,6 +90,8 @@ commands:
       # - <message>
     sender: "<gold>You <gray>»</gray> <receiver><reset>: <message>"
     receiver: "<gold><sender> <gray>»</gray> You<reset>: <message>"
+
+    messagesDisabled: "<red><receiver>'s messages are disabled"
   broadcast:
     enabled: true
     message: "<newline>  <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</red></bold>]<white> <message><newline>"
@@ -99,6 +101,7 @@ commands:
     toggledOn: "<gray>Private Messages have been<green> Enabled"
   reply:
     enabled: true
+    noReply: "<red>You don't have anyone to reply to!"
   socialspy:
     enabled: true
     # same vars as /message
@@ -113,10 +116,10 @@ commands:
     message: "<gray>Applied<yellow> <enchantment></yellow> to<yellow> <target></yellow> held item"
   feed:
     enabled: true
-    message: "<green>Successfully<gray> fed<yellow> <target>"
+    message: "<gray>Successfully fed<yellow> <target>"
   back:
     enabled: true
-    message: "<gold>You have teleported to <yellow>your <gold>previous location<dark_gray>!"
+    message: "<gray>You have teleported to <yellow>your <gray>previous location"
   flyspeed:
     enabled: true
   gamemode:
@@ -133,6 +136,8 @@ commands:
     enabled: true
   vanish:
     enabled: true
+    vanishMsg: "<dark_gray>[<gold>Vanish</gold>]<yellow> <player><gray> is now in vanish."
+    unvanishMsg: "<dark_gray>[<gold>Vanish</gold>]<yellow> <player><gray> is no longer in vanish."
   clearinventory:
     enabled: true
   warp:

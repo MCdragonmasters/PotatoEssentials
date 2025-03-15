@@ -1,34 +1,42 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
+import dev.jorel.commandapi.executors.CommandArguments;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @SuppressWarnings("unchecked")
-public class ClearInventoryCommand {
-    public static void register() {
-        EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
-                .ManyPlayers("target");
+public class ClearInventoryCommand extends PotatoCommand {
+    public ClearInventoryCommand() {
+        super("clearinventory", "ci");
+        setPermission(PotatoEssentials.NAMESPACE+".clearinventory");
+    }
 
-        new CommandAPICommand("clearinventory")
-                .withAliases("ci")
-                .withPermission(PotatoEssentials.NAMESPACE+".clearinventory")
+    private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
+            .ManyPlayers("target");
+
+    @Override
+    public void register() {
+        new CommandAPICommand(name)
+                .withAliases(aliases)
+                .withPermission(permission)
                 .withOptionalArguments(playerArg)
-                .executesPlayer((sender,args) -> {
-                    Collection<Player> players = args.getByArgument(playerArg) != null ?
-                            Objects.requireNonNull(args.getByArgument(playerArg)) : List.of(sender);
-                    for (Player player : players) {
-                        player.getInventory().clear();
-                    }
-                    String msg = Utils.possessivePlayerNameFormat(players);
-                    sender.sendRichMessage("<gray>Cleared<yellow> "+msg+"</yellow> Inventory");
-                }).register();
+                .executesPlayer(this::execute)
+                .register();
 
+    }
+    private void execute(Player sender, CommandArguments args) {
+        Collection<Player> players = args.getByArgumentOrDefault(playerArg, List.of(sender));
+        for (Player p : players) {
+            p.getInventory().clear();
+        }
+        String msg = Utils.possessivePlayerNameFormat(players);
+        sender.sendRichMessage("<gray>Cleared<yellow> "+msg+"</yellow> Inventory");
     }
 }

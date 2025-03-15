@@ -78,7 +78,7 @@ public class PotatoEssentials extends JavaPlugin {
         registerCommand(new MainCommand(), true);
 
         if (Config.commandEnabled("message")) MessageCommand.register();
-        if (Config.commandEnabled("reply")) ReplyCommand.register();
+        registerCommand(new ReplyCommand());
         if (Config.commandEnabled("socialspy")) SocialSpyCommand.register();
         if (Config.commandEnabled("broadcast")) BroadcastCommand.register();
         if (Config.commandEnabled("messagetoggle")) MessageToggleCommand.register();
@@ -93,9 +93,9 @@ public class PotatoEssentials extends JavaPlugin {
         if (config.getBoolean("commands.tp.tphere-enabled")) TeleportHereCommand.register();
         if (config.getBoolean("commands.tp.tpall-enabled")) TeleportAllCommand.register();
         if (Config.commandEnabled("flyspeed")) FlySpeedCommand.register();
-        if (Config.commandEnabled("vanish")) VanishCommand.register();
+        registerCommand(new VanishCommand());
         if (Config.commandEnabled("feed")) FeedCommand.register();
-        if (Config.commandEnabled("clearinventory")) ClearInventoryCommand.register();
+        registerCommand(new ClearInventoryCommand());
 
         if (Config.commandEnabled("warp")) WarpCommand.register();
         if (Config.commandEnabled("setwarp")) SetWarpCommand.register();

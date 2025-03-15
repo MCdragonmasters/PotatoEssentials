@@ -45,15 +45,12 @@ public class Config {
         try {
             List<String> ignoredList = new ArrayList<>();
             addToIgnoredListIfExists("chat.emojis", ignoredList);
-            addToIgnoredListIfExists("chat.filteredWords", ignoredList);
             addToIgnoredListIfExists("chats.customChats", ignoredList);
-            addToIgnoredListIfExists("serverList.motd", ignoredList);
-            addToIgnoredListIfExists("serverList.hoverInfo", ignoredList);
             addToIgnoredListIfExists("serverLinks.serverLinks", ignoredList);
             ConfigUpdater.update(plugin,"config.yml",
                     new File(plugin.getDataFolder(), "config.yml"), ignoredList);
         } catch (IOException e) {
-            PotatoEssentials.LOGGER.log(Level.SEVERE, "Error updating config", e);
+            LOGGER.log(Level.SEVERE, "Error updating config", e);
             return;
         }
         String reload = reload();
@@ -254,6 +251,7 @@ public class Config {
         return Utils.miniMessage(format, resolver);
     }
     private static void addToIgnoredListIfExists(String s, List<String> list) {
-        if (config.isConfigurationSection(s)) list.add(s);
+        if (config.contains(s, true) && config.isConfigurationSection(s))
+            list.add(s);
     }
 }
