@@ -1,0 +1,13 @@
+debug: false
+reloadDatapacks: false
+linkRequiredToJoin: false
+
+botToken: "TOKEN_HERE"
+discordInvite: "https://discord.gg/CHANGEME"
+linkedRole: "" # leave blank for none
+
+commands:
+  link:
+    enabled: true
+  unlink:
+    enabled: true

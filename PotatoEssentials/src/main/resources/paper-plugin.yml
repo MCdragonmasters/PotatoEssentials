@@ -1,0 +1,204 @@
+name: PotatoEssentials
+description: fr
+authors: [ MCdragonmasters, ScytheMedia(WIKI) ]
+website: https://github.com/MCdragonmasters/PotatoEssentials
+version: @version@
+main: com.mcdragonmasters.potatoessentials.PotatoEssentials
+api-version: '1.21.3'
+load: STARTUP
+dependencies:
+  server:
+    Vault:
+      load: BEFORE
+      required: false
+      join-classpath: true
+
+
+permissions:
+  potatoessentials.*:
+    description: Gives the user full access to all of PotatoEssentials' commands
+    children:
+
+      potatoessentials.message: true
+      potatoessentials.ping: true
+      potatoessentials.messagetoggle: true
+      potatoessentials.channel: true
+
+      potatoessentials.chat.*: true
+
+      potatoessentials.chat.urls: true
+      potatoessentials.broadcast: true
+      potatoessentials.socialspy: true
+      potatoessentials.enchant: true
+      potatoessentials.hunger: true
+      potatoessentials.invsee: true
+      potatoessentials.smite: true
+      potatoessentials.tphere: true
+      potatoessentials.heal: true
+      potatoessentials.potatoessentials: true
+      potatoessentials.tpall: true
+      potatoessentials.flyspeed: true
+      potatoessentials.messagetoggle.bypass: true
+
+      potatoessentials.vanish: true
+
+      potatoessentials.feed: true
+      potatoessentials.clearinventory: true
+      potatoessentials.warp: true
+      potatoessentials.setwarp: true
+      potatoessentials.deletewarp: true
+
+      potatoessentials.mutechat: true
+      potatoessentials.sudo: true
+      potatoessentials.back: true
+
+      potatoessentials.report.log: true
+      potatoessentials.report: true
+
+      potatoessentials.uptime: true
+
+      potatoessentials.kit.*: true
+      potatoessentials.clearchat: true
+      potatoessentials.skin: true
+
+  potatoessentials.chat.*:
+    description: Gives to user full access for all chat related permissions
+    children:
+      potatoessentials.chat.bypassFilter: true
+      potatoessentials.chat.minimessage: true
+      potatoessentials.chat.emojis: true
+      potatoessentials.chat.bypassMutedChat: true
+  potatoessentials.kit.*:
+    description: Allows the user to use all /kit subcommands
+    children:
+      potatoessentials.kit.create: true
+      potatoessentials.kit.give: true
+      potatoessentials.kit.delete: true
+  potatoessentials.message:
+    description: Allows the user to use /msg and /r
+    default: true
+  potatoessentials.ping:
+    description: Allows the user to use /ping
+    default: true
+  potatoessentials.messagetoggle:
+    description: Allows the user to use /msgtoggle
+    default: true
+  potatoessentials.channel:
+    description: Allows the user to use /channel (/chat)
+    default: true
+
+
+  potatoessentials.broadcast:
+    description: Allows the user to use /broadcast
+    default: op
+  potatoessentials.socialspy:
+    description: Allows the user to use /socialspy
+    default: op
+  potatoessentials.enchant:
+    description: Allows the user to use /enchant
+    default: op
+  potatoessentials.gamemode:
+    description: Allows the user to use /gm and /gamemode
+    default: op
+  potatoessentials.hunger:
+    description: Allows the user to use /hunger
+    default: op
+  potatoessentials.invsee:
+    description: Allows the user to use /invsee
+    default: op
+  potatoessentials.smite:
+    description: Allows the user to use /smite
+    default: op
+  potatoessentials.tphere:
+    description: Allows the user to use /tphere
+    default: op
+  potatoessentials.heal:
+    description: Allows the user to use /heal
+    default: op
+  potatoessentials.potatoessentials:
+    description: Allows the user to use /potatoessentials
+    default: op
+  potatoessentials.tpall:
+    description: Allows the user to use /tpall
+    default: op
+  potatoessentials.flyspeed:
+    description: Allows the user to use /flyspeed
+    default: op
+  potatoessentials.messagetoggle.bypass:
+    description: Allows the user to message users that have messages disabled via /msgtoggle
+    default: op
+  potatoessentials.vanish:
+    description: Allows the user to use /vanish
+    default: op
+  potatoessentials.feed:
+    description: Allows the user to use /feed
+    default: op
+  potatoessentials.clearinventory:
+    description: Allows the user to use /ci
+    default: op
+  potatoessentials.warp:
+    description: Allows the user to use /warp
+    default: op
+  potatoessentials.deletewarp:
+    description: Allows the user to use /delwarp
+    default: op
+  potatoessentials.setwarp:
+    description: Allows the user to use /setwarp
+    default: op
+  potatoessentials.chat.minimessage:
+    description: Allows the user to use MiniMessage color codes and formating in chat
+    default: op
+  potatoessentials.chat.emojis:
+    description: Allows the user to use emojis in chat
+    default: op
+  potatoessentials.mutechat:
+    description: Allows the user to use /mutechat
+    default: op
+  potatoessentials.chat.bypassMutedChat:
+    description: Allows the user to talk what chat is muted
+    default: op
+  potatoessentials.sudo:
+    description: Allows the user to use /sudo
+    default: op
+  potatoessentials.chat.urls:
+    description: Formats the URLs when the player chats
+    default: op
+  potatoessentials.back:
+    description: Allows the user to use /back
+    default: op
+  potatoessentials.report:
+    description: Allows the user to use /report
+    default: true
+  potatoessentials.report.log:
+    description: Allows the user to use /report log
+    default: op
+  potatoessentials.uptime:
+    description: Allows the user to use /uptime
+    default: op
+  potatoessentials.chat.bypassFilter:
+    description: Allows the user to bypass the chat filter
+    default: op
+  potatoessentials.kit.give:
+    description: Allows the user to use /kit give
+    default: op
+  potatoessentials.kit.create:
+    description: Allows the user to use /kit create
+    default: op
+  potatoessentials.kit.delete:
+    description: Allows the user to use /kit delete
+    default: op
+  potatoessentials.clearchat:
+    description: Allows the user to use /clearchat
+    default: op
+  potatoessentials.skin:
+    description: Allows the user to use /skin
+    default: op
+  potatoessentials.skull:
+    description: Allows the user to use /skull
+    default: op
+  potatoessentials.troll.crash:
+    description: Allows the user to use /troll crash
+    default: false
+  potatoessentials.chat.bypass-cooldown:
+    description: Allows the user to bypass the chat cooldown
+    default: op

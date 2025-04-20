@@ -1,0 +1,21 @@
+name: PotatoDiscordLink
+description: fr
+authors: [ MCdragonmasters]
+website: https://github.com/MCdragonmasters/PotatoEssentials
+version: @version@
+main: com.mcdragonmasters.potatodiscordlink.PotatoDiscordLink
+api-version: '1.21.3'
+load: STARTUP
+dependencies:
+  server:
+    PotatoEssentials:
+      load: BEFORE
+      required: true
+      join-classpath: true
+permissions:
+  potatoessentials.discord.link:
+    description: Allows the user to use /link
+    default: true
+  potatoessentials.discord.unlink:
+    description: Allows the user to use /unlink
+    default: true
