@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,7 +27,7 @@ public class LinkManager {
     public LinkManager() {
         try {
             read();
-            PotatoDiscordLink.LOGGER.debug("Loaded "+linkedAccounts.size()+" linked accounts");
+            PotatoDiscordLink.LOGGER.debug("Loaded "+linkedAccounts.size()+" linked account(s)");
         } catch (IOException e) {
             PotatoDiscordLink.LOGGER.log(Level.SEVERE,"Failed to load linked accounts", e);
         }
@@ -46,7 +47,7 @@ public class LinkManager {
         } while (linkingCodes.putIfAbsent(codeString, playerUuid) != null);
         return codeString;
     }
-
+    @Getter
     private final DualHashBidiMap<String, UUID> linkedAccounts = new DualHashBidiMap<>();
 
     private void read() throws IOException {
@@ -85,9 +86,8 @@ public class LinkManager {
         File file = getFile();
         File tempFile = getTempFile();
         tempFile.deleteOnExit();
-        file.delete();
 
-        PotatoDiscordLink.LOGGER.debug("Saving linked.aof file");
+        PotatoDiscordLink.LOGGER.debug("Saving linked.aof file (%s accounts)".formatted(linkedAccounts.size()));
 
         try {
             try (FileWriter fileWriter = new FileWriter(tempFile);
@@ -97,8 +97,14 @@ public class LinkManager {
                     UUID uuid = entry.getValue();
                     writer.write(discordId+" "+uuid+"\n");
                 }
-            } catch (IOException e) {
+            } catch (IOException | NoClassDefFoundError e) {
                 PotatoDiscordLink.LOGGER.log(Level.SEVERE, "Error saving linked.aof", e);
+                if (e instanceof NoClassDefFoundError) {
+                    PotatoDiscordLink.LOGGER.severe(
+                            "This probably occurred due to updating the jar while the server was online," +
+                                    " which may cause data loss," +
+                                    " please don't do this");
+                }
                 return;
             }
             //noinspection ResultOfMethodCallIgnored
@@ -106,7 +112,7 @@ public class LinkManager {
             try {
                 FileUtils.moveFile(tempFile, file);
             } catch (IOException e) {
-                PotatoDiscordLink.LOGGER.log(Level.SEVERE, "Failed moving accounts.aof.tmp to accounts.aof: ", e);
+                PotatoDiscordLink.LOGGER.log(Level.SEVERE, "Failed moving linked.aof.tmp to linked.aof: ", e);
             }
         } finally {
             //noinspection ResultOfMethodCallIgnored
@@ -127,9 +133,9 @@ public class LinkManager {
                 uuid = linkedAccounts.get(discordId);
             }
             OfflinePlayer offlinePlayer = PotatoDiscordLink.INSTANCE.getServer().getOfflinePlayer(uuid);
-            return "You are already linked to %username% (%uuid%)"
-                    .replace("%username%", offlinePlayer.getName()!=null?offlinePlayer.getName():"Unknown")
-                    .replace("%uuid%", uuid.toString());
+            return Objects.requireNonNull(PotatoDiscordLink.config().getString("messages.discord.alreadyLinked"))
+                    .replace("<username>", offlinePlayer.getName()!=null?offlinePlayer.getName():"Unknown")
+                    .replace("<uuid>", uuid.toString());
         }
 
         linkCode = linkCode.replaceAll("[^0-9]", "");
@@ -147,19 +153,18 @@ public class LinkManager {
             if (player.isOnline() && onlinePlayer != null) {
                 onlinePlayer.sendMessage(
                         Config.replaceFormat(
-                                "<aqua>Your UUID has been linked to Discord user <username> (<id>)",
+                                PotatoDiscordLink.config().getString("messages.minecraft.linked"),
                                 new Replacer("username", user.getName()),
                                 new Replacer("id", user.getId()))
                 );
             }
 
-            return "Your Discord account has been linked to %s (%s)"
-                    .formatted(
-                            Optional.ofNullable(player.getName()).orElse("Unknown"),
-                            getUUID(discordId).toString());
+            return Objects.requireNonNull(PotatoDiscordLink.config().getString("messages.discord.linked"))
+                    .replace("<player>", Optional.ofNullable(player.getName()).orElse("Unknown"))
+                    .replace("<uuid>", getUUID(discordId).toString());
         }
 
-        return "Invalid code";
+        return Objects.requireNonNull(PotatoDiscordLink.config().getString("messages.discord.invalidCode"));
     }
     public void link(String discordId, UUID uuid) {
         if (discordId.trim().isEmpty()) {

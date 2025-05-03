@@ -21,16 +21,18 @@ public class DcSlashCommandListener extends ListenerAdapter {
                 var id = e.getUser().getId();
                 var uuid = linkManager.getUUID(id);
                 if (uuid == null) {
-                    e.reply("You're not currently linked!").queue();
+                    e.reply(Objects.requireNonNull(PotatoDiscordLink.config().getString("messages.discord.notLinked"))).queue();
                     return;
                 }
                 var player = Bukkit.getOfflinePlayer(uuid);
-                e.reply("Unlinked from %s (%s)".formatted(player.getName(), uuid)).queue();
+                e.reply(Objects.requireNonNull(PotatoDiscordLink.config().getString("messages.discord.unlinked"))
+                        .replace("<player>", player.getName()!=null?player.getName():"Unknown")
+                        .replace("<uuid>", uuid.toString())).queue();
                 linkManager.unlink(id);
                 var onlinePlayer = player.getPlayer();
                 if (PotatoDiscordLink.config().getBoolean("linkRequiredToJoin") && onlinePlayer!=null) {
                     onlinePlayer.kick(Utils.miniMessage(
-                            "<gray>You must link your <aqua>Discord</aqua> account to join! Rejoin to get a linking code"
+                            PotatoDiscordLink.config().getString("messages.minecraft.kickUnlinked")
                     ));
                 }
                 break;

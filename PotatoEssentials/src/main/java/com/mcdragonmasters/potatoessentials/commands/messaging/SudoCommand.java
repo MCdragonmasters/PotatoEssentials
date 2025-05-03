@@ -14,9 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @SuppressWarnings({"unchecked", "DataFlowIssue"})
 public class SudoCommand extends PotatoCommand {
@@ -27,7 +25,7 @@ public class SudoCommand extends PotatoCommand {
     }
 
     private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
-            .ManyPlayers("target");
+            .ManyPlayers("target", false);
 
     private final Argument<String> stringArg = new GreedyStringArgument("input");
 

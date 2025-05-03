@@ -1,5 +1,5 @@
 package com.mcdragonmasters.potatoessentials.commands;
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
@@ -15,8 +15,15 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("unchecked")
-public class GameModeCommand {
-    public static void register() {
+public class GameModeCommand extends PotatoCommand {
+
+    public GameModeCommand() {
+        super("gamemode", "gm");
+        setPermission(NAMESPACE+".gamemode");
+    }
+
+    @Override
+    public void register() {
 
         CommandAPI.unregister("gamemode");
 
@@ -24,13 +31,12 @@ public class GameModeCommand {
                 "adventure", "creative", "spectator", "survival",
                 "a", "c", "sp", "s", "0", "1", "2", "3");
         EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
-                .ManyPlayers("target");
+                .ManyPlayers("target", false);
 
-        String permission = PotatoEssentials.NAMESPACE+".gamemode";
-        new CommandAPICommand("gamemode")
+        new CommandAPICommand(name)
                 .withPermission(permission)
                 .withArguments(gmArg)
-                .withAliases("gm")
+                .withAliases(aliases)
                 .withOptionalArguments(playerArg)
                 .executesPlayer((player, args) -> {
                     Collection<Player> players = args.getByArgument(playerArg) != null ?

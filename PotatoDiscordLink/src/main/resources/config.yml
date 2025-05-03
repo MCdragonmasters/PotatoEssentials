@@ -5,9 +5,32 @@ linkRequiredToJoin: false
 botToken: "TOKEN_HERE"
 discordInvite: "https://discord.gg/CHANGEME"
 linkedRole: "" # leave blank for none
+messages:
+  discord:
+    alreadyLinked: "You are already linked to <username> (<uuid>)"
+    linked: "Your Discord account has been linked to <player> (<uuid>)"
+    unlinked: "Unlinked from <player> (<uuid>)"
+    invalidCode: "Invalid code"
+    notLinked: "You're not currently linked!"
+  minecraft:
+    linked: "<aqua>Your UUID has been linked to Discord user <username> (<id>)"
+    unlinked: "<aqua>Unlinked your Minecraft account from your Discord account"
+    kickUnlinked: "<gray>You must link your <aqua>Discord</aqua> account to join! Rejoin to get a linking code"
+    alreadyLinked: "<red>You're already linked!"
+    linkMessage:
+    - "<gray>Your link<aqua><b> code is <code></b></aqua>."
+    - "Use /link in the <aqua>Discord server</aqua> to link your account<newline>"
+    - "<gray>Discord Invite » <aqua><invite>"
+    codeHoverMsg: "Click to copy code"
+    notLinked: "<red>Your Minecraft account isn't currently linked with a Discord account"
 
 commands:
   link:
     enabled: true
   unlink:
     enabled: true
+  linked:
+    enabled: true
+    listPrefix: "<aqua>Linked players: <gray>"
+    listFormat: "<name> (@<discord>)"
+    listDelimiter: "<aqua>, </aqua>"

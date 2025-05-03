@@ -2,10 +2,12 @@ package com.mcdragonmasters.potatodiscordlink;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mcdragonmasters.potatodiscordlink.commands.LinkCommand;
+import com.mcdragonmasters.potatodiscordlink.commands.LinkedCommand;
 import com.mcdragonmasters.potatodiscordlink.commands.UnlinkCommand;
 import com.mcdragonmasters.potatodiscordlink.listeners.DcSlashCommandListener;
 import com.mcdragonmasters.potatodiscordlink.listeners.MCPreJoinListener;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.libs.configupdater.ConfigUpdater;
 import com.mcdragonmasters.potatoessentials.utils.PotatoLogger;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
@@ -23,7 +25,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.*;
+import java.util.logging.Level;
 
 public class PotatoDiscordLink extends JavaPlugin {
     private static FileConfiguration config;
@@ -45,8 +50,14 @@ public class PotatoDiscordLink extends JavaPlugin {
     @SneakyThrows
     public void onEnable() {
         saveDefaultConfig();
-        config = getConfig();
         INSTANCE = this;
+        try {
+            ConfigUpdater.update(INSTANCE, "config.yml",
+                    new File(INSTANCE.getDataFolder(), "config.yml"));
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error updating config", e);
+        }
+        config = getConfig();
         LOGGER = new PotatoLogger(this.getLogger(), config);
         String token = config.getString("botToken");
         if (token == null || token.equals("TOKEN_HERE") || token.isEmpty()) {
@@ -62,12 +73,11 @@ public class PotatoDiscordLink extends JavaPlugin {
 
         ThreadFactory gatewayThreadFactory = new ThreadFactoryBuilder().setNameFormat("DiscordSRV - JDA Gateway").build();
         ScheduledExecutorService gatewayThreadPool = Executors.newSingleThreadScheduledExecutor(gatewayThreadFactory);
-
-        jda = JDABuilder.createLight(token)
+        jda = JDABuilder.create(token, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES,
+                        GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_EXPRESSIONS, GatewayIntent.SCHEDULED_EVENTS)
                 .setCallbackPool(callbackThreadPool, false)
                 .setGatewayPool(gatewayThreadPool, true)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(new DcSlashCommandListener())
                 .build();
 
@@ -81,7 +91,6 @@ public class PotatoDiscordLink extends JavaPlugin {
 
 
         var commands = jda.updateCommands();
-
         commands.addCommands(
                 Commands.slash("link", "Links your Discord to your Minecraft")
                         .addOption(OptionType.STRING, "code",
@@ -94,6 +103,7 @@ public class PotatoDiscordLink extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new MCPreJoinListener(), INSTANCE);
         PotatoEssentials.registerCommand(new LinkCommand(), INSTANCE);
         PotatoEssentials.registerCommand(new UnlinkCommand(), INSTANCE);
+        PotatoEssentials.registerCommand(new LinkedCommand(), INSTANCE);
     }
     @Override
     public void onDisable() {

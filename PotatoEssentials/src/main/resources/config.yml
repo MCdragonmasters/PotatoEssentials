@@ -193,3 +193,9 @@ commands:
     enabled: true
   troll:
     enabled: false
+    attemptCrashSelf: "<red>You cannot crash yourself!"
+    crash: "<gray>Crashing <yellow><target>"
+    demoSingle: "<gray>Showing demo screen to <yellow><target>"
+    demoMany: "<gray>Showing demo screen to <yellow><count> Players"
+  teleportcenter:
+    enabled: true

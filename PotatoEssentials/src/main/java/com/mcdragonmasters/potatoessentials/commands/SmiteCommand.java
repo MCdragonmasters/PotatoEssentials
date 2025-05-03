@@ -12,7 +12,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -23,7 +22,7 @@ public class SmiteCommand extends PotatoCommand {
         setPermission(NAMESPACE+".smite");
     }
 
-    private final ManyPlayers manyPlayersArg = new ManyPlayers("targets");
+    private final ManyPlayers manyPlayersArg = new ManyPlayers("targets", false);
     private final IntegerArgument integerArg = new IntegerArgument("damage",1,1000);
 
     @Override

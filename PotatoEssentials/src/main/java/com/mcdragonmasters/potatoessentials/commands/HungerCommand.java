@@ -2,28 +2,39 @@ package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.listeners.HungerChangeListener;
+import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.executors.CommandArguments;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class HungerCommand {
+public class HungerCommand extends PotatoCommand {
 
-    public static boolean hungerEnabled=true;
+    public HungerCommand() {
+        super("hunger");
+        setPermission(NAMESPACE+".hunger");
+    }
 
-    public static void register() {
+    public static boolean hungerEnabled = true;
+
+    @Override
+    public void register() {
 
         PotatoEssentials.pluginManager
                 .registerEvents(new HungerChangeListener(), PotatoEssentials.INSTANCE);
 
-        new CommandAPICommand("hunger")
-                .withPermission(PotatoEssentials.NAMESPACE+".hunger")
-                .executes((sender, args) -> {
-                    hungerEnabled=!hungerEnabled;
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (!player.hasPermission(PotatoEssentials.NAMESPACE+".hunger")) continue;
-                        sender.sendRichMessage("<gray>[<gold>Hunger</gold>] " +
-                                (hungerEnabled ? "<green>Enabled" : "<red>Disabled"));
-                    }
-                }).register();
+        new CommandAPICommand(name)
+                .withPermission(permission)
+                .executes(this::execute)
+                .register();
+    }
+    private void execute(CommandSender sender, CommandArguments args) {
+        hungerEnabled=!hungerEnabled;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!player.hasPermission(PotatoEssentials.NAMESPACE+".hunger")) continue;
+            sender.sendRichMessage("<gray>[<gold>Hunger</gold>] " +
+                    (hungerEnabled ? "<green>Enabled" : "<red>Disabled"));
+        }
     }
 }

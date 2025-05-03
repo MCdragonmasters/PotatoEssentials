@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class ReportCommand {
 
-    public static Set<Report> reports= new HashSet<>();
+    public static Set<Report> reports = new HashSet<>();
 
     @SuppressWarnings("DataFlowIssue")
     public static void register() {

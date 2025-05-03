@@ -20,7 +20,7 @@ public class TeleportHereCommand extends PotatoCommand {
         setPermission(NAMESPACE+".tphere");
     }
     private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
-            .ManyPlayers("target");
+            .ManyPlayers("target", false);
 
     @Override
     public void register() {

@@ -13,9 +13,17 @@ dependencies:
       required: true
       join-classpath: true
 permissions:
+  potatoessentials.discord.*:
+    children:
+      potatoessentials.discord.link: true
+      potatoessentials.discord.unlink: true
+      potatoessentials.discord.linked: true
   potatoessentials.discord.link:
     description: Allows the user to use /link
     default: true
   potatoessentials.discord.unlink:
     description: Allows the user to use /unlink
     default: true
+  potatoessentials.discord.linked:
+    description: Allows the user to use /linked
+    default: op

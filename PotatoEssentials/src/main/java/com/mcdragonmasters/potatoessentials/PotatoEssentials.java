@@ -87,18 +87,18 @@ public class PotatoEssentials extends JavaPlugin {
         registerCommand(new BroadcastCommand());
         registerCommand(new MessageToggleCommand());
 
-        if (Config.commandEnabled("enchant")) EnchantCommand.register();
-        if (Config.commandEnabled("gamemode"))  GameModeCommand.register();
-        if (Config.commandEnabled("heal")) HealCommand.register();
-        if (Config.commandEnabled("hunger")) HungerCommand.register();
-        if (Config.commandEnabled("invsee")) InvSeeCommand.register();
+        registerCommand(new EnchantCommand());
+        registerCommand(new GameModeCommand());
+        registerCommand(new HealCommand());
+        registerCommand(new HungerCommand());
+        registerCommand(new InvSeeCommand());
         registerCommand(new PingCommand());
         registerCommand(new SmiteCommand());
         if (config.getBoolean("commands.tp.tphere-enabled")) new TeleportHereCommand().register();
         if (config.getBoolean("commands.tp.tpall-enabled")) new TeleportAllCommand().register();
-        if (Config.commandEnabled("flyspeed")) FlySpeedCommand.register();
+        registerCommand(new FlySpeedCommand());
         registerCommand(new VanishCommand());
-        if (Config.commandEnabled("feed")) FeedCommand.register();
+        registerCommand(new FeedCommand());
         registerCommand(new ClearInventoryCommand());
 
         registerCommand(new WarpCommand());
@@ -117,6 +117,7 @@ public class PotatoEssentials extends JavaPlugin {
         registerCommand(new SkinCommand());
         registerCommand(new SkullCommand());
         registerCommand(new TrollCommand());
+        registerCommand(new TeleportCenterCommand());
     }
 
     private static int registeredCmds = 0;

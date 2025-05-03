@@ -49,11 +49,12 @@ public class VanishCommand extends PotatoCommand {
 
         var event = new VanishToggleEvent(vanisher, vanished);
         Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
 
         var msg = Config.replaceFormat(getMsg(vanished?"vanishMsg":"unvanishMsg"),
                 new Replacer("player", vanisher.getName()));
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission(permission)) continue;
+            if (player.hasPermission(permission+".bypass")) continue;
 
             if (vanished) player.hidePlayer(INSTANCE, vanisher);
             if (!vanished) player.showPlayer(INSTANCE, vanisher);

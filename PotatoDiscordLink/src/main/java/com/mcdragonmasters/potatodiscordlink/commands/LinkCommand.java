@@ -12,6 +12,8 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class LinkCommand extends PotatoCommand {
     public LinkCommand() {
         super("link");
@@ -29,7 +31,7 @@ public class LinkCommand extends PotatoCommand {
         String code = linkManager.generateCode(player.getUniqueId());
         if ("already linked".equals(code)) {
             player.sendMessage(
-                    Utils.miniMessage("<red>You're already linked!")
+                    Utils.miniMessage(PotatoDiscordLink.config().getString("messages.minecraft.alreadyLinked"))
             );
             return;
         }
@@ -37,12 +39,11 @@ public class LinkCommand extends PotatoCommand {
     }
     public static Component getLinkMessage(String code) {
         return Config.replaceFormat(
-                "<gray>Your link<aqua><b> code is <code></b></aqua>.<newline>"+
-                        "Use /link in the <aqua>Discord server</aqua> to link your account<newline><newline>"+
-                        "<gray>Discord Invite » <aqua><invite>",
+                        String.join("<newline>", PotatoDiscordLink.config().getStringList("messages.minecraft.linkMessage")),
                         new Replacer("code", code),
                         new Replacer("invite", PotatoDiscordLink.config().getString("discordInvite")))
                 .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, code))
-                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Click to copy code")));
+                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        Component.text(Objects.requireNonNull(PotatoDiscordLink.config().getString("messages.minecraft.codeHoverMsg")))));
     }
 }

@@ -196,8 +196,8 @@ permissions:
   potatoessentials.skull:
     description: Allows the user to use /skull
     default: op
-  potatoessentials.troll.crash:
-    description: Allows the user to use /troll crash
+  potatoessentials.troll:
+    description: Allows the user to use /troll
     default: false
   potatoessentials.chat.bypass-cooldown:
     description: Allows the user to bypass the chat cooldown

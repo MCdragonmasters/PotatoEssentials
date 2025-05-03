@@ -21,7 +21,7 @@ public class ClearInventoryCommand extends PotatoCommand {
     }
 
     private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
-            .ManyPlayers("target");
+            .ManyPlayers("target", false);
 
     @Override
     public void register() {

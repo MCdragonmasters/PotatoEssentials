@@ -29,7 +29,7 @@ public class KitCommand extends PotatoCommand {
     }
 
     private final Argument<String> kitNameArg;
-    private final ManyPlayers kitGivePlayersArg = new ManyPlayers("target");
+    private final ManyPlayers kitGivePlayersArg = new ManyPlayers("target", false);
 
     @Override
     public void register() {
