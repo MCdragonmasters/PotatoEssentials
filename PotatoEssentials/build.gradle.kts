@@ -63,7 +63,6 @@ publishing {
             artifactId = "PotatoEssentials"
             version = project.version.toString()
             artifact(tasks.shadowJar)
-            artifact(tasks.jar)
         }
     }
 }
