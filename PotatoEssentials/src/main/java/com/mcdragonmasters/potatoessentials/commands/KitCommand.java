@@ -21,8 +21,7 @@ import java.util.List;
 public class KitCommand extends PotatoCommand {
     private final KitManager kitManager;
     public KitCommand(KitManager kitManager) {
-        super("kit");
-        setPermission(NAMESPACE+".kit");
+        super("kit", NAMESPACE+".kit");
         this.kitManager = kitManager;
         this.kitNameArg = new StringArgument("kitName").
                 replaceSuggestions(ArgumentSuggestions.strings(kitManager.getKitNames()));
@@ -34,7 +33,7 @@ public class KitCommand extends PotatoCommand {
     @Override
     public void register() {
         new CommandAPICommand("kit")
-                //.withPermission(permission)
+                .withPermission(permission)
                 .withSubcommand(
                         new CommandAPICommand("create")
                                 .withPermission(permission+".create")

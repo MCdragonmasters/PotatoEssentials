@@ -12,8 +12,7 @@ import org.bukkit.entity.Player;
 public class HungerCommand extends PotatoCommand {
 
     public HungerCommand() {
-        super("hunger");
-        setPermission(NAMESPACE+".hunger");
+        super("hunger",NAMESPACE+".hunger");
     }
 
     public static boolean hungerEnabled = true;

@@ -16,8 +16,7 @@ import org.bukkit.entity.Player;
 public class WarpCommand extends PotatoCommand {
 
     public WarpCommand() {
-        super("warp");
-        setPermission(NAMESPACE+".warp");
+        super("warp",NAMESPACE+".warp");
     }
 
     private final Argument<String> warpNameArg = new StringArgument("warp-name")

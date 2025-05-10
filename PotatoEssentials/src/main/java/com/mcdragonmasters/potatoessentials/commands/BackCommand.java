@@ -13,8 +13,7 @@ import static com.mcdragonmasters.potatoessentials.listeners.PlayerTeleportListe
 
 public class BackCommand extends PotatoCommand {
     public BackCommand() {
-        super("back");
-        setPermission(NAMESPACE+".back");
+        super("back", NAMESPACE+".back");
     }
     @Override
     public void register() {

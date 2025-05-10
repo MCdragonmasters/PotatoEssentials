@@ -11,8 +11,7 @@ import org.bukkit.command.CommandSender;
 
 public class MuteChatCommand extends PotatoCommand {
     public MuteChatCommand() {
-        super("mutechat");
-        setPermission(NAMESPACE+".mutechat");
+        super("mutechat", NAMESPACE+".mutechat");
     }
 
     public static boolean chatMuted = false;

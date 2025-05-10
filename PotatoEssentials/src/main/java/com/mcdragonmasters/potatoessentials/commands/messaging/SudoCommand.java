@@ -20,8 +20,7 @@ import java.util.Objects;
 public class SudoCommand extends PotatoCommand {
 
     public SudoCommand() {
-        super("sudo");
-        setPermission(NAMESPACE+".sudo");
+        super("sudo", NAMESPACE+".sudo");
     }
 
     private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument

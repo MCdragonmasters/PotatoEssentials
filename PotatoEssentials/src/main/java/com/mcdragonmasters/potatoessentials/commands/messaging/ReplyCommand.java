@@ -17,8 +17,7 @@ import static com.mcdragonmasters.potatoessentials.commands.messaging.MessageTog
 
 public class ReplyCommand extends PotatoCommand {
     public ReplyCommand() {
-        super("reply", "r");
-        setPermission(PotatoEssentials.NAMESPACE+".message");
+        super("reply",PotatoEssentials.NAMESPACE+".message", "r");
     }
 
     private final Argument<String> stringArgument = new GreedyStringArgument("message");

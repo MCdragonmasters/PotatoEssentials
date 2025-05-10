@@ -29,8 +29,7 @@ public class SkinCommand extends PotatoCommand {
     private final ManyPlayers playerArg = new ManyPlayers("targets", false);
 
     public SkinCommand() {
-        super("skin");
-        setPermission(NAMESPACE+".skin");
+        super("skin",NAMESPACE+".skin");
     }
 
     @Override

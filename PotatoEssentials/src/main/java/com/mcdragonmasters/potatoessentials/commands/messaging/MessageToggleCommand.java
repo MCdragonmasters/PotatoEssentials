@@ -12,8 +12,7 @@ import java.util.UUID;
 
 public class MessageToggleCommand extends PotatoCommand {
     public MessageToggleCommand() {
-        super("messagetoggle","msgtoggle", "tpm");
-        setPermission(NAMESPACE+".messagetoggle");
+        super("messagetoggle",NAMESPACE+".messagetoggle","msgtoggle", "tpm");
     }
     public static Set<UUID> messagesDisabled = new HashSet<>();
 

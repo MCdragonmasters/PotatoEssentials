@@ -19,8 +19,7 @@ import java.util.Collection;
 public class EnchantCommand extends PotatoCommand {
 
     public EnchantCommand() {
-        super("enchant");
-        setPermission(NAMESPACE+".enchant");
+        super("enchant",NAMESPACE+".enchant");
     }
 
     private final ManyPlayers playerArg = new ManyPlayers("players", false);

@@ -14,8 +14,7 @@ public class SkullCommand extends PotatoCommand {
 
     private final OfflinePlayerArgument arg = new OfflinePlayerArgument("owner");
     public SkullCommand() {
-        super("skull","head");
-        setPermission(NAMESPACE+".skull");
+        super("skull",NAMESPACE+".skull","head");
     }
     @Override
     public void register() {

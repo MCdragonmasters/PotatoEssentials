@@ -4,9 +4,10 @@ import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.EntitySelectorArgument;
+import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyEntities;
 import dev.jorel.commandapi.executors.CommandArguments;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -16,31 +17,29 @@ import java.util.List;
 public class TeleportHereCommand extends PotatoCommand {
 
     public TeleportHereCommand() {
-        super("tphere", "teleporthere");
-        setPermission(NAMESPACE+".tphere");
+        super("tphere",NAMESPACE+".tphere", "teleporthere");
     }
-    private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument
-            .ManyPlayers("target", false);
+    private final ManyEntities targetsArg = new ManyEntities("target", false);
 
     @Override
     public void register() {
         new CommandAPICommand(name)
                 .withAliases(aliases)
                 .withPermission(permission)
-                .withArguments(playerArg)
+                .withArguments(targetsArg)
                 .executesPlayer(this::execute)
                 .register();
     }
     private void execute(Player sender, CommandArguments args) {
-        Collection<Player> players = args.getByArgumentOrDefault(playerArg, List.of(sender));
+        Collection<Entity> entities = args.getByArgumentOrDefault(targetsArg, List.of(sender));
         Component tpedMsg = Config.replaceFormat(Config.teleportedMsg(),
                 new Replacer("teleporter", sender.getName()));
 
-        for (Player player : players) {
+        for (Entity player : entities) {
             player.teleport(sender);
             player.sendMessage(tpedMsg);
         }
-        String msg = Utils.playerNameFormat(players);
+        String msg = Utils.playerNameFormat(entities);
         Component tperMsg = Config.replaceFormat(Config.teleporterMsg(),
                 new Replacer("teleported", msg));
         sender.sendMessage(tperMsg);

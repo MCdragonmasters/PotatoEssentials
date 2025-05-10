@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 
 public class PingCommand extends PotatoCommand {
     public PingCommand() {
-        super("ping");
-        setPermission(NAMESPACE+".ping");
+        super("ping",NAMESPACE+".ping");
     }
 
     private final Argument<Player> playerArgument = new OnePlayer("player");

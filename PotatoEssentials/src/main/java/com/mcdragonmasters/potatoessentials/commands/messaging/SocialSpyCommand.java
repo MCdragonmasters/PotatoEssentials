@@ -11,8 +11,7 @@ import java.util.Set;
 
 public class SocialSpyCommand extends PotatoCommand {
     public SocialSpyCommand() {
-        super("socialspy");
-        setPermission(NAMESPACE+".socialspy");
+        super("socialspy", NAMESPACE+".socialspy");
     }
 
     public static Set<CommandSender> socialSpyList = new HashSet<>();

@@ -11,8 +11,7 @@ import org.bukkit.entity.Player;
 public class TeleportCenterCommand extends PotatoCommand {
 
     public TeleportCenterCommand() {
-        super("teleportcenter", "tpcenter");
-        setPermission(NAMESPACE+".teleportcenter");
+        super("teleportcenter",NAMESPACE+".teleportcenter", "tpcenter");
     }
 
     private final Argument<Rotation> rotArg = new RotationArgument("rotation");

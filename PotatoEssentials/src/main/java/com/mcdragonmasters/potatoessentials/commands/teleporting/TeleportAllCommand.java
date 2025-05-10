@@ -13,10 +13,8 @@ import java.util.Collection;
 
 public class TeleportAllCommand extends PotatoCommand {
     public TeleportAllCommand() {
-        super("tpall", "teleportall");
-        setPermission(NAMESPACE + ".tpall");
+        super("tpall",NAMESPACE + ".tpall", "teleportall");
     }
-
 
     @Override
     public void register() {

@@ -4,7 +4,6 @@ import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
-import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.*;
 import dev.jorel.commandapi.executors.CommandArguments;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -23,27 +22,17 @@ import java.util.concurrent.ThreadLocalRandom;
 @SuppressWarnings("unchecked")
 public class TrollCommand extends PotatoCommand {
     public TrollCommand() {
-        super("troll");
-        setPermission(NAMESPACE+".troll");
+        super("troll", NAMESPACE+".troll");
     }
 
     private final OnePlayer onePlayerArg = new OnePlayer("target");
     private final ManyPlayers manyPlayersArg = new ManyPlayers("targets", false);
-
     @Override
     public void register() {
-        new CommandAPICommand(name)
-                .withPermission(permission)
-                .withSubcommand(
-                        new CommandAPICommand("crash")
-                                .withArguments(onePlayerArg)
-                                .executes(this::crash)
-                ).withSubcommand(
-                        new CommandAPICommand("demo")
-                                .withArguments(manyPlayersArg)
-                                .executes(this::demo)
-                )
-                .register();
+        createCommand(
+                createSubcommand("crash").executes(this::crash).withArguments(onePlayerArg),
+                createSubcommand("demo").executes(this::demo).withArguments(manyPlayersArg)
+        ).register();
     }
     private void crash(CommandSender sender, CommandArguments args) {
         Player toBeCrashed = args.getByArgument(onePlayerArg);
@@ -52,13 +41,11 @@ public class TrollCommand extends PotatoCommand {
             sender.sendMessage(Config.replaceFormat(getMsg("attemptCrashSelf")));
             return;
         }
-
         sender.sendMessage(Config.replaceFormat(getMsg("crash"), new Replacer("target", toBeCrashed.getName())));
 
         var connection = ((CraftPlayer) toBeCrashed).getHandle().connection;
-        double x = toBeCrashed.getX();
-        double y = toBeCrashed.getY();
-        double z = toBeCrashed.getZ();
+
+        double x = toBeCrashed.getX(), y = toBeCrashed.getY(), z = toBeCrashed.getZ();
         var type = EntityType.ENDER_DRAGON;
         Vec3 vec3 = new Vec3(0,0,0);
         new BukkitRunnable() {

@@ -13,8 +13,7 @@ import java.util.Objects;
 public class InvSeeCommand extends PotatoCommand {
 
     public InvSeeCommand() {
-        super("invsee");
-        setPermission(NAMESPACE+".invsee");
+        super("invsee",NAMESPACE+".invsee");
     }
 
     private final Argument<Player> arg = new EntitySelectorArgument.OnePlayer("target");

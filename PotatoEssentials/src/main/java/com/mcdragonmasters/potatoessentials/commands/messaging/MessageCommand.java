@@ -1,6 +1,5 @@
 package com.mcdragonmasters.potatoessentials.commands.messaging;
 
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
@@ -26,8 +25,7 @@ import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyC
 
 public class MessageCommand extends PotatoCommand {
     public MessageCommand() {
-        super("message","msg","whisper", "w");
-        setPermission(NAMESPACE+".message");
+        super("message",NAMESPACE+".message","msg","tell", "whisper", "w");
     }
 
     @Getter

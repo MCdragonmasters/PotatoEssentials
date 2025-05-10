@@ -15,7 +15,7 @@ public class MainCommand extends PotatoCommand {
     private final static String prefix = "<gold>PotatoEssentials<gray> >";
 
     public MainCommand() {
-        super("potatoessentials");
+        super("potatoessentials", NAMESPACE+".potatoessentials");
     }
 
     @Override
@@ -33,10 +33,6 @@ public class MainCommand extends PotatoCommand {
     }
 
     public void reload(CommandSender sender, CommandArguments ca) {
-        if (!sender.hasPermission(PotatoEssentials.NAMESPACE+".potatoessentials")) {
-            sender.sendRichMessage("<red>You don't have permission!");
-            return;
-        }
         String reload = Config.reload();
         if (!reload.equals("passed")) {
             sender.sendRichMessage(

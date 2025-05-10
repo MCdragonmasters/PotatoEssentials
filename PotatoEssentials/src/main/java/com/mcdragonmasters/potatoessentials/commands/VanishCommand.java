@@ -22,8 +22,7 @@ import static com.mcdragonmasters.potatoessentials.PotatoEssentials.pluginManage
 public class VanishCommand extends PotatoCommand {
 
     public VanishCommand() {
-        super("vanish");
-        setPermission(NAMESPACE+".vanish");
+        super("vanish", NAMESPACE+".vanish");
     }
 
     @Getter

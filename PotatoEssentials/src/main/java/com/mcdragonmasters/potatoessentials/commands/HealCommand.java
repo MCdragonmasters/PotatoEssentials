@@ -14,8 +14,7 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class HealCommand extends PotatoCommand {
     public HealCommand() {
-        super("heal");
-        setPermission(NAMESPACE+".heal");
+        super("heal",NAMESPACE+".heal");
     }
 
     private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument

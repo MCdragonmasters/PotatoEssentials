@@ -1,7 +1,6 @@
 package com.mcdragonmasters.potatoessentials.commands.warping;
 
 import com.mcdragonmasters.potatoessentials.database.WarpsManager;
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
@@ -16,8 +15,7 @@ import org.bukkit.entity.Player;
 public class SetWarpCommand extends PotatoCommand {
 
     public SetWarpCommand() {
-        super("setwarp");
-        setPermission(NAMESPACE+".setwarp");
+        super("setwarp", NAMESPACE+".setwarp");
     }
 
     private final Argument<String> warpNameArg = new StringArgument("warp-name");

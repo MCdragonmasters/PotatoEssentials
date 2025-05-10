@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 
 public class ClearChatCommand extends PotatoCommand {
     public ClearChatCommand() {
-        super("clearchat");
-        setPermission(NAMESPACE+".clearchat");
+        super("clearchat", NAMESPACE+".clearchat");
     }
     private final String lineBreaks = "\n ".repeat(256);
 

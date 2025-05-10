@@ -19,8 +19,7 @@ import java.util.List;
 public class FeedCommand extends PotatoCommand {
 
     public FeedCommand() {
-        super("feed");
-        setPermission(NAMESPACE+".feed");
+        super("feed",NAMESPACE+".feed");
     }
 
     private final ManyPlayers playerArg = new ManyPlayers("target", false);

@@ -18,8 +18,7 @@ import java.util.Collection;
 public class SmiteCommand extends PotatoCommand {
 
     public SmiteCommand() {
-        super("smite");
-        setPermission(NAMESPACE+".smite");
+        super("smite",NAMESPACE+".smite");
     }
 
     private final ManyPlayers manyPlayersArg = new ManyPlayers("targets", false);

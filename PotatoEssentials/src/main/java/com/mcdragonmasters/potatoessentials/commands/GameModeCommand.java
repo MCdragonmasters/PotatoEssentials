@@ -18,8 +18,7 @@ import java.util.Objects;
 public class GameModeCommand extends PotatoCommand {
 
     public GameModeCommand() {
-        super("gamemode", "gm");
-        setPermission(NAMESPACE+".gamemode");
+        super("gamemode",NAMESPACE+".gamemode", "gm");
     }
 
     @Override

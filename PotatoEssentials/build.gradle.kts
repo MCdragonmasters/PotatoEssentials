@@ -4,6 +4,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     java
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    `maven-publish`
 }
 
 group = "com.mcdragonmasters"
@@ -55,3 +56,15 @@ tasks.processResources {
     filter<ReplaceTokens>("tokens" to mapOf(
         "version" to project.version.toString()))
 }
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.mcdragonmasters"
+            artifactId = "PotatoEssentials"
+            version = project.version.toString()
+            artifact(tasks.shadowJar)
+            artifact(tasks.jar)
+        }
+    }
+}
+

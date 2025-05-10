@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 
 public class UnlinkCommand extends PotatoCommand {
     public UnlinkCommand() {
-        super("unlink");
-        setPermission(NAMESPACE+".discord.unlink");
+        super("unlink",NAMESPACE+".discord.unlink");
     }
     @Override
     public void register() {

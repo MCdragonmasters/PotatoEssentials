@@ -16,8 +16,7 @@ import java.util.Objects;
 
 public class LinkCommand extends PotatoCommand {
     public LinkCommand() {
-        super("link");
-        setPermission(NAMESPACE+".discord.link");
+        super("link",NAMESPACE+".discord.link");
     }
     @Override
     public void register() {

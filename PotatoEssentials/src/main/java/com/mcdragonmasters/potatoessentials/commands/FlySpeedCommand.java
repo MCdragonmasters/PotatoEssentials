@@ -12,8 +12,7 @@ import java.util.Objects;
 public class FlySpeedCommand extends PotatoCommand {
 
     public FlySpeedCommand() {
-        super("flyspeed");
-        setPermission(NAMESPACE+".flyspeed");
+        super("flyspeed", NAMESPACE+".flyspeed");
     }
 
     private final Argument<Integer> intArg = new IntegerArgument("speed", 1, 10);

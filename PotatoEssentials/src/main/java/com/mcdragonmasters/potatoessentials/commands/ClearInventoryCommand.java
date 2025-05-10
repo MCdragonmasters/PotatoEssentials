@@ -1,6 +1,5 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
@@ -16,8 +15,7 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class ClearInventoryCommand extends PotatoCommand {
     public ClearInventoryCommand() {
-        super("clearinventory", "ci");
-        setPermission(PotatoEssentials.NAMESPACE+".clearinventory");
+        super("clearinventory",NAMESPACE+".clearinventory", "ci");
     }
 
     private final EntitySelectorArgument.ManyPlayers playerArg = new EntitySelectorArgument

@@ -15,8 +15,7 @@ import java.util.Objects;
 
 public class BroadcastCommand extends PotatoCommand {
     public BroadcastCommand() {
-        super("broadcast", "bc");
-        setPermission(NAMESPACE+".broadcast");
+        super("broadcast",NAMESPACE+".broadcast", "bc");
     }
 
     private final Argument<String> arg = new GreedyStringArgument("message");

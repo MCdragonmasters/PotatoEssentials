@@ -17,8 +17,7 @@ import java.util.Set;
 
 public class ChannelCommand extends PotatoCommand {
     public ChannelCommand() {
-        super("channel", "chat");
-        setPermission(NAMESPACE+".channel");
+        super("channel",NAMESPACE+".channel", "chat");
     }
 
     private final Argument<String> chatArgument = new StringArgument("chat").replaceSuggestions(

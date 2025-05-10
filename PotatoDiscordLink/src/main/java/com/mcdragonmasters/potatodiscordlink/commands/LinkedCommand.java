@@ -13,8 +13,7 @@ import java.util.*;
 
 public class LinkedCommand extends PotatoCommand {
     public LinkedCommand() {
-        super("linked");
-        setPermission(NAMESPACE+".discord.linked");
+        super("linked",NAMESPACE+".discord.linked");
     }
     @Override
     public void register() {

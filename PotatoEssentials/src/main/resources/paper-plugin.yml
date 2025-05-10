@@ -41,6 +41,7 @@ permissions:
       potatoessentials.messagetoggle.bypass: true
 
       potatoessentials.vanish: true
+      potatoessentials.vanish.bypass: true
 
       potatoessentials.feed: true
       potatoessentials.clearinventory: true
@@ -130,6 +131,9 @@ permissions:
   potatoessentials.vanish:
     description: Allows the user to use /vanish
     default: op
+  potatoessentials.vanish.bypass:
+    description: Allows the user to see vanished players
+    default: op
   potatoessentials.feed:
     description: Allows the user to use /feed
     default: op
@@ -180,12 +184,20 @@ permissions:
     default: op
   potatoessentials.kit.give:
     description: Allows the user to use /kit give
+    children:
+      potatoessentials.kit: true
     default: op
   potatoessentials.kit.create:
     description: Allows the user to use /kit create
+    children:
+      potatoessentials.kit: true
     default: op
   potatoessentials.kit.delete:
     description: Allows the user to use /kit delete
+    children:
+      potatoessentials.kit: true
+    default: op
+  potatoessentials.kit:
     default: op
   potatoessentials.clearchat:
     description: Allows the user to use /clearchat

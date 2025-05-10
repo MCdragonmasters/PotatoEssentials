@@ -15,8 +15,7 @@ import java.time.Instant;
 
 public class UptimeCommand extends PotatoCommand {
     public UptimeCommand() {
-        super("uptime");
-        setPermission(NAMESPACE+".uptime");
+        super("uptime",NAMESPACE+".uptime");
     }
     @Override
     public void register() {

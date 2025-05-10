@@ -1,7 +1,6 @@
 package com.mcdragonmasters.potatoessentials.commands.warping;
 
 import com.mcdragonmasters.potatoessentials.database.WarpsManager;
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
@@ -14,8 +13,7 @@ import org.bukkit.entity.Player;
 public class DelWarpCommand extends PotatoCommand {
 
     public DelWarpCommand() {
-        super("deletewarp", "delwarp");
-        setPermission(NAMESPACE+".deletewarp");
+        super("deletewarp",NAMESPACE+".deletewarp", "delwarp");
     }
 
     private final Argument<String> warpNameArg = new StringArgument("warp-name");
