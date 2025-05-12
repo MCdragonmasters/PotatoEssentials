@@ -9,24 +9,18 @@ import com.mcdragonmasters.potatoessentials.commands.warping.WarpCommand;
 import com.mcdragonmasters.potatoessentials.database.KitManager;
 import com.mcdragonmasters.potatoessentials.listeners.PlayerChatListener;
 import com.mcdragonmasters.potatoessentials.listeners.ServerListPingListener;
-import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.PotatoLogger;
-import com.mcdragonmasters.potatoessentials.utils.Utils;
+import com.mcdragonmasters.potatoessentials.utils.*;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.chat.Chat;
-
-import java.util.Arrays;
 
 @SuppressWarnings("SameParameterValue")
 public class PotatoEssentials extends JavaPlugin {
@@ -40,10 +34,12 @@ public class PotatoEssentials extends JavaPlugin {
     public static PluginManager pluginManager;
     public static FileConfiguration config;
     public static PotatoLogger LOGGER;
+    @Getter
+    private CommandAPIBukkitConfig cmdAPIConfig;
 
     @Override
     public void onLoad() {
-        var cmdAPIConfig = new CommandAPIBukkitConfig(this).usePluginNamespace();
+        cmdAPIConfig = new CommandAPIBukkitConfig(this);
         if (!getConfig().getBoolean("reloadDatapacks")) {
             cmdAPIConfig.skipReloadDatapacks(true);
         }
@@ -69,84 +65,57 @@ public class PotatoEssentials extends JavaPlugin {
         vaultInstalled = setupVaultChat();
 
         registerCommands();
-        LOGGER.debug("Registered "+registeredCmds+" commands");
         LOGGER.info(vaultInstalled ? "Vault found" : "Vault not found");
         LOGGER.info("Enabled");
 
     }
 
 
-    private static void registerCommands() {
+    private void registerCommands() {
         var kits = new KitManager(INSTANCE.getDataFolder());
+        var registrar = new PotatoCommandRegistrar(INSTANCE);
+        registrar.register(new MainCommand(), true);
 
-        registerCommand(new MainCommand(), true);
+        registrar.register(new MessageCommand());
+        registrar.register(new ReplyCommand());
+        registrar.register(new SocialSpyCommand());
+        registrar.register(new BroadcastCommand());
+        registrar.register(new MessageToggleCommand());
 
-        registerCommand(new MessageCommand());
-        registerCommand(new ReplyCommand());
-        registerCommand(new SocialSpyCommand());
-        registerCommand(new BroadcastCommand());
-        registerCommand(new MessageToggleCommand());
-
-        registerCommand(new EnchantCommand());
-        registerCommand(new GameModeCommand());
-        registerCommand(new HealCommand());
-        registerCommand(new HungerCommand());
-        registerCommand(new InvSeeCommand());
-        registerCommand(new PingCommand());
-        registerCommand(new SmiteCommand());
+        registrar.register(new EnchantCommand());
+        registrar.register(new GameModeCommand());
+        registrar.register(new HealCommand());
+        registrar.register(new HungerCommand());
+        registrar.register(new InvSeeCommand());
+        registrar.register(new PingCommand());
+        registrar.register(new SmiteCommand());
         if (config.getBoolean("commands.tp.tphere-enabled")) new TeleportHereCommand().register();
         if (config.getBoolean("commands.tp.tpall-enabled")) new TeleportAllCommand().register();
-        registerCommand(new FlySpeedCommand());
-        registerCommand(new VanishCommand());
-        registerCommand(new FeedCommand());
-        registerCommand(new ClearInventoryCommand());
+        registrar.register(new FlySpeedCommand());
+        registrar.register(new VanishCommand());
+        registrar.register(new FeedCommand());
+        registrar.register(new ClearInventoryCommand());
 
-        registerCommand(new WarpCommand());
-        registerCommand(new SetWarpCommand());
-        registerCommand(new DelWarpCommand());
+        registrar.register(new WarpCommand());
+        registrar.register(new SetWarpCommand());
+        registrar.register(new DelWarpCommand());
 
-        registerCommand(new MuteChatCommand());
-        registerCommand(new SudoCommand());
-        registerCommand(new BackCommand());
+        registrar.register(new MuteChatCommand());
+        registrar.register(new SudoCommand());
+        registrar.register(new BackCommand());
         if (Config.commandEnabled("report")) ReportCommand.register();
-        registerCommand(new UptimeCommand());
-        registerCommand(new ChannelCommand());
-        registerCommand(new KitCommand(kits));
+        registrar.register(new UptimeCommand());
+        registrar.register(new ChannelCommand());
+        registrar.register(new KitCommand(kits));
 
-        registerCommand(new ClearChatCommand());
-        registerCommand(new SkinCommand());
-        registerCommand(new SkullCommand());
-        registerCommand(new TrollCommand());
-        registerCommand(new TeleportCenterCommand());
+        registrar.register(new ClearChatCommand());
+        registrar.register(new SkinCommand());
+        registrar.register(new SkullCommand());
+        registrar.register(new TrollCommand());
+        registrar.register(new TeleportCenterCommand());
+        LOGGER.debug("Registered "+registrar.getRegisteredCmds()+" commands");
     }
 
-    private static int registeredCmds = 0;
-
-    public static void registerCommand(PotatoCommand command, boolean forced, Plugin plugin) {
-        String name = command.getName();
-        if (Config.commandEnabled(name, plugin.getConfig()) || forced) {
-            command.register();
-            var msg = (plugin!=INSTANCE?"[%s] ".formatted(plugin.getName()):"")+"Registering command '%s'";
-            if (command.hasAliases()) msg += " with aliases '%s'";
-            LOGGER.debug(msg.formatted(name, formatList(command.getAliases())));
-            if(plugin==INSTANCE) registeredCmds++;
-        } else {
-            LOGGER.debug("Command '%s' disabled in config, not registering".formatted(name));
-        }
-    }
-    public static void registerCommand(PotatoCommand command, Plugin plugin) {
-        registerCommand(command, false, plugin);
-    }
-    private static void registerCommand(PotatoCommand command, boolean forced) {
-        registerCommand(command, forced, INSTANCE);
-    }
-    private static void registerCommand(PotatoCommand command) {
-        registerCommand(command, false);
-    }
-    private static String formatList(String[] list) {
-        String arrStr = Arrays.toString(list);
-        return arrStr.substring(1, arrStr.length() - 1);
-    }
     private boolean setupVaultChat() {
         if (pluginManager.getPlugin("Vault") == null) {
             return false;

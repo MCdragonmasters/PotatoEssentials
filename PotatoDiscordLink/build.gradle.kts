@@ -15,7 +15,6 @@ dependencies {
     implementation("net.dv8tion:JDA:5.3.1") {
         exclude(module="opus-java")
     }
-//    implementation("ch.qos.logback:logback-classic:1.5.13")
     implementation("com.google.code.gson:gson:2.12.1")
     implementation("commons-io:commons-io:2.14.0")
     compileOnly(project(":PotatoEssentials"))

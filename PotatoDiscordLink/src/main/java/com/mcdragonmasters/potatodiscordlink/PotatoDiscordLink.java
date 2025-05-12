@@ -6,11 +6,9 @@ import com.mcdragonmasters.potatodiscordlink.commands.LinkedCommand;
 import com.mcdragonmasters.potatodiscordlink.commands.UnlinkCommand;
 import com.mcdragonmasters.potatodiscordlink.listeners.DcSlashCommandListener;
 import com.mcdragonmasters.potatodiscordlink.listeners.MCPreJoinListener;
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.libs.configupdater.ConfigUpdater;
+import com.mcdragonmasters.potatoessentials.utils.PotatoCommandRegistrar;
 import com.mcdragonmasters.potatoessentials.utils.PotatoLogger;
-import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
@@ -38,14 +36,6 @@ public class PotatoDiscordLink extends JavaPlugin {
     private static JDA jda;
     @Getter
     private static LinkManager linkManager;
-    @Override
-    public void onLoad() {
-        var cmdAPIConfig = new CommandAPIBukkitConfig(this).usePluginNamespace();
-        if (!getConfig().getBoolean("reloadDatapacks")) {
-            cmdAPIConfig.skipReloadDatapacks(true);
-        }
-        CommandAPI.onLoad(cmdAPIConfig);
-    }
     @Override
     @SneakyThrows
     public void onEnable() {
@@ -101,9 +91,10 @@ public class PotatoDiscordLink extends JavaPlugin {
 
         linkManager = new LinkManager();
         Bukkit.getPluginManager().registerEvents(new MCPreJoinListener(), INSTANCE);
-        PotatoEssentials.registerCommand(new LinkCommand(), INSTANCE);
-        PotatoEssentials.registerCommand(new UnlinkCommand(), INSTANCE);
-        PotatoEssentials.registerCommand(new LinkedCommand(), INSTANCE);
+        var registrar = new PotatoCommandRegistrar(this);
+        registrar.register(new LinkCommand());
+        registrar.register(new UnlinkCommand());
+        registrar.register(new LinkedCommand());
     }
     @Override
     public void onDisable() {

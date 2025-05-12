@@ -28,6 +28,8 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     // Config-Updater
     implementation("com.tchristofferson:ConfigUpdater:2.2-SNAPSHOT")
+    // CommandAPI
+    implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.0.1")
 }
 
 tasks.build {

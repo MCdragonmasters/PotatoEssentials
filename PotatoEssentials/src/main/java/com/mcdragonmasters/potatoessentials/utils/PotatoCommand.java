@@ -2,7 +2,6 @@ package com.mcdragonmasters.potatoessentials.utils;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.executors.CommandExecutor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,23 +27,19 @@ public abstract class PotatoCommand {
     }
     public abstract void register();
 
-    protected CommandAPICommand createCommand(@Nullable CommandExecutor executor, CommandAPICommand... subCommands) {
+    protected CommandAPICommand createCommand(CommandAPICommand... subCommands) {
         this.command = new CommandAPICommand(name)
                 .withAliases(aliases)
                 .withPermission(permission)
                 .withSubcommands(subCommands);
-        if (executor != null) this.command.executes(executor);
         return this.command;
     }
-    protected CommandAPICommand createCommand(CommandAPICommand... subCommands) {
-        return createCommand(null, subCommands);
-    }
     protected CommandAPICommand createSubcommand(String name, @Nullable String permission) {
-
-        CommandAPICommand command = new CommandAPICommand(name);
+        var command = new CommandAPICommand(name);
         if (permission != null) command.withPermission(permission);
         return command;
     }
+
     protected CommandAPICommand createSubcommand(String name) {
         return createSubcommand(name, null);
     }
