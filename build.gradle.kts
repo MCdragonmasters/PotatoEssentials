@@ -39,7 +39,7 @@ subprojects {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
     }
-    buildDir = rootProject.buildDir
+
     dependencies {
         // Paper
         compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
