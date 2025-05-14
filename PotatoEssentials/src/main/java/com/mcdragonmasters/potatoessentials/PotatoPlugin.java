@@ -7,11 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class PotatoPlugin extends JavaPlugin {
     private PotatoLogger logger = null;
-    private PotatoCommandRegistrar commandRegistrar = null;
+    private final PotatoCommandRegistrar commandRegistrar = new PotatoCommandRegistrar(this);
     public PotatoCommandRegistrar getCommandRegistrar() {
-        if (this.commandRegistrar == null) {
-            this.commandRegistrar = new PotatoCommandRegistrar(this);
-        }
         return this.commandRegistrar;
     }
     @Override

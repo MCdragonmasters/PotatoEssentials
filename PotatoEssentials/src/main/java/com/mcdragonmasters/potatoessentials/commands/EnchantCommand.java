@@ -4,7 +4,6 @@ import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
-import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.EnchantmentArgument;
@@ -30,7 +29,6 @@ public class EnchantCommand extends PotatoCommand {
 
     @Override
     public void register() {
-        CommandAPI.unregister(name);
         new CommandAPICommand(name)
                 .withPermission(permission)
                 .withArguments(playerArg)

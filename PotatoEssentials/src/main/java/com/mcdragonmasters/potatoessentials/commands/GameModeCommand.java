@@ -1,6 +1,5 @@
 package com.mcdragonmasters.potatoessentials.commands;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
@@ -23,8 +22,6 @@ public class GameModeCommand extends PotatoCommand {
 
     @Override
     public void register() {
-
-        CommandAPI.unregister("gamemode");
 
         Argument<String> gmArg = new MultiLiteralArgument("gamemode",
                 "adventure", "creative", "spectator", "survival",

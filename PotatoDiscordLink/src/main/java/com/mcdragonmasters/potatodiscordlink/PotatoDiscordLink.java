@@ -35,8 +35,8 @@ public class PotatoDiscordLink extends PotatoPlugin {
     private static JDA jda;
     @Getter
     private static LinkManager linkManager;
-    @Override
     @SneakyThrows
+    @Override
     public void onEnable() {
         saveDefaultConfig();
         INSTANCE = this;

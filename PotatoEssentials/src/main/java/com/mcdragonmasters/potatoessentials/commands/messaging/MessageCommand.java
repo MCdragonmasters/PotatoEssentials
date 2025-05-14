@@ -4,7 +4,6 @@ import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
-import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
@@ -35,11 +34,6 @@ public class MessageCommand extends PotatoCommand {
 
     @Override
     public void register() {
-        CommandAPI.unregister("message");
-        CommandAPI.unregister("msg");
-        CommandAPI.unregister("whisper");
-        CommandAPI.unregister("w");
-
         new CommandAPICommand(name)
                 .withAliases(aliases)
                 .withPermission(permission)
