@@ -18,6 +18,7 @@ public abstract class PotatoCommand {
     protected String permission;
     protected boolean hasAliases;
     protected CommandAPICommand command;
+    public PotatoCommandRegistrar registrar;
 
     protected PotatoCommand(@NotNull String name, @NotNull String permission, String... aliases) {
         this.name = name;
@@ -25,6 +26,7 @@ public abstract class PotatoCommand {
         this.aliases = aliases;
         this.hasAliases = aliases.length > 0;
     }
+
     public abstract void register();
 
     protected CommandAPICommand createCommand(CommandAPICommand... subCommands) {
@@ -43,10 +45,12 @@ public abstract class PotatoCommand {
     protected CommandAPICommand createSubcommand(String name) {
         return createSubcommand(name, null);
     }
+
     public boolean hasAliases() {
         return hasAliases;
     }
-    protected String getMsg(String s) {
-        return Config.getCmdMsg(name, s);
+
+    protected String getMsg(String field) {
+        return this.registrar.getPlugin().getConfig().getString("commands."+this.name+"."+field);
     }
 }

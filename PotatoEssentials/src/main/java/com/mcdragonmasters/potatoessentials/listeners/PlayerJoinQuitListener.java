@@ -1,8 +1,8 @@
 package com.mcdragonmasters.potatoessentials.listeners;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
-import com.mcdragonmasters.potatoessentials.commands.messaging.MessageCommand;
 import com.mcdragonmasters.potatoessentials.commands.VanishCommand;
+import com.mcdragonmasters.potatoessentials.commands.messaging.MessageCommand;
 import com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyCommand;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.CustomChat;

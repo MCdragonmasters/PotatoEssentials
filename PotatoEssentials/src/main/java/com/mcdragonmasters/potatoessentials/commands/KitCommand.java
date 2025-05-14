@@ -1,12 +1,10 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.database.KitManager;
-
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
-import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyPlayers;
@@ -32,26 +30,18 @@ public class KitCommand extends PotatoCommand {
 
     @Override
     public void register() {
-        new CommandAPICommand("kit")
-                .withPermission(permission)
-                .withSubcommand(
-                        new CommandAPICommand("create")
-                                .withPermission(permission+".create")
-                                .withArguments(kitNameArg)
-                                .executesPlayer(this::executeCreate)
-                ).withSubcommand(
-                        new CommandAPICommand("give")
-                                .withPermission(permission+".give")
-                                .withArguments(kitNameArg)
-                                .withOptionalArguments(kitGivePlayersArg)
-                                .executesPlayer(this::executeGive)
-                )
-                .withSubcommand(
-                        new CommandAPICommand("delete")
-                                .withPermission(permission+".delete")
-                                .withArguments(kitNameArg)
-                                .executesPlayer(this::executeDelete)
-                ).register();
+        createCommand(
+                createSubcommand("create", permission+".create")
+                        .withArguments(kitNameArg)
+                        .executesPlayer(this::executeCreate),
+                createSubcommand("give", permission+".give")
+                        .withArguments(kitNameArg)
+                        .withOptionalArguments(kitGivePlayersArg)
+                        .executesPlayer(this::executeGive),
+                createSubcommand("delete", permission+".delete")
+                        .withArguments(kitNameArg)
+                        .executesPlayer(this::executeDelete)
+        ).register();
     }
     private void executeCreate(Player player, CommandArguments args) {
         String kitName = args.getByArgument(kitNameArg);

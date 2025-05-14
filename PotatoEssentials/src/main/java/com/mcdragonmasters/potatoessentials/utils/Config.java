@@ -3,20 +3,17 @@ package com.mcdragonmasters.potatoessentials.utils;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.listeners.ServerListPingListener;
 import com.tchristofferson.configupdater.ConfigUpdater;
-
+import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ServerLinks;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,8 +40,7 @@ public class Config {
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
         config = plugin.getConfig();
-        PotatoEssentials.config = config;
-        LOGGER.setDefaultConfig();
+        PotatoEssentials.INSTANCE.config = config;
         try {
             List<String> ignoredList = new ArrayList<>();
             addToIgnoredListIfExists("chat.emojis", ignoredList);
@@ -68,11 +64,15 @@ public class Config {
         potatoEssentials.saveDefaultConfig();
         potatoEssentials.reloadConfig();
         config = potatoEssentials.getConfig();
-        PotatoEssentials.config = config;
+        PotatoEssentials.INSTANCE.config = config;
 
         emojiConfig();
 
         ConfigurationSection chatsSection = config.getConfigurationSection("chats.customChats");
+        for (CustomChat chat : CustomChat.getCustomChats()) {
+            if (chat.getCommand()==null) continue;
+            CommandAPI.unregister(chat.getCommand());
+        }
         CustomChat.clearAll();
         if (customChatsEnabled() && chatsSection != null) {
             for (String key : chatsSection.getKeys(false)) {
@@ -130,9 +130,6 @@ public class Config {
             p.addCustomChatCompletions(Config.getEmojis().keySet());
         }
     }
-    public static boolean isDebug() {
-        return getBoolean("debug");
-    }
     public static Boolean chatEnabled() {
         return config.getBoolean("chat.enabled");
     }
@@ -156,9 +153,6 @@ public class Config {
     }
     public static boolean commandEnabled(String s, FileConfiguration config) {
         return config.getBoolean("commands."+s+".enabled");
-    }
-    public static boolean commandEnabled(String s) {
-        return getBoolean("commands."+s+".enabled");
     }
     public static boolean emojisEnabled() {
         return getBoolean("chat.emojis-enabled");

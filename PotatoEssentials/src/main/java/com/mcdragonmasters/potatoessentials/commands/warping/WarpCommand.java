@@ -1,7 +1,7 @@
 package com.mcdragonmasters.potatoessentials.commands.warping;
 
-import com.mcdragonmasters.potatoessentials.database.WarpsManager;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.database.WarpsManager;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;

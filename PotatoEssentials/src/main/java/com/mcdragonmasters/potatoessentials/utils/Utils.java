@@ -5,8 +5,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.milkbowl.vault.chat.Chat;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
@@ -26,9 +26,9 @@ public class Utils {
         return MiniMessage.miniMessage().escapeTags(s);
     }
     public static Chat vaultChat;
-    public static String formatCoords(double x, double y, double z) {
+    public static String formatCoords(Location loc) {
         DecimalFormat df = new DecimalFormat("#.##");
-        return df.format(x) + ", " + df.format(y) + ", " + df.format(z);
+        return df.format(loc.x()) + ", " + df.format(loc.y()) + ", " + df.format(loc.z());
     }
     public static String serialize(Component c) { return MiniMessage.miniMessage().serialize(c); }
 
@@ -43,11 +43,9 @@ public class Utils {
         if (!PotatoEssentials.isVaultInstalled()) return "vaultNotInstalled";
         return vaultChat.getPlayerSuffix(player);
     }
-    public static String playerNameFormat(Collection<? extends Entity> entities) {
-        boolean isPlayer = entities.toArray()[0] instanceof Player;
-        return entities.size()==1?entities.toArray(new Entity[0])[0].getName()
-                : entities.size()
-                +(isPlayer ? " entities" : " players");
+    public static String playerNameFormat(Collection<? extends Player> players) {
+        return players.size()==1?players.toArray(new Player[0])[0].getName()
+                : players.size()+" players";
     }
     public static String possessivePlayerNameFormat(Collection<Player> players) {
         return players.size()==1?players.toArray(new Player[0])[0].getName()+"'s":players.size()+" Players'";

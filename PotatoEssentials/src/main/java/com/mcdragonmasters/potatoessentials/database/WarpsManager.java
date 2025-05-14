@@ -8,13 +8,11 @@ import org.bukkit.Location;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class WarpsManager {
 
     private static final File warpsFile = new File(PotatoEssentials.INSTANCE.getDataFolder(), "warps.json");
     private static final Map<String, Location> warpsMap = new HashMap<>();
-    private static final Logger logger = PotatoEssentials.LOGGER;
     static {
         loadWarps();
     }
@@ -50,8 +48,8 @@ public class WarpsManager {
                 }
             }
         } catch (IOException | com.google.gson.JsonSyntaxException e) {
-            logger.severe(e.getMessage());
-            logger.severe("Could not load Warps from the JSON file.");
+            PotatoEssentials.LOGGER.severe(e.getMessage());
+            PotatoEssentials.LOGGER.severe("Could not load Warps from the JSON file.");
         }
     }
     public static void saveWarps() {
@@ -75,7 +73,7 @@ public class WarpsManager {
             Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
             gsonPretty.toJson(jsonObject, writer);
         } catch (IOException e) {
-            logger.severe(e.getMessage());
+            PotatoEssentials.LOGGER.severe(e.getMessage());
         }
     }
 

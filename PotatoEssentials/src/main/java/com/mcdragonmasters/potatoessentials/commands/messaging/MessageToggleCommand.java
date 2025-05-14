@@ -25,7 +25,7 @@ public class MessageToggleCommand extends PotatoCommand {
                 .register();
 
     }
-    
+
     private void execute(Player player, CommandArguments args) {
         UUID uuid = player.getUniqueId();
         String toggle;

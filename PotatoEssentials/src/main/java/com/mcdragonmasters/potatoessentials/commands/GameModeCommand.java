@@ -92,7 +92,7 @@ public class GameModeCommand extends PotatoCommand {
                 })
                 .register();
     }
-    private static void setGameModes(Collection<Player> players, GameMode gameMode, Player senderPlayer) {
+    private void setGameModes(Collection<Player> players, GameMode gameMode, Player senderPlayer) {
         for (Player player : players) {
             player.setGameMode(gameMode);
         }

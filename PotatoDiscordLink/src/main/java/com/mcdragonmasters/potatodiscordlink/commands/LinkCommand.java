@@ -1,12 +1,12 @@
 package com.mcdragonmasters.potatodiscordlink.commands;
 
 import com.mcdragonmasters.potatodiscordlink.PotatoDiscordLink;
+import com.mcdragonmasters.potatoessentials.libs.commandapi.CommandAPICommand;
+import com.mcdragonmasters.potatoessentials.libs.commandapi.executors.CommandArguments;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
-import com.mcdragonmasters.potatoessentials.libs.commandapi.CommandAPICommand;
-import com.mcdragonmasters.potatoessentials.libs.commandapi.executors.CommandArguments;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;

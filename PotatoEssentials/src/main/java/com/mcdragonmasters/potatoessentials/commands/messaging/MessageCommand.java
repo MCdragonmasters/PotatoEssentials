@@ -3,7 +3,6 @@ package com.mcdragonmasters.potatoessentials.commands.messaging;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
-
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;

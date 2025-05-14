@@ -9,7 +9,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import static com.mcdragonmasters.potatoessentials.PotatoEssentials.LOGGER;

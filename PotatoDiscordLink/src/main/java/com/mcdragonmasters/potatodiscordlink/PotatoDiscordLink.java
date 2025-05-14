@@ -6,8 +6,8 @@ import com.mcdragonmasters.potatodiscordlink.commands.LinkedCommand;
 import com.mcdragonmasters.potatodiscordlink.commands.UnlinkCommand;
 import com.mcdragonmasters.potatodiscordlink.listeners.DcSlashCommandListener;
 import com.mcdragonmasters.potatodiscordlink.listeners.MCPreJoinListener;
+import com.mcdragonmasters.potatoessentials.PotatoPlugin;
 import com.mcdragonmasters.potatoessentials.libs.configupdater.ConfigUpdater;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommandRegistrar;
 import com.mcdragonmasters.potatoessentials.utils.PotatoLogger;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -21,14 +21,13 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 
-public class PotatoDiscordLink extends JavaPlugin {
+public class PotatoDiscordLink extends PotatoPlugin {
     private static FileConfiguration config;
     public static PotatoDiscordLink INSTANCE;
     public static PotatoLogger LOGGER;
@@ -48,7 +47,7 @@ public class PotatoDiscordLink extends JavaPlugin {
             LOGGER.log(Level.SEVERE, "Error updating config", e);
         }
         config = getConfig();
-        LOGGER = new PotatoLogger(this.getLogger(), config);
+        LOGGER = getLogger();
         String token = config.getString("botToken");
         if (token == null || token.equals("TOKEN_HERE") || token.isEmpty()) {
             disablePlugin("Disabling due to token being not set");
@@ -91,10 +90,11 @@ public class PotatoDiscordLink extends JavaPlugin {
 
         linkManager = new LinkManager();
         Bukkit.getPluginManager().registerEvents(new MCPreJoinListener(), INSTANCE);
-        var registrar = new PotatoCommandRegistrar(this);
-        registrar.register(new LinkCommand());
-        registrar.register(new UnlinkCommand());
-        registrar.register(new LinkedCommand());
+        var registrar = this.getCommandRegistrar();
+        registrar.register(new LinkCommand(),
+                new UnlinkCommand(),
+                new LinkedCommand()
+        );
     }
     @Override
     public void onDisable() {

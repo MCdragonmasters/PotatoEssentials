@@ -40,7 +40,7 @@ public class SetWarpCommand extends PotatoCommand {
         WarpsManager.removeWarp(warpName);
         WarpsManager.saveWarp(warpName,loc);
 
-        var formattedLoc = Utils.formatCoords(loc.x(),loc.y(),loc.z());
+        var formattedLoc = Utils.formatCoords(loc);
 
         var msg = Config.replaceFormat(getMsg("warpSet"),
                 new Replacer("warp-name", warpName), new Replacer("location", formattedLoc));

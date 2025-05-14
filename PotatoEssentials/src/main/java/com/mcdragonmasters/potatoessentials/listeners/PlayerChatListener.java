@@ -6,11 +6,8 @@ import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.CustomChat;
 import com.mcdragonmasters.potatoessentials.utils.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
-
 import io.papermc.paper.event.player.AsyncChatEvent;
-
 import net.kyori.adventure.text.Component;
-
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

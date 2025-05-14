@@ -116,7 +116,7 @@ public class SkinCommand extends PotatoCommand {
         }
         return realName;
     }
-    public static void setSkin(Player player, Player newSkin) {
+    public void setSkin(Player player, Player newSkin) {
         var profile = player.getPlayerProfile();
         var newProfile = newSkin.getPlayerProfile();
 

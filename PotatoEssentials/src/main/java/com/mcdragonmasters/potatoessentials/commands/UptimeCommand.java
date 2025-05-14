@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 
 import java.lang.management.ManagementFactory;
 import java.time.Duration;
-
 import java.time.Instant;
 
 public class UptimeCommand extends PotatoCommand {

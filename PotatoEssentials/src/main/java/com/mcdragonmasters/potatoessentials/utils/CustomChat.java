@@ -1,9 +1,8 @@
 package com.mcdragonmasters.potatoessentials.utils;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
-import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIBukkit;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.RegisteredCommand;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -26,6 +25,8 @@ public class CustomChat {
     private static final Map<String, CustomChat> chatMap = new HashMap<>();
     @Getter
     private static final Map<Player, CustomChat> playerChat = new HashMap<>();
+    @Getter
+    private static final Set<String> chatCommandList = new HashSet<>();
     private final String key;
     private final String name;
     private final String permission;
@@ -39,15 +40,21 @@ public class CustomChat {
         chatMap.put(key, this);
         customChats.add(this);
         if (command==null) return;
-        for (RegisteredCommand registeredCmd : CommandAPI.getRegisteredCommands()) {
-            if (registeredCmd.commandName().equals(command)) {
-                PotatoEssentials.LOGGER.warning(
-                        ("Command '%s' for custom chat '%s' was already taken," +
-                        " if this was from reloading you can safely ignore this").formatted(command, key));
-                return;
-
-            }
+        if (PotatoEssentials.INSTANCE.getCommandRegistrar().getRegisteredCommandNames().contains(command)) {
+            PotatoEssentials.LOGGER.warning(
+                    ("Command '%s' for custom chat '%s' was already registered, not registering").formatted(command, key));
+            return;
         }
+        if (chatCommandList.contains(command)) {
+            PotatoEssentials.LOGGER.warning(
+                    ("Command '%s' for custom chat '%s' already has a custom chat assigned to it, not registering").formatted(command, key));
+            return;
+        }
+
+        CommandAPIBukkit.unregister(command, false, true);
+        CommandAPIBukkit.unregister(command, false, false);
+
+        chatCommandList.add(command);
         var messageArg = new GreedyStringArgument("message");
         new CommandAPICommand(command)
                 .withPermission(permission)
@@ -73,5 +80,6 @@ public class CustomChat {
         customChats.clear();
         chatMap.clear();
         playerChat.clear();
+        chatCommandList.clear();
     }
 }

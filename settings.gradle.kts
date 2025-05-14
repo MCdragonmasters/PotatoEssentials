@@ -1,4 +1,4 @@
-rootProject.name = "PotatoEssentialsMain"
+rootProject.name = "PotatoEssentials"
 setupSubproject("PotatoEssentials")
 setupSubproject("PotatoDiscordLink")
 fun setupSubproject(moduleName: String) {
@@ -7,4 +7,3 @@ fun setupSubproject(moduleName: String) {
     proj.name = moduleName
     proj.projectDir = file(moduleName)
 }
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
