@@ -2,7 +2,7 @@ package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.listeners.HungerChangeListener;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
 import org.bukkit.Bukkit;

@@ -1,7 +1,7 @@
 package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
 import org.bukkit.command.CommandSender;

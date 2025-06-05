@@ -1,7 +1,8 @@
 package com.mcdragonmasters.potatoessentials.commands.teleporting;
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
+import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyEntities;
 import dev.jorel.commandapi.executors.CommandArguments;
@@ -39,7 +40,7 @@ public class TeleportHereCommand extends PotatoCommand {
             player.sendMessage(tpedMsg);
         }
         Component tperMsg = Config.replaceFormat(Config.teleporterMsg(),
-                new Replacer("teleported", entities.size()+" entities"));
+                new Replacer("teleported", Utils.nameFormat(entities, true)));
         sender.sendMessage(tperMsg);
     }
 }

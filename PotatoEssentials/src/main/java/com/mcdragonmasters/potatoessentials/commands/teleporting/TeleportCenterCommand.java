@@ -1,6 +1,6 @@
-package com.mcdragonmasters.potatoessentials.commands;
+package com.mcdragonmasters.potatoessentials.commands.teleporting;
 
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.RotationArgument;

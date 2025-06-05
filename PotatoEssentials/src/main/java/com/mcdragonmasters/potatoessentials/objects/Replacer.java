@@ -1,4 +1,4 @@
-package com.mcdragonmasters.potatoessentials.utils;
+package com.mcdragonmasters.potatoessentials.objects;
 
 import lombok.Getter;
 

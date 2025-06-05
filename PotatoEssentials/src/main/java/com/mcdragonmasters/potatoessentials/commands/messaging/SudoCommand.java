@@ -1,8 +1,8 @@
 package com.mcdragonmasters.potatoessentials.commands.messaging;
 
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
@@ -40,15 +40,13 @@ public class SudoCommand extends PotatoCommand {
     private void execute(CommandSender sender, CommandArguments args) {
         Collection<Player> players = args.getByArgument(playerArg);
         String text = Objects.requireNonNull(args.getByArgument(stringArg));
-        boolean isChat = (text.toLowerCase().startsWith("c:"));
-        String otherMsg = Utils.playerNameFormat(players);
-        Component msg = Config.replaceFormat(isChat?Config.sudoSayMsg():Config.sudoCmdMsg(),
+        boolean isCommand = (text.toLowerCase().startsWith("/"));
+        String otherMsg = Utils.nameFormat(players);
+        Component msg = Config.replaceFormat(
+                isCommand ? Config.sudoCmdMsg() : Config.sudoSayMsg(),
                 new Replacer("sudoed-players", otherMsg), new Replacer("input", text));
         sender.sendMessage(msg);
-        if (isChat) {
-            text = text.substring(2);
-            for (Player player : players) player.chat(text);
-        } else for (Player player : players) player.performCommand(text);
+        for (Player player : players) player.chat(text);
 
     }
 }

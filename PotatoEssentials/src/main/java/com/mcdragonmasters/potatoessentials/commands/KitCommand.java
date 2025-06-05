@@ -2,8 +2,8 @@ package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.database.KitManager;
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
@@ -73,7 +73,7 @@ public class KitCommand extends PotatoCommand {
         }
         var msg = Config.replaceFormat(Config.getCmdMsg("kit","kitGiveTo"),
                 new Replacer("kit-name", kitName),
-                new Replacer("target", Utils.playerNameFormat(players)));
+                new Replacer("target", Utils.nameFormat(players)));
         player.sendMessage(msg);
         players.forEach(p -> kitManager.giveKit(kitName, p));
     }

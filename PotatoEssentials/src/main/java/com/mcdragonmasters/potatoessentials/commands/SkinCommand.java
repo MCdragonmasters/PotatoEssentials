@@ -5,8 +5,8 @@ import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyPlayers;
 import dev.jorel.commandapi.arguments.StringArgument;
@@ -26,7 +26,7 @@ public class SkinCommand extends PotatoCommand {
 
     private final StringArgument skinArg = new StringArgument("skin");
 
-    private final ManyPlayers playerArg = new ManyPlayers("targets", false);
+    private final ManyPlayers playersArg = new ManyPlayers("targets", false);
 
     public SkinCommand() {
         super("skin",NAMESPACE+".skin");
@@ -37,29 +37,29 @@ public class SkinCommand extends PotatoCommand {
         new CommandAPICommand(name)
                 .withPermission(permission)
                 .withArguments(skinArg)
-                .withOptionalArguments(playerArg)
+                .withOptionalArguments(playersArg)
                 .executesPlayer(this::executeMain)
                 .withSubcommand(
                         new CommandAPICommand("reset")
                                 .executesPlayer(this::executeReset)
-//                                .executesProxy((proxy, args) -> {
-//                                    if (!(proxy.getCallee() instanceof Player p)) return;
-//                                    executeReset(p, args);
-//                                })
                 )
-//                .executesProxy((proxy, args) -> {
-//                    if (!(proxy.getCallee() instanceof Player p)) return;
-//                    executeMain(p, args);
-//                })
                 .register();
+        createCommand(
+                createSubcommand("reset")
+                        .withArguments(playersArg)
+                        .executesPlayer(this::executeReset)
+        ).withArguments(skinArg)
+                .withOptionalArguments(playersArg)
+                .executesPlayer(this::executeMain);
     }
 
     private void executeMain(Player sender, CommandArguments args) {
         String skin = args.getByArgumentOrDefault(skinArg, "Error");
-        Collection<Player> players = args.getByArgumentOrDefault(playerArg, List.of(sender));
+        Collection<Player> players = args.getByArgumentOrDefault(playersArg, List.of(sender));
         var newSkinFromPlayer = Bukkit.getPlayer(skin);
-        String skinName = "skinName not found";
+        String skinName;
         if (newSkinFromPlayer!=null) {
+            skinName = newSkinFromPlayer.getName();
             for (Player player : players)
                 setSkin(player, newSkinFromPlayer);
         } else {
@@ -82,7 +82,7 @@ public class SkinCommand extends PotatoCommand {
     private void executeReset(Player player, @Nullable CommandArguments args) {
         try {
             if (args!=null)
-                setSkin(args.getByArgumentOrDefault(playerArg, List.of(player)), player.getName());
+                setSkin(args.getByArgumentOrDefault(playersArg, List.of(player)), player.getName());
             else setSkin(player, player.getName());
         } catch (Exception e) {
             player.sendRichMessage("<red>Failed to reset skin!");

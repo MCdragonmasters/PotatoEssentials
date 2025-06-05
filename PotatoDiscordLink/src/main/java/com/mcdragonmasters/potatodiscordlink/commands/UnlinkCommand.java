@@ -4,7 +4,7 @@ import com.mcdragonmasters.potatodiscordlink.PotatoDiscordLink;
 import com.mcdragonmasters.potatoessentials.libs.commandapi.CommandAPICommand;
 import com.mcdragonmasters.potatoessentials.libs.commandapi.executors.CommandArguments;
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import org.bukkit.entity.Player;
 
 public class UnlinkCommand extends PotatoCommand {

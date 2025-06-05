@@ -2,17 +2,21 @@ package com.mcdragonmasters.potatoessentials;
 
 import com.mcdragonmasters.potatoessentials.commands.*;
 import com.mcdragonmasters.potatoessentials.commands.messaging.*;
+import com.mcdragonmasters.potatoessentials.commands.messaging.channels.ChannelCommand;
+import com.mcdragonmasters.potatoessentials.commands.messaging.channels.ToggleChannelCommand;
 import com.mcdragonmasters.potatoessentials.commands.teleporting.TeleportAllCommand;
+import com.mcdragonmasters.potatoessentials.commands.teleporting.TeleportCenterCommand;
 import com.mcdragonmasters.potatoessentials.commands.teleporting.TeleportHereCommand;
 import com.mcdragonmasters.potatoessentials.commands.warping.DelWarpCommand;
 import com.mcdragonmasters.potatoessentials.commands.warping.SetWarpCommand;
 import com.mcdragonmasters.potatoessentials.commands.warping.WarpCommand;
 import com.mcdragonmasters.potatoessentials.database.KitManager;
-import com.mcdragonmasters.potatoessentials.listeners.PlayerChatListener;
+import com.mcdragonmasters.potatoessentials.listeners.ChatListener;
 import com.mcdragonmasters.potatoessentials.listeners.ServerListPingListener;
+import com.mcdragonmasters.potatoessentials.objects.PotatoPlugin;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommandRegistrar;
-import com.mcdragonmasters.potatoessentials.utils.PotatoLogger;
+import com.mcdragonmasters.potatoessentials.objects.PotatoLogger;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
@@ -62,7 +66,7 @@ public class PotatoEssentials extends PotatoPlugin {
 
         pluginManager = Bukkit.getPluginManager();
 
-        pluginManager.registerEvents(new PlayerChatListener(), INSTANCE);
+        pluginManager.registerEvents(new ChatListener(), INSTANCE);
         pluginManager.registerEvents(new ServerListPingListener(), INSTANCE);
 
         vaultInstalled = setupVaultChat();
@@ -108,7 +112,8 @@ public class PotatoEssentials extends PotatoPlugin {
                 new SkullCommand(),
                 new TrollCommand(),
                 new TeleportCenterCommand(),
-                new ReportCommand()
+                new ReportCommand(),
+                new ToggleChannelCommand()
         );
 
         if (config.getBoolean("commands.tp.tphere-enabled")) new TeleportHereCommand().register();

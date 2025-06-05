@@ -2,8 +2,8 @@ package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyPlayers;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.OnePlayer;
 import dev.jorel.commandapi.executors.CommandArguments;

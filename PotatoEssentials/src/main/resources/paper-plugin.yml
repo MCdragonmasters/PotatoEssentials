@@ -61,6 +61,7 @@ permissions:
       potatoessentials.kit.*: true
       potatoessentials.clearchat: true
       potatoessentials.skin: true
+      potatoessentials.togglechannel: true
 
   potatoessentials.chat.*:
     description: Gives to user full access for all chat related permissions
@@ -213,4 +214,7 @@ permissions:
     default: false
   potatoessentials.chat.bypass-cooldown:
     description: Allows the user to bypass the chat cooldown
+    default: op
+  potatoessentials.togglechannel:
+    description: Allows the user to use /togglechannel
     default: op

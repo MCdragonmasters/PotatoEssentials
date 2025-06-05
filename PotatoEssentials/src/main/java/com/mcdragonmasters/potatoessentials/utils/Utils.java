@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
@@ -43,9 +44,13 @@ public class Utils {
         if (!PotatoEssentials.isVaultInstalled()) return "vaultNotInstalled";
         return vaultChat.getPlayerSuffix(player);
     }
-    public static String playerNameFormat(Collection<? extends Player> players) {
-        return players.size()==1?players.toArray(new Player[0])[0].getName()
-                : players.size()+" players";
+    public static String nameFormat(Collection<? extends CommandSender> senders, boolean canBeEntity) {
+        return senders.size()==1
+                ? senders.toArray(new CommandSender[0])[0].getName()
+                : senders.size()+(canBeEntity?" entities":" players");
+    }
+    public static String nameFormat(Collection<? extends CommandSender> senders) {
+        return nameFormat(senders, false);
     }
     public static String possessivePlayerNameFormat(Collection<Player> players) {
         return players.size()==1?players.toArray(new Player[0])[0].getName()+"'s":players.size()+" Players'";

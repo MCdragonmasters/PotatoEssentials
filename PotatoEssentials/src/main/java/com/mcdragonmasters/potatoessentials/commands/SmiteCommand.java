@@ -1,17 +1,18 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyPlayers;
+import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyEntities;
 import dev.jorel.commandapi.arguments.IntegerArgument;
 import dev.jorel.commandapi.executors.CommandArguments;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
 
 import java.util.Collection;
 
@@ -21,29 +22,30 @@ public class SmiteCommand extends PotatoCommand {
         super("smite",NAMESPACE+".smite");
     }
 
-    private final ManyPlayers manyPlayersArg = new ManyPlayers("targets", false);
+    private final ManyEntities manyEntitiesArg = new ManyEntities("targets", false);
     private final IntegerArgument integerArg = new IntegerArgument("damage",1,1000);
 
     @Override
     public void register() {
         new CommandAPICommand(name)
                 .withPermission(permission)
-                .withArguments(manyPlayersArg)
+                .withArguments(manyEntitiesArg)
                 .withOptionalArguments(integerArg)
                 .executes(this::execute)
                 .register();
     }
     @SuppressWarnings("unchecked")
     public void execute(CommandSender sender, CommandArguments args) {
-        Collection<Player> players = args.getByArgument(manyPlayersArg);
+        Collection<Entity> entities = args.getByArgument(manyEntitiesArg);
         int damage = args.getByArgumentOrDefault(integerArg, 1);
-        if (players==null) return;
-        players.forEach((player -> {
-            Location loc = player.getLocation();
+        if (entities==null) return;
+        for (Entity entity : entities) {
+            Location loc = entity.getLocation();
             loc.getWorld().strikeLightningEffect(loc);
-            player.damage(damage);
-        }));
-        String playerMsg = Utils.playerNameFormat(players);
+            if (entity instanceof Damageable damageable)
+                damageable.damage(damage);
+        }
+        String playerMsg = Utils.nameFormat(entities, true);
         Component msg = Config.replaceFormat(getMsg("smiteMessage"),
                 new Replacer("targets", playerMsg));
         sender.sendMessage(msg);

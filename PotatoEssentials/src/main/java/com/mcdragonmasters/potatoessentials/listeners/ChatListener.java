@@ -3,8 +3,8 @@ package com.mcdragonmasters.potatoessentials.listeners;
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.commands.messaging.MuteChatCommand;
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.CustomChat;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.CustomChat;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
@@ -18,14 +18,13 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerChatListener implements Listener {
+public class ChatListener implements Listener {
 
     private final HashMap<Player, Long> lastChatTime = new HashMap<>();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncChatEvent e) {
         if (!Config.chatEnabled()) return;
-        if (e.isCancelled()) return;
         e.setCancelled(true);
         int cooldown = Config.getInt("chat.cooldown");
         Player player = e.getPlayer();
@@ -63,7 +62,7 @@ public class PlayerChatListener implements Listener {
                 new Replacer("message", message, false));
         Map<Player, CustomChat> playerChatMap = CustomChat.getPlayerChat();
         if (Config.customChatsEnabled() && playerChatMap.containsKey(player)) {
-            CustomChat.sendMessage(player, message, playerChatMap.get(player));
+            playerChatMap.get(player).sendMessage(player, message);
             return;
         }
         Bukkit.broadcast(finalMessage);

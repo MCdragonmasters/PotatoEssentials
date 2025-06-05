@@ -49,6 +49,7 @@ chats:
   format: "<chat-name> <dark_gray>»<white> <prefix><name><white>: <message>"
   customChats:
     staff:
+      cooldown: 0
       name: "<gold>Staff Chat"
       permission: "potatoessentials.chats.examplestaff"
       # optional field
@@ -174,6 +175,10 @@ commands:
     enabled: true
     chatChannelChange: "<yellow>Chat channel</yellow><gray> set to </gray><chat-name>"
     chatNotFound: "<red>Chat <chat-name> does not exist!"
+  togglechannel:
+    enabled: true
+    toggledOff: "<gray>Messages for channel '<yellow><channel></yellow>' have been <red>Disabled"
+    toggledOn: "<gray>Messages for channel '<yellow><channel></yellow>' have been <green>Enabled"
   kit:
     enabled: true
     emptyInventory: "<red>You cannot create a kit with an empty inventory!"

@@ -2,6 +2,8 @@ package com.mcdragonmasters.potatoessentials.utils;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.listeners.ServerListPingListener;
+import com.mcdragonmasters.potatoessentials.objects.CustomChat;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.tchristofferson.configupdater.ConfigUpdater;
 import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
@@ -71,7 +73,7 @@ public class Config {
         ConfigurationSection chatsSection = config.getConfigurationSection("chats.customChats");
         for (CustomChat chat : CustomChat.getCustomChats()) {
             if (chat.getCommand()==null) continue;
-            CommandAPI.unregister(chat.getCommand());
+            CommandAPI.unregister(chat.getCommand(), true);
         }
         CustomChat.clearAll();
         if (customChatsEnabled() && chatsSection != null) {
@@ -84,7 +86,8 @@ public class Config {
                 new CustomChat(key,
                         getString(chatConfPrefix+"name"),
                         getString(chatConfPrefix+"permission"),
-                        getString(chatConfPrefix+"command"));
+                        getString(chatConfPrefix+"command"),
+                        getInt(chatConfPrefix+".cooldown"));
             }
         }
 

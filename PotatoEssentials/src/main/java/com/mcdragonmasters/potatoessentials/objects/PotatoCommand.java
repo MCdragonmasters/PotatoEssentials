@@ -1,6 +1,7 @@
-package com.mcdragonmasters.potatoessentials.utils;
+package com.mcdragonmasters.potatoessentials.objects;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.utils.PotatoCommandRegistrar;
 import dev.jorel.commandapi.CommandAPICommand;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +51,7 @@ public abstract class PotatoCommand {
         return hasAliases;
     }
 
-    protected String getMsg(String field) {
-        return this.registrar.getPlugin().getConfig().getString("commands."+this.name+"."+field);
+    protected String getMsg(String path) {
+        return this.registrar.getCommandMessageGetter().apply(this.name, path);
     }
 }

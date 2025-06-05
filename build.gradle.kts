@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     java
     id("com.gradleup.shadow") version "8.3.3"
@@ -7,26 +9,49 @@ plugins {
 repositories {
     mavenCentral()
 }
+fun Project.getSubProjectJars(): List<TaskProvider<ShadowJar>> {
+    return listOf(
+        project(":PotatoEssentials").tasks.shadowJar,
+        project(":PotatoDiscordLink").tasks.shadowJar
+    )
+}
 
 tasks {
     register<Copy>("serverDevelopment") {
-        from(project(":PotatoEssentials").tasks.shadowJar, project(":PotatoDiscordLink").tasks.shadowJar)
+        from(getSubProjectJars())
         into("\\\\192.168.1.46\\dev\\plugins") // Change this to wherever you want your jar to build
     }
     register<Copy>("serverProduction") {
-        from(project(":PotatoEssentials").tasks.shadowJar, project(":PotatoDiscordLink").tasks.shadowJar)
+        from(getSubProjectJars())
         into("\\\\192.168.1.46\\event\\plugins")
+    }
+    build {
+        dependsOn("copyShadowJars")
     }
     jar.configure {
         enabled = false
     }
+
     runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("1.21.4")
-        pluginJars.from(project(":PotatoEssentials").tasks.shadowJar, project(":PotatoDiscordLink").tasks.shadowJar)
+        pluginJars.setFrom(getSubProjectJars())
     }
+    runPaper.detectPluginJar = false
+
+    register<Copy>("copyShadowJars") {
+        dependsOn(subprojects.map { it.tasks.shadowJar })
+
+        val destinationDir = layout.buildDirectory.dir("libs").get().asFile
+
+        from(subprojects.map {
+            it.tasks.named<ShadowJar>("shadowJar").map { task ->
+                task.archiveFile.get().asFile
+            }
+        })
+
+        into(destinationDir)
+    }
+
 }
 
 lombok.disableConfig = true

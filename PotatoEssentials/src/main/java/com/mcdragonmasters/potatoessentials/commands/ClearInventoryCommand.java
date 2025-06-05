@@ -1,8 +1,8 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.utils.Config;
-import com.mcdragonmasters.potatoessentials.utils.PotatoCommand;
-import com.mcdragonmasters.potatoessentials.utils.Replacer;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
@@ -37,7 +37,7 @@ public class ClearInventoryCommand extends PotatoCommand {
             p.getInventory().clear();
         }
         var msg = Config.replaceFormat(getMsg("clearInventory"),
-                new Replacer("target", Utils.playerNameFormat(players)));
+                new Replacer("target", Utils.nameFormat(players)));
         sender.sendMessage(msg);
     }
 }

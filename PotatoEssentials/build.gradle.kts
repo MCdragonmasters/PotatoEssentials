@@ -45,7 +45,6 @@ tasks.shadowJar {
     relocate("com.tchristofferson.configupdater",
         "com.mcdragonmasters.potatoessentials.libs.configupdater")
 }
-
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
@@ -58,15 +57,11 @@ tasks.processResources {
     filter<ReplaceTokens>("tokens" to mapOf(
         "version" to project.version.toString()))
 }
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.mcdragonmasters"
-            artifactId = "PotatoEssentials"
-            version = project.version.toString()
-            artifact(tasks.shadowJar)
-        }
-    }
+publishing.publications.create<MavenPublication>("maven") {
+    groupId = "com.mcdragonmasters"
+    artifactId = "PotatoEssentials"
+    version = project.version.toString()
+    artifact(tasks.shadowJar)
 }
 tasks.named("publishMavenPublicationToMavenLocal") {
     dependsOn(tasks.jar)

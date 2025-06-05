@@ -1,4 +1,4 @@
-rootProject.name = "PotatoEssentials"
+rootProject.name = "PotatoEssentialsMain"
 setupSubproject("PotatoEssentials")
 setupSubproject("PotatoDiscordLink")
 fun setupSubproject(moduleName: String) {
