@@ -35,9 +35,17 @@ public class ChannelCommand extends PotatoCommand {
             CustomChat.getPlayerChat().remove(player);
             Component msg = Config.replaceFormat(
                     this.getMsg("chatChannelChange"),
-                    new Replacer("chat-name", "<yellow>Global")
+                    new Replacer("chat-name", channel.getName())
             );
             player.sendMessage(msg);
+            return;
+        }
+        //TODO: make this message configurable
+        if (CustomChat.getPlayerIgnoredChannels(player).contains(channel)) {
+            player.sendMessage(Config.replaceFormat(
+                    "<red>Cannot switch channel to <channel> because you've toggled it off!",
+                    new Replacer("channel", channel.getName())
+            ));
             return;
         }
         CustomChat.getPlayerChat().put(player, channel);
@@ -50,19 +58,22 @@ public class ChannelCommand extends PotatoCommand {
         public ChannelArgument(String nodeName) {
             super(new StringArgument(nodeName), info -> {
                 CustomChat channel = CustomChat.getChatMap().get(info.input());
-                if (channel == null || !info.sender().hasPermission(channel.getPermission()))
-                    throw CustomArgumentException.fromMessageBuilder(new MessageBuilder("Unknown channel: ").appendArgInput());
+                if (channel == null || !channel.checkPerm(info.sender()))
+                    throw CustomArgumentException.fromAdventureComponent(
+                            Config.replaceFormat(
+                                    Config.getCmdMsg("channel", "chatNotFound"),
+                                    new Replacer("chat-name", info.input())
+                            )
+                    );
                 else return channel;
             });
             this.replaceSuggestions(
-                    ArgumentSuggestions.strings(info -> {
-                        List<String> chats = new ArrayList<>(CustomChat.getCustomChats().stream()
+                    ArgumentSuggestions.strings(info ->
+                        CustomChat.getCustomChats().stream()
                                 .filter(chat ->
-                                        info.sender().hasPermission(chat.getPermission())
-                                ).map(CustomChat::getKey).toList());
-                        chats.add("global");
-                        return chats.toArray(String[]::new);
-                    }
+                                        chat.checkPerm(info.sender())
+                                ).map(CustomChat::getKey).toArray(String[]::new)
+
             ));
         }
         @Override

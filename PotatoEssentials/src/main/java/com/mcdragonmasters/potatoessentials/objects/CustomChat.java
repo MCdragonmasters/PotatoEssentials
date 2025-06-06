@@ -31,13 +31,13 @@ public class CustomChat {
     private static final Set<String> chatCommandList = new HashSet<>();
     private final String key;
     private final String name;
-    private final String permission;
+    private final @Nullable String permission;
     private final @Nullable String command;
     private final @Nullable Integer cooldown;
     @Getter
     private final HashMap<CommandSender, Long> lastChatTimes = new HashMap<>();
 
-    public CustomChat(String key, String name, String permission, @Nullable String command, @Nullable Integer cooldown) {
+    public CustomChat(String key, String name, @Nullable String permission, @Nullable String command, @Nullable Integer cooldown) {
         this.key = key;
         this.name = name;
         this.permission = permission;
@@ -62,13 +62,14 @@ public class CustomChat {
 
         chatCommandList.add(command);
         var messageArg = new GreedyStringArgument("message");
-        new CommandAPICommand(command)
-                .withPermission(permission)
+        var cmd = new CommandAPICommand(command)
                 .withArguments(messageArg)
                 .executes((sender, args) -> {
                     String message = args.getByArgument(messageArg);
                     this.sendMessage(sender,message);
-                }).register("potatoessentialscustomchat");
+                });
+        if (permission!=null) cmd.withPermission(permission);
+        cmd.register("potatoessentialschannel");
     }
     public void sendMessage(CommandSender sender, String message) {
         if (this.getCooldown()!=null) {
@@ -103,10 +104,13 @@ public class CustomChat {
         var recipients = Bukkit.getOnlinePlayers().stream()
                 .filter(p -> {
                     boolean ignoredByPlayer = getPlayerIgnoredChannels(p).contains(this);
-                    return p.hasPermission(this.getPermission()) && !ignoredByPlayer;
+                    return checkPerm(p) && !ignoredByPlayer;
                 }).toList();
         recipients.forEach(p -> p.sendMessage(msg));
         Bukkit.getConsoleSender().sendMessage(msg);
+    }
+    public boolean checkPerm(CommandSender sender) {
+        return this.getPermission() == null || sender.hasPermission(this.getPermission());
     }
     public static Set<CustomChat> getPlayerIgnoredChannels(Player p) {
         ignoredChannels.computeIfAbsent(p, p1 -> new HashSet<>());

@@ -13,14 +13,10 @@ import java.util.Objects;
 import java.util.Set;
 
 public class ToggleChannelCommand extends PotatoCommand {
+
     public ToggleChannelCommand() {
         super("togglechannel", NAMESPACE+".togglechannel", "togglechat");
     }
-
-//                Set<String> chats = new HashSet<>();
-//                for (CustomChat chat : CustomChat.getCustomChats()) {
-//                    if (info.sender().hasPermission(chat.getPermission())) chats.add(chat.getKey());
-//                }
 
     private final Argument<CustomChat> channelArgument = new ChannelArgument("channel");
 
@@ -36,6 +32,22 @@ public class ToggleChannelCommand extends PotatoCommand {
         Set<CustomChat> ignoredChannels = CustomChat.getPlayerIgnoredChannels(player);
         CustomChat channel = args.getByArgument(channelArgument);
         Objects.requireNonNull(channel);
+
+        //TODO: make these messages configurable
+        if (channel.getKey().equals("global")) {
+            player.sendMessage(Config.replaceFormat(
+                    "<red>Cannot toggle <global> channel",
+                    new Replacer("global", channel.getName())
+            ));
+            return;
+        }
+        if (channel.equals(CustomChat.getPlayerChat().get(player))) {
+            player.sendMessage(Config.replaceFormat(
+                    "<gray>Toggled current channel, moved to <global>",
+                    new Replacer("global", CustomChat.getChatMap().get("global").getName())
+            ));
+            CustomChat.getPlayerChat().remove(player);
+        }
         boolean ignored = ignoredChannels.add(channel);
         if (!ignored) ignoredChannels.remove(channel);
         player.sendMessage(Config.replaceFormat(

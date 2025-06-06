@@ -78,8 +78,8 @@ public class Config {
         CustomChat.clearAll();
         if (customChatsEnabled() && chatsSection != null) {
             for (String key : chatsSection.getKeys(false)) {
-                if ("global".equals(key) || "all".equals(key)) {
-                    return "keys 'global' and 'all' are reserved for global chat.";
+                if ("global".equals(key)) {
+                    return "key 'global' is reserved for global chat.";
                 }
                 String chatConfPrefix = "chats.customChats."+key+".";
                 LOGGER.debug("Registering custom chat '%s'".formatted(key));
@@ -89,6 +89,7 @@ public class Config {
                         getString(chatConfPrefix+"command"),
                         getInt(chatConfPrefix+".cooldown"));
             }
+            new CustomChat("global", "<yellow>Global</yellow>", null, null, null);
         }
 
         motdEnabled = getBoolean("serverList.motdEnabled");
@@ -96,10 +97,10 @@ public class Config {
         List<String> motd = config.getStringList("serverList.motd");
         ServerListPingListener.motd = Utils.miniMessage(motd.getFirst()+"<reset><newline>"+motd.getLast());
         ServerListPingListener.hoverInfo.clear();
-        config.getStringList("serverList.hoverInfo").forEach(s ->
-                ServerListPingListener.hoverInfo.add(
-                        LegacyComponentSerializer.legacySection()
-                                .serialize(Utils.miniMessage(s))));
+        ServerListPingListener.hoverInfo = config.getStringList("serverList.hoverInfo").stream()
+                .map(s ->
+                        LegacyComponentSerializer.legacySection().serialize(Utils.miniMessage(s))
+                ).toList();
 
         for (ServerLinks.ServerLink serverLink : serverLinks) {
             Bukkit.getServerLinks().removeLink(serverLink);
@@ -153,9 +154,6 @@ public class Config {
     }
     public static String broadcastFormat() {
         return getString("commands.broadcast.message");
-    }
-    public static boolean commandEnabled(String s, FileConfiguration config) {
-        return config.getBoolean("commands."+s+".enabled");
     }
     public static boolean emojisEnabled() {
         return getBoolean("chat.emojis-enabled");

@@ -49,11 +49,12 @@ chats:
   format: "<chat-name> <dark_gray>»<white> <prefix><name><white>: <message>"
   customChats:
     staff:
-      cooldown: 0
-      name: "<gold>Staff Chat"
+      name: "<gold>Staff Chat</gold>"
       permission: "potatoessentials.chats.examplestaff"
-      # optional field
+      # - optional fields
       command: "sc" # (needs server restart when first added)
+      cooldown: 0
+      # -
     #vip:
     #  name: "<green>VIP Chat"
     #  permission: "potatoessentials.chats.examplevip"
@@ -174,7 +175,7 @@ commands:
   channel:
     enabled: true
     chatChannelChange: "<yellow>Chat channel</yellow><gray> set to </gray><chat-name>"
-    chatNotFound: "<red>Chat <chat-name> does not exist!"
+    chatNotFound: "<red>Chat <chat-name> not found"
   togglechannel:
     enabled: true
     toggledOff: "<gray>Messages for channel '<yellow><channel></yellow>' have been <red>Disabled"
