@@ -67,8 +67,7 @@ public class CustomChat {
                 .executes((sender, args) -> {
                     if (sender instanceof Player p && getPlayerIgnoredChannels(p).contains(this)) {
                         sender.sendMessage(Config.replaceFormat(
-                                //TODO: make msg configurable
-                                "<red>Cannot chat in channel <channel> because you've toggled it off!",
+                                Config.getString("chats.chatChannelIgnored"),
                                 new Replacer("channel", this.getName())
                         ));
                         return;

@@ -41,15 +41,15 @@ public class EnchantCommand extends PotatoCommand {
     private void execute(CommandSender sender, CommandArguments args) {
         Collection<Player> players = args.getByArgument(playerArg);
         int level = args.getByArgumentOrDefault(integerArgument, 1);
-        Enchantment ench = args.getByArgument(enchantmentArgument);
+        Enchantment enchantment = args.getByArgument(enchantmentArgument);
         for (Player player : players) {
             player.getInventory().getItemInMainHand()
-                    .addUnsafeEnchantment(ench, level);
+                    .addUnsafeEnchantment(enchantment, level);
         }
         String target = Utils.possessivePlayerNameFormat(players);
-        Component msg = Config.replaceFormat(Config.enchantmentFormat(),
+        Component msg = Config.replaceFormat(getMsg("message"),
                 new Replacer("enchantment",
-                        Utils.serialize(ench.displayName(level)).replace("enchantment.level.", "")),
+                        Utils.serialize(enchantment.displayName(level)).replace("enchantment.level.", "")),
                 new Replacer("target", target));
         sender.sendMessage(msg);
     }

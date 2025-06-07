@@ -47,12 +47,14 @@ connectionMessages:
 chats:
   enabled: true
   format: "<chat-name> <dark_gray>»<white> <prefix><name><white>: <message>"
+  globalChannelName: "<yellow>Global</yellow>"
+  chatChannelIgnored: "<red>Cannot chat in channel <channel> because you've toggled it off!"
   customChats:
     staff:
       name: "<gold>Staff Chat</gold>"
       # - optional fields
-      permission: "potatoessentials.chats.examplestaff"
-      command: "sc" # (needs server restart when first added)
+      permission: "potatoessentials.channels.examplestaff"
+      command: "sc"
       cooldown: 0
       # -
     #vip:
@@ -176,10 +178,13 @@ commands:
     enabled: true
     chatChannelChange: "<yellow>Chat channel</yellow><gray> set to </gray><chat-name>"
     chatNotFound: "<red>Chat <chat-name> not found"
+    channelChangeIgnored: "<red>Cannot switch channel to <channel> because you've toggled it off!"
   togglechannel:
     enabled: true
     toggledOff: "<gray>Messages for channel '<yellow><channel></yellow>' have been <red>Disabled"
     toggledOn: "<gray>Messages for channel '<yellow><channel></yellow>' have been <green>Enabled"
+    toggledCurrentChannel: "<gray>Toggled current channel, moved to <global>"
+    toggleGlobal: "<red>Cannot toggle <global> channel"
   kit:
     enabled: true
     emptyInventory: "<red>You cannot create a kit with an empty inventory!"

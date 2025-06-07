@@ -33,10 +33,9 @@ public class ToggleChannelCommand extends PotatoCommand {
         CustomChat channel = args.getByArgument(channelArgument);
         Objects.requireNonNull(channel);
 
-        //TODO: make these messages configurable
         if (channel.getKey().equals("global")) {
             player.sendMessage(Config.replaceFormat(
-                    "<red>Cannot toggle <global> channel",
+                    getMsg("toggleGlobal"),
                     new Replacer("global", channel.getName())
             ));
             return;
@@ -49,7 +48,7 @@ public class ToggleChannelCommand extends PotatoCommand {
         ));
         if (channel.equals(CustomChat.getPlayerChat().get(player))) {
             player.sendMessage(Config.replaceFormat(
-                    "<gray>Toggled current channel, moved to <global>",
+                    getMsg("toggledCurrentChannel"),
                     new Replacer("global", CustomChat.getChatMap().get("global").getName())
             ));
             CustomChat.getPlayerChat().remove(player);

@@ -89,7 +89,7 @@ public class Config {
                         getString(chatConfPrefix+"command"),
                         getInt(chatConfPrefix+"cooldown"));
             }
-            new CustomChat("global", "<yellow>Global</yellow>", null, null, null);
+            new CustomChat("global", getString("chats.globalChannelName"), null, null, null);
         }
 
         motdEnabled = getBoolean("serverList.motdEnabled");
@@ -206,9 +206,6 @@ public class Config {
         return config.getStringList("chat.filteredWords");
     }
 
-    public static String enchantmentFormat() {
-        return config.getString("commands.enchant.message");
-    }
     public static String customChatFormat() {
         return getString("chats.format");
     }

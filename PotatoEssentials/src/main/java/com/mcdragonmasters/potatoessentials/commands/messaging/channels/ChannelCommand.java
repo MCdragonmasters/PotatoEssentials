@@ -40,10 +40,9 @@ public class ChannelCommand extends PotatoCommand {
             player.sendMessage(msg);
             return;
         }
-        //TODO: make this message configurable
         if (CustomChat.getPlayerIgnoredChannels(player).contains(channel)) {
             player.sendMessage(Config.replaceFormat(
-                    "<red>Cannot switch channel to <channel> because you've toggled it off!",
+                    getMsg("channelChangeIgnored"),
                     new Replacer("channel", channel.getName())
             ));
             return;
