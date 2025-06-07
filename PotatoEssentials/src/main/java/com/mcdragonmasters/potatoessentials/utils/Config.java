@@ -87,7 +87,7 @@ public class Config {
                         getString(chatConfPrefix+"name"),
                         getString(chatConfPrefix+"permission"),
                         getString(chatConfPrefix+"command"),
-                        getInt(chatConfPrefix+".cooldown"));
+                        getInt(chatConfPrefix+"cooldown"));
             }
             new CustomChat("global", "<yellow>Global</yellow>", null, null, null);
         }
@@ -96,7 +96,6 @@ public class Config {
         hoverInfoEnabled = getBoolean("serverList.hoverInfoEnabled");
         List<String> motd = config.getStringList("serverList.motd");
         ServerListPingListener.motd = Utils.miniMessage(motd.getFirst()+"<reset><newline>"+motd.getLast());
-        ServerListPingListener.hoverInfo.clear();
         ServerListPingListener.hoverInfo = config.getStringList("serverList.hoverInfo").stream()
                 .map(s ->
                         LegacyComponentSerializer.legacySection().serialize(Utils.miniMessage(s))

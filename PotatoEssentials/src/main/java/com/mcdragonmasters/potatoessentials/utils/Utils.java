@@ -7,7 +7,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
@@ -87,12 +86,11 @@ public class Utils {
         if (Config.formatURLs() && canUseURLs) {
 
             Matcher matcher = DOMAIN_PATTERN.matcher(message);
-
             StringBuilder formattedMessage = new StringBuilder();
 
             while (matcher.find()) {
                 String fullMatch = matcher.group();
-                String clickableUrl = (fullMatch.startsWith("https://")||fullMatch.startsWith("http://"))?fullMatch:"https://"+fullMatch;
+                String clickableUrl = fullMatch.startsWith("https://")?fullMatch:"https://"+fullMatch;
 
 
                 String miniMessageFormattedUrl =

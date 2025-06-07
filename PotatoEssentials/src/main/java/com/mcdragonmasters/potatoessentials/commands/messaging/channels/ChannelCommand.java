@@ -73,7 +73,6 @@ public class ChannelCommand extends PotatoCommand {
                                 .filter(chat ->
                                         chat.checkPerm(info.sender())
                                 ).map(CustomChat::getKey).toArray(String[]::new)
-
             ));
         }
         @Override

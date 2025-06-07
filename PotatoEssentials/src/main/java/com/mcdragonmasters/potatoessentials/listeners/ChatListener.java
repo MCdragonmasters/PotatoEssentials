@@ -34,7 +34,7 @@ public class ChatListener implements Listener {
             return;
         }
         boolean canBypassCooldown = player.hasPermission(PotatoEssentials.NAMESPACE+".chat.bypass-cooldown");
-        if (lastChatTime.containsKey(player) && !canBypassCooldown) {
+        if (!CustomChat.getPlayerChat().containsKey(player) && lastChatTime.containsKey(player) && !canBypassCooldown) {
             long lastTime = lastChatTime.get(player);
             long currentTime = System.currentTimeMillis();
             long cooldownMillis = cooldown * 1000L;
@@ -50,6 +50,7 @@ public class ChatListener implements Listener {
                 return;
             }
         }
+
         lastChatTime.put(player, System.currentTimeMillis());
         String message = PlainTextComponentSerializer.plainText().serialize(e.message());
 

@@ -65,6 +65,14 @@ public class CustomChat {
         var cmd = new CommandAPICommand(command)
                 .withArguments(messageArg)
                 .executes((sender, args) -> {
+                    if (sender instanceof Player p && getPlayerIgnoredChannels(p).contains(this)) {
+                        sender.sendMessage(Config.replaceFormat(
+                                //TODO: make msg configurable
+                                "<red>Cannot chat in channel <channel> because you've toggled it off!",
+                                new Replacer("channel", this.getName())
+                        ));
+                        return;
+                    }
                     String message = args.getByArgument(messageArg);
                     this.sendMessage(sender,message);
                 });

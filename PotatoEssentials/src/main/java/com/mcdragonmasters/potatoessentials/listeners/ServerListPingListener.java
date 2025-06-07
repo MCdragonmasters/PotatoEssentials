@@ -7,14 +7,13 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ServerListPingListener implements Listener {
 
     public static Component motd;
-    public static List<String> hoverInfo = new ArrayList<>();
+    public static List<String> hoverInfo;
 
     @EventHandler
     public void onServerListPing(PaperServerListPingEvent e) {

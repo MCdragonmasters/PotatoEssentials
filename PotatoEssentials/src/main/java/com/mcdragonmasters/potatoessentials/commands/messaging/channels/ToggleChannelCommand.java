@@ -41,6 +41,12 @@ public class ToggleChannelCommand extends PotatoCommand {
             ));
             return;
         }
+        boolean ignored = ignoredChannels.add(channel);
+        if (!ignored) ignoredChannels.remove(channel);
+        player.sendMessage(Config.replaceFormat(
+                getMsg(ignored ? "toggledOff" : "toggledOn"),
+                new Replacer("channel", channel.getName())
+        ));
         if (channel.equals(CustomChat.getPlayerChat().get(player))) {
             player.sendMessage(Config.replaceFormat(
                     "<gray>Toggled current channel, moved to <global>",
@@ -48,12 +54,6 @@ public class ToggleChannelCommand extends PotatoCommand {
             ));
             CustomChat.getPlayerChat().remove(player);
         }
-        boolean ignored = ignoredChannels.add(channel);
-        if (!ignored) ignoredChannels.remove(channel);
-        player.sendMessage(Config.replaceFormat(
-                getMsg(ignored ? "toggledOff" : "toggledOn"),
-                new Replacer("channel", channel.getName())
-        ));
     }
 
 }

@@ -50,8 +50,8 @@ chats:
   customChats:
     staff:
       name: "<gold>Staff Chat</gold>"
-      permission: "potatoessentials.chats.examplestaff"
       # - optional fields
+      permission: "potatoessentials.chats.examplestaff"
       command: "sc" # (needs server restart when first added)
       cooldown: 0
       # -
