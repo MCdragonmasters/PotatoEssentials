@@ -70,27 +70,9 @@ public class Config {
 
         emojiConfig();
 
-        ConfigurationSection chatsSection = config.getConfigurationSection("chats.customChats");
-        for (CustomChat chat : CustomChat.getCustomChats()) {
-            if (chat.getCommand()==null) continue;
-            CommandAPI.unregister(chat.getCommand(), true);
-        }
-        CustomChat.clearAll();
-        if (customChatsEnabled() && chatsSection != null) {
-            for (String key : chatsSection.getKeys(false)) {
-                if ("global".equals(key)) {
-                    return "key 'global' is reserved for global chat.";
-                }
-                String chatConfPrefix = "chats.customChats."+key+".";
-                LOGGER.debug("Registering custom chat '%s'".formatted(key));
-                new CustomChat(key,
-                        getString(chatConfPrefix+"name"),
-                        getString(chatConfPrefix+"permission"),
-                        getString(chatConfPrefix+"command"),
-                        getInt(chatConfPrefix+"cooldown"));
-            }
-            new CustomChat("global", getString("chats.globalChannelName"), null, null, null);
-        }
+        String channel = channelConfig();
+        if (!"passed".equals(channel)) return channel;
+
 
         motdEnabled = getBoolean("serverList.motdEnabled");
         hoverInfoEnabled = getBoolean("serverList.hoverInfoEnabled");
@@ -116,6 +98,30 @@ public class Config {
                 serverLinks.add(Bukkit.getServerLinks().addLink(compName, link));
                 LOGGER.debug("Registering server link '%s' with name '%s', URL '%s'".formatted(key, name, link.toString()));
             }
+        }
+        return "passed";
+    }
+    private static String channelConfig() {
+        ConfigurationSection chatsSection = config.getConfigurationSection("chats.customChats");
+        for (CustomChat chat : CustomChat.getCustomChats()) {
+            if (chat.getCommand()==null) continue;
+            CommandAPI.unregister(chat.getCommand(), true);
+        }
+        CustomChat.clearAll();
+        if (customChatsEnabled() && chatsSection != null) {
+            for (String key : chatsSection.getKeys(false)) {
+                if ("global".equals(key)) {
+                    return "key 'global' is reserved for global chat.";
+                }
+                String chatConfPrefix = "chats.customChats."+key+".";
+                LOGGER.debug("Registering custom chat '%s'".formatted(key));
+                new CustomChat(key,
+                        getString(chatConfPrefix+"name"),
+                        getString(chatConfPrefix+"permission"),
+                        getString(chatConfPrefix+"command"),
+                        getInt(chatConfPrefix+"cooldown"));
+            }
+            new CustomChat("global", getString("chats.globalChannelName"), null, null, null);
         }
         return "passed";
     }

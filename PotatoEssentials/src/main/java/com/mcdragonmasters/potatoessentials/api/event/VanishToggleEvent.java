@@ -1,4 +1,4 @@
-package com.mcdragonmasters.potatoessentials.events;
+package com.mcdragonmasters.potatoessentials.api.event;
 
 import lombok.Getter;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
-import com.mcdragonmasters.potatoessentials.events.VanishToggleEvent;
+import com.mcdragonmasters.potatoessentials.api.event.VanishToggleEvent;
 import com.mcdragonmasters.potatoessentials.listeners.PlayerJoinQuitListener;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;

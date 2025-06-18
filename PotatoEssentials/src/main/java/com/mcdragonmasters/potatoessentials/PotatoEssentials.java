@@ -13,6 +13,7 @@ import com.mcdragonmasters.potatoessentials.commands.warping.WarpCommand;
 import com.mcdragonmasters.potatoessentials.database.KitManager;
 import com.mcdragonmasters.potatoessentials.listeners.ChatListener;
 import com.mcdragonmasters.potatoessentials.listeners.ServerListPingListener;
+import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.objects.PotatoPlugin;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.PotatoCommandRegistrar;
@@ -26,6 +27,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 @SuppressWarnings("SameParameterValue")
 public class PotatoEssentials extends PotatoPlugin {
@@ -82,7 +91,8 @@ public class PotatoEssentials extends PotatoPlugin {
         var kits = new KitManager(INSTANCE.getDataFolder());
         PotatoCommandRegistrar registrar = this.getCommandRegistrar();
         registrar.register(new MainCommand(), true);
-        registrar.register(new MessageCommand(),
+        registrar.register(
+                new MessageCommand(),
                 new ReplyCommand(),
                 new SocialSpyCommand(),
                 new BroadcastCommand(),
@@ -119,7 +129,29 @@ public class PotatoEssentials extends PotatoPlugin {
         if (config.getBoolean("commands.tp.tphere-enabled")) new TeleportHereCommand().register();
         if (config.getBoolean("commands.tp.tpall-enabled")) new TeleportAllCommand().register();
 
-        LOGGER.debug("Registered "+registrar.getRegisteredCmds()+" commands");
+        LOGGER.debug("Registered "+registrar.getRegisteredCommands().size()+" commands");
+        boolean genDocs = false;
+        //noinspection ConstantValue
+        if (genDocs) {
+            File file = new File(PotatoEssentials.INSTANCE.getDataFolder(), "commands-docs.md");
+            if (file.exists()) file.delete();
+            List<PotatoCommand> commands = new ArrayList<>(registrar.getRegisteredCommands());
+            commands.addAll(registrar.getUnregisteredCommands());
+            try (FileWriter fileWriter = new FileWriter(file); BufferedWriter writer = new BufferedWriter(fileWriter)) {
+                for (PotatoCommand command : commands) {
+                    String s = "## `/"+command.getName()+"`";
+                    s += "\n- **Syntax:** `/"+command.getName()+" TODO`";
+                    if (command.hasAliases()) s += "\n- **Aliases:** `/"+ String.join("`, `/",command.getAliases())+"`";
+                    s += "\n- **Description:** TODO";
+                    s += "\n- **Permission:** `"+command.getPermission()+"`";
+                    writer.write(s);
+                    writer.newLine();
+                    writer.newLine();
+                }
+            } catch (IOException | NoClassDefFoundError e) {
+                PotatoEssentials.LOGGER.log(Level.SEVERE, "Error saving docs", e);
+            }
+        }
     }
 
     private boolean setupVaultChat() {

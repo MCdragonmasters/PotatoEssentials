@@ -1,11 +1,9 @@
 package com.mcdragonmasters.potatoessentials.commands.warping;
 
-import com.mcdragonmasters.potatoessentials.PotatoEssentials;
 import com.mcdragonmasters.potatoessentials.database.WarpsManager;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.objects.Replacer;
-import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
@@ -22,18 +20,17 @@ public class WarpCommand extends PotatoCommand {
     }
 
     private final Argument<String> warpNameArg = new StringArgument("warp-name")
-            .replaceSuggestions(ArgumentSuggestions.strings(info ->{
-                    String[] warps = WarpsManager.getWarps().clone();
-                    return (String[]) Arrays.stream(warps).filter(warp ->
-                            info.sender().hasPermission(this.permission) || info.sender().hasPermission(this.permission+"."+warp)
-                    ).toArray();
-            }));
+            .replaceSuggestions(ArgumentSuggestions.strings(info ->
+                    Arrays.stream(WarpsManager.getWarps().clone()).filter(warp ->
+                            info.sender().hasPermission(this.permission)
+                    ).toArray(String[]::new)
+            ));
     @Override
     public void register() {
-        new CommandAPICommand("warp")
-                .withPermission(PotatoEssentials.NAMESPACE+".warp")
+        createCommand()
                 .withArguments(warpNameArg)
-                .executesPlayer(this::execute).register();
+                .executesPlayer(this::execute)
+                .register();
     }
     private void execute(Player sender, CommandArguments args) {
         String warpName = args.getByArgument(warpNameArg);

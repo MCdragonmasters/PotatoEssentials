@@ -107,7 +107,6 @@ public class LinkManager {
                 }
                 return;
             }
-            //noinspection ResultOfMethodCallIgnored
             file.delete();
             try {
                 FileUtils.moveFile(tempFile, file);
@@ -115,7 +114,6 @@ public class LinkManager {
                 PotatoDiscordLink.LOGGER.log(Level.SEVERE, "Failed moving linked.aof.tmp to linked.aof: ", e);
             }
         } finally {
-            //noinspection ResultOfMethodCallIgnored
             tempFile.delete();
         }
     }

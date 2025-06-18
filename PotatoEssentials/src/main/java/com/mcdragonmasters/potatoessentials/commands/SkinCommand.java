@@ -15,8 +15,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
@@ -85,13 +88,13 @@ public class SkinCommand extends PotatoCommand {
                 setSkin(args.getByArgumentOrDefault(playersArg, List.of(player)), player.getName());
             else setSkin(player, player.getName());
         } catch (Exception e) {
-            player.sendRichMessage("<red>Failed to reset skin!");
+            player.sendRichMessage("<red>Failed to reset skin: %s, %s".formatted(e.getClass().getName(), e.getMessage()));
         }
     }
     private void setSkin(Player player, String name) throws Exception {
         setSkin(List.of(player), name);
     }
-    private String setSkin(Collection<Player> players, String name) throws Exception {
+    private String setSkin(Collection<Player> players, String name) throws URISyntaxException, IOException {
         var uuidUrl = new URI("https://api.mojang.com/users/profiles/minecraft/"+name).toURL();
 
         var uuidReader = new InputStreamReader(uuidUrl.openStream());

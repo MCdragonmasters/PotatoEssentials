@@ -82,8 +82,11 @@ public class PotatoDiscordLink extends PotatoPlugin {
         var commands = jda.updateCommands();
         commands.addCommands(
                 Commands.slash("link", "Links your Discord to your Minecraft")
-                        .addOption(OptionType.STRING, "code",
-                                "The code you got by running /link in-game", true),
+                        .addOption(
+                                OptionType.STRING,
+                                "code",
+                                "The code you got by running /link in-game", true
+                        ),
                 Commands.slash("unlink", "Unlinks your Discord from your Minecraft")
         );
         commands.queue();

@@ -1,6 +1,7 @@
 package com.mcdragonmasters.potatoessentials.objects;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.api.event.CustomChannelChatEvent;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPIBukkit;
@@ -107,7 +108,9 @@ public class CustomChat {
                 new Replacer("prefix", Utils.getPrefix(sender)),
                 new Replacer("name", sender.getName()),
                 new Replacer("message", message, false));
-
+        var event = new CustomChannelChatEvent(sender, msg);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
         var recipients = Bukkit.getOnlinePlayers().stream()
                 .filter(p -> {
                     boolean ignoredByPlayer = getPlayerIgnoredChannels(p).contains(this);

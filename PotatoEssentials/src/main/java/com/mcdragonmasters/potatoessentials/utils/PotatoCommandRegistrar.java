@@ -18,14 +18,16 @@ import java.util.logging.Level;
 public class PotatoCommandRegistrar {
     @Getter
     private final PotatoPlugin plugin;
-    @Getter
-    private int registeredCmds = 0;
     private final PotatoLogger logger;
     @Getter
     private final List<String> registeredCommandNames = new ArrayList<>();
     private final HashMap<Class<? extends PotatoCommand>, PotatoCommand> commandInstances = new HashMap<>();
     @Setter
     private Function<String, Boolean> commandEnabledCheck;
+    @Getter
+    private final List<PotatoCommand> registeredCommands = new ArrayList<>();
+    @Getter
+    private final List<PotatoCommand> unregisteredCommands = new ArrayList<>();
     @Setter
     @Getter
     private BiFunction<String, String, String> commandMessageGetter;
@@ -75,9 +77,10 @@ public class PotatoCommandRegistrar {
             logger.debug(msg.formatted(name, formatList(command.getAliases())));
             commandInstances.put(command.getClass(), command);
             registeredCommandNames.add(name);
-            registeredCmds++;
+            registeredCommands.add(command);
         } else {
             logger.debug("Command '%s' disabled in config, not registering".formatted(name));
+            unregisteredCommands.add(command);
         }
     }
     private void setField(Field field, Object obj, Object value) throws IllegalArgumentException, IllegalAccessException {

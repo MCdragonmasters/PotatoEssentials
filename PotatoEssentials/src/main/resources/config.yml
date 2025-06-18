@@ -59,7 +59,10 @@ chats:
       # -
     #vip:
     #  name: "<green>VIP Chat"
+    ## - optional fields
     #  permission: "potatoessentials.chats.examplevip"
+    #  command: "vc"
+    #  cooldown: 0 # in seconds
 
 serverLinks:
   enabled: false
