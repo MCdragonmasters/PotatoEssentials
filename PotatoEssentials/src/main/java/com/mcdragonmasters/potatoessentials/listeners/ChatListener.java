@@ -1,6 +1,7 @@
 package com.mcdragonmasters.potatoessentials.listeners;
 
 import com.mcdragonmasters.potatoessentials.PotatoEssentials;
+import com.mcdragonmasters.potatoessentials.api.event.CooldownChatEvent;
 import com.mcdragonmasters.potatoessentials.commands.messaging.MuteChatCommand;
 import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.objects.CustomChat;
@@ -46,6 +47,8 @@ public class ChatListener implements Listener {
                 double cooldownRemainder = cooldownRemainderMillis / 1000D;
                 var msg = Config.replaceFormat(Config.getString("chat.cooldownMessage"),
                         new Replacer("cooldown", df.format(cooldownRemainder)));
+                var event = new CooldownChatEvent(player, msg, cooldownRemainder,"global");
+                Bukkit.getPluginManager().callEvent(event);
                 player.sendMessage(msg);
                 return;
             }
