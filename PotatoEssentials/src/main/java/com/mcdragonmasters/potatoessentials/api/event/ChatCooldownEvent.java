@@ -13,22 +13,20 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 
-public class CooldownChatEvent extends PlayerEvent {
+public class ChatCooldownEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
+    @Getter
     private final Component message;
     @Getter
     private final String channel;
     @Getter
     private final double remainingSeconds;
 
-    public CooldownChatEvent(@NotNull Player player, Component message, double remainingSeconds, String channel) {
+    public ChatCooldownEvent(@NotNull Player player, Component message, double remainingSeconds, String channel) {
         super(player);
         this.message = message;
         this.channel = channel;
         this.remainingSeconds = remainingSeconds;
-    }
-    public Component message() {
-        return this.message;
     }
     @Override
     public @NotNull HandlerList getHandlers() {
