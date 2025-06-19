@@ -134,7 +134,8 @@ public class PotatoEssentials extends PotatoPlugin {
         //noinspection ConstantValue
         if (genDocs) {
             File file = new File(PotatoEssentials.INSTANCE.getDataFolder(), "commands-docs.md");
-            if (file.exists()) file.delete();
+            if (file.exists()) //noinspection ResultOfMethodCallIgnored
+                file.delete();
             List<PotatoCommand> commands = new ArrayList<>(registrar.getRegisteredCommands());
             commands.addAll(registrar.getUnregisteredCommands());
             try (FileWriter fileWriter = new FileWriter(file); BufferedWriter writer = new BufferedWriter(fileWriter)) {

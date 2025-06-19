@@ -47,9 +47,9 @@ public class ChatListener implements Listener {
                 double cooldownRemainder = cooldownRemainderMillis / 1000D;
                 var msg = Config.replaceFormat(Config.getString("chat.cooldownMessage"),
                         new Replacer("cooldown", df.format(cooldownRemainder)));
-                var event = new ChatCooldownEvent(player, msg, cooldownRemainder,"global");
+                var event = new ChatCooldownEvent(player, msg, cooldownRemainder,"global", e.isAsynchronous());
                 Bukkit.getPluginManager().callEvent(event);
-                player.sendMessage(msg);
+                if (event.shouldSendMessage()) player.sendMessage(msg);
                 return;
             }
         }
@@ -66,7 +66,7 @@ public class ChatListener implements Listener {
                 new Replacer("message", message, false));
         Map<Player, CustomChat> playerChatMap = CustomChat.getPlayerChat();
         if (Config.customChatsEnabled() && playerChatMap.containsKey(player)) {
-            playerChatMap.get(player).sendMessage(player, message);
+            playerChatMap.get(player).sendMessage(player, message, e.isAsynchronous());
             return;
         }
         Bukkit.broadcast(finalMessage);

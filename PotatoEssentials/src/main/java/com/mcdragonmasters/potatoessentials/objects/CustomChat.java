@@ -37,7 +37,7 @@ public class CustomChat {
     private final @Nullable String command;
     private final @Nullable Integer cooldown;
     @Getter
-    private final HashMap<CommandSender, Long> lastChatTimes = new HashMap<>();
+    private final HashMap<Player, Long> lastChatTimes = new HashMap<>();
 
     public CustomChat(String key, String name, @Nullable String permission, @Nullable String command, @Nullable Integer cooldown) {
         this.key = key;
@@ -80,11 +80,11 @@ public class CustomChat {
         if (permission!=null) cmd.withPermission(permission);
         cmd.register("potatoessentialschannel");
     }
-    public void sendMessage(CommandSender sender, String message) {
-        if (this.getCooldown()!=null) {
-            boolean canBypassCooldown = sender.hasPermission(PotatoEssentials.NAMESPACE+".chat.bypass-cooldown");
-            if (this.getLastChatTimes().containsKey(sender) && !canBypassCooldown) {
-                long lastTime = this.getLastChatTimes().get(sender);
+    public void sendMessage(CommandSender sender, String message, boolean async) {
+        if (sender instanceof Player p && this.getCooldown()!=null) {
+            boolean canBypassCooldown = p.hasPermission(PotatoEssentials.NAMESPACE+".chat.bypass-cooldown");
+            if (this.getLastChatTimes().containsKey(p) && !canBypassCooldown) {
+                long lastTime = this.getLastChatTimes().get(p);
                 long currentTime = System.currentTimeMillis();
                 long cooldownMillis = this.getCooldown() * 1000L;
                 long timeElapsed = currentTime - lastTime;
@@ -95,13 +95,13 @@ public class CustomChat {
                     double cooldownRemainder = cooldownRemainderMillis / 1000D;
                     var msg = Config.replaceFormat(Config.getString("chat.cooldownMessage"),
                             new Replacer("cooldown", df.format(cooldownRemainder)));
-                    var event = new ChatCooldownEvent((Player) sender, msg, cooldownRemainder, this.getKey());
+                    var event = new ChatCooldownEvent(p, msg, cooldownRemainder, this.getKey(), async);
                     Bukkit.getPluginManager().callEvent(event);
-                    sender.sendMessage(msg);
+                    if (event.shouldSendMessage()) p.sendMessage(msg);
                     return;
                 }
             }
-            this.getLastChatTimes().put(sender, System.currentTimeMillis());
+            this.getLastChatTimes().put(p, System.currentTimeMillis());
         }
         boolean miniMsg = sender.hasPermission(PotatoEssentials.NAMESPACE+".chat.minimessage");
         if (!miniMsg) message = Utils.escapeTags(message);
@@ -121,6 +121,9 @@ public class CustomChat {
                 }).toList();
         recipients.forEach(p -> p.sendMessage(msg));
         Bukkit.getConsoleSender().sendMessage(msg);
+    }
+    public void sendMessage(CommandSender sender, String message) {
+        sendMessage(sender, message, false);
     }
     public boolean checkPerm(CommandSender sender) {
         return this.getPermission() == null || sender.hasPermission(this.getPermission());

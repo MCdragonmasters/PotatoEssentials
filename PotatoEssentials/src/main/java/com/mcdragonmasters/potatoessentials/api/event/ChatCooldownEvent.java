@@ -21,12 +21,19 @@ public class ChatCooldownEvent extends PlayerEvent {
     private final String channel;
     @Getter
     private final double remainingSeconds;
+    private boolean shouldSendMessage = true;
 
-    public ChatCooldownEvent(@NotNull Player player, Component message, double remainingSeconds, String channel) {
-        super(player);
+    public ChatCooldownEvent(@NotNull Player player, Component message, double remainingSeconds, String channel, boolean async) {
+        super(player, async);
         this.message = message;
         this.channel = channel;
         this.remainingSeconds = remainingSeconds;
+    }
+    public boolean shouldSendMessage() {
+        return shouldSendMessage;
+    }
+    public void shouldSendMessage(boolean shouldSendMessage) {
+        this.shouldSendMessage = shouldSendMessage;
     }
     @Override
     public @NotNull HandlerList getHandlers() {
