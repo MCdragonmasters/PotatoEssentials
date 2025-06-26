@@ -97,7 +97,7 @@ public class CustomChat {
                             new Replacer("cooldown", df.format(cooldownRemainder)));
                     var event = new ChatCooldownEvent(p, msg, cooldownRemainder, this.getKey(), async);
                     Bukkit.getPluginManager().callEvent(event);
-                    if (event.shouldSendMessage()) p.sendMessage(msg);
+                    p.sendMessage(msg);
                     return;
                 }
             }
@@ -111,7 +111,7 @@ public class CustomChat {
                 new Replacer("prefix", Utils.getPrefix(sender)),
                 new Replacer("name", sender.getName()),
                 new Replacer("message", message, false));
-        var event = new CustomChannelChatEvent(sender, msg);
+        var event = new CustomChannelChatEvent(sender, msg, async);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
         var recipients = Bukkit.getOnlinePlayers().stream()

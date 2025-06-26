@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -21,19 +22,13 @@ public class ChatCooldownEvent extends PlayerEvent {
     private final String channel;
     @Getter
     private final double remainingSeconds;
-    private boolean shouldSendMessage = true;
 
+    @Internal
     public ChatCooldownEvent(@NotNull Player player, Component message, double remainingSeconds, String channel, boolean async) {
         super(player, async);
         this.message = message;
         this.channel = channel;
         this.remainingSeconds = remainingSeconds;
-    }
-    public boolean shouldSendMessage() {
-        return shouldSendMessage;
-    }
-    public void shouldSendMessage(boolean shouldSendMessage) {
-        this.shouldSendMessage = shouldSendMessage;
     }
     @Override
     public @NotNull HandlerList getHandlers() {

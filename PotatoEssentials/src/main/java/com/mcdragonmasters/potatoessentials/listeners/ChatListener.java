@@ -49,7 +49,7 @@ public class ChatListener implements Listener {
                         new Replacer("cooldown", df.format(cooldownRemainder)));
                 var event = new ChatCooldownEvent(player, msg, cooldownRemainder,"global", e.isAsynchronous());
                 Bukkit.getPluginManager().callEvent(event);
-                if (event.shouldSendMessage()) player.sendMessage(msg);
+                player.sendMessage(msg);
                 return;
             }
         }

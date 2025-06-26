@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
 public class VanishToggleEvent extends PlayerEvent implements Cancellable {
@@ -12,6 +13,8 @@ public class VanishToggleEvent extends PlayerEvent implements Cancellable {
     private boolean cancelled;
     @Getter
     private final boolean vanished;
+
+    @Internal
     public VanishToggleEvent(Player vanished, boolean isVanished) {
         super(vanished);
         this.vanished = isVanished;
