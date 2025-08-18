@@ -8,8 +8,6 @@ import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Map;
@@ -91,12 +89,15 @@ public class Utils {
 
             while (matcher.find()) {
                 String fullMatch = matcher.group();
-                String clickableUrl = fullMatch.startsWith("https://")?fullMatch:"https://"+fullMatch;
+                String clickableUrl =
+                        (fullMatch.startsWith("https://") || fullMatch.startsWith("http://"))
+                        ? fullMatch
+                        : "https://"+fullMatch;
 
 
                 String miniMessageFormattedUrl =
-                        "<#00b1fc><hover:show_text:'"+clickableUrl+"'><u><click:open_url:'"+clickableUrl
-                                +"'>"+fullMatch+"</click></u></hover></#00b1fc>";
+                        "<#00b1fc><hover:show_text:'%s'><u><click:open_url:'%s'>%s</click></u></hover></#00b1fc>"
+                                .formatted(clickableUrl, clickableUrl, fullMatch);
 
                 matcher.appendReplacement(formattedMessage, miniMessageFormattedUrl);
             }

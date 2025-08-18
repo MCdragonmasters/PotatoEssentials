@@ -8,8 +8,10 @@ import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import dev.jorel.commandapi.executors.CommandArguments;
+import io.papermc.paper.entity.TeleportFlag.EntityState;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import java.util.Arrays;
 
@@ -37,7 +39,7 @@ public class WarpCommand extends PotatoCommand {
         Location warpLocation = WarpsManager.getWarp(warpName);
         String msg;
         if (warpLocation != null) {
-            sender.teleport(warpLocation);
+            sender.teleport(warpLocation, TeleportCause.COMMAND, EntityState.RETAIN_PASSENGERS);
             msg = "warpWarp";
         } else msg = "warpNotSet";
         var message = Config.replaceFormat(getMsg(msg), new Replacer("warp-name", warpName));

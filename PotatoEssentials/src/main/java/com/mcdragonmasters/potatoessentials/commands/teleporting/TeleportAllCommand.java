@@ -5,9 +5,11 @@ import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
+import io.papermc.paper.entity.TeleportFlag.EntityState;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import java.util.Collection;
 
@@ -31,7 +33,7 @@ public class TeleportAllCommand extends PotatoCommand {
                 new Replacer("teleporter", sender.getName()));
 
         for (Player player : players) {
-            player.teleport(sender);
+            player.teleport(sender.getLocation(), TeleportCause.COMMAND, EntityState.RETAIN_PASSENGERS);
             player.sendMessage(tpedMsg);
         }
         String msg = Utils.nameFormat(players);

@@ -6,7 +6,9 @@ import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.RotationArgument;
 import dev.jorel.commandapi.executors.CommandArguments;
 import dev.jorel.commandapi.wrappers.Rotation;
+import io.papermc.paper.entity.TeleportFlag.EntityState;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public class TeleportCenterCommand extends PotatoCommand {
 
@@ -30,6 +32,6 @@ public class TeleportCenterCommand extends PotatoCommand {
         var loc = p.getLocation().toCenterLocation();
         loc.setYaw(rot.getYaw());
         loc.setPitch(rot.getPitch());
-        p.teleport(loc);
+        p.teleport(loc, TeleportCause.COMMAND, EntityState.RETAIN_PASSENGERS);
     }
 }

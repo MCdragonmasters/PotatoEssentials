@@ -8,6 +8,8 @@ import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.arguments.Argument;
+import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyPlayers;
 import dev.jorel.commandapi.arguments.StringArgument;
 import dev.jorel.commandapi.executors.CommandArguments;
@@ -17,7 +19,6 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -27,7 +28,10 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class SkinCommand extends PotatoCommand {
 
-    private final StringArgument skinArg = new StringArgument("skin");
+    private final Argument<String> skinArg = new StringArgument("skin")
+            .replaceSuggestions(ArgumentSuggestions.strings(
+                            Bukkit.getOnlinePlayers().stream().map(Player::getName).toArray(String[]::new)
+            ));
 
     private final ManyPlayers playersArg = new ManyPlayers("targets", false);
 
@@ -57,14 +61,17 @@ public class SkinCommand extends PotatoCommand {
     }
 
     private void executeMain(Player sender, CommandArguments args) {
-        String skin = args.getByArgumentOrDefault(skinArg, "Error");
+        String skin = args.getByArgumentOrDefault(skinArg, "");
         Collection<Player> players = args.getByArgumentOrDefault(playersArg, List.of(sender));
-        var newSkinFromPlayer = Bukkit.getPlayer(skin);
+        var skinFromPlayer = Bukkit.getOnlinePlayers().stream().filter(p ->
+                p.getName().equalsIgnoreCase(skin)
+        ).findFirst();
+
         String skinName;
-        if (newSkinFromPlayer!=null) {
-            skinName = newSkinFromPlayer.getName();
+        if (skinFromPlayer.isPresent()) {
+            skinName = skinFromPlayer.get().getName();
             for (Player player : players)
-                setSkin(player, newSkinFromPlayer);
+                setSkin(player, skinFromPlayer.get());
         } else {
             try {
                 skinName = setSkin(players, skin);

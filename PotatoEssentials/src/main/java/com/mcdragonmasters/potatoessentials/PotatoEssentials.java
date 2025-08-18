@@ -23,6 +23,7 @@ import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
 import net.milkbowl.vault.chat.Chat;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -66,6 +67,8 @@ public class PotatoEssentials extends PotatoPlugin {
         INSTANCE = this;
 
         config = getConfig();
+
+        new Metrics(this, 26959);
 
         LOGGER = getLogger();
 

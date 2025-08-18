@@ -39,14 +39,14 @@ public class ReplyCommand extends PotatoCommand {
             return;
         }
         String message = Objects.requireNonNull(args.getByArgument(stringArgument));
-        Player lastMessagedPlayer = messageMap.get(sender);
-        if (messagesDisabled.contains(lastMessagedPlayer.getUniqueId())&&
+        CommandSender lastMessaged = messageMap.get(sender);
+        if (lastMessaged instanceof Player p &&  messagesDisabled.contains(p.getUniqueId()) &&
                 !sender.hasPermission(NAMESPACE+".messagetoggle.bypass")) {
             var msg = Config.replaceFormat(Config.getCmdMsg("message", "messagesDisabled"),
-                    new Replacer("receiver", lastMessagedPlayer.getName()));
+                    new Replacer("receiver", lastMessaged.getName()));
             sender.sendMessage(msg);
             return;
         }
-        MessageCommand.message(sender, message, lastMessagedPlayer);
+        MessageCommand.message(sender, message, lastMessaged);
     }
 }

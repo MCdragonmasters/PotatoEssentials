@@ -60,7 +60,7 @@ public class TrollCommand extends PotatoCommand {
                     var packet = new ClientboundAddEntityPacket(
                             id, UUID.randomUUID(), x, y, z,
                             0,0 , type, 0, vec3, 0);
-                    connection.sendPacket(packet);
+                    connection.send(packet);
                 }
                 iter++;
             }
@@ -75,7 +75,7 @@ public class TrollCommand extends PotatoCommand {
         sender.sendMessage(msg);
 
         var packet = new ClientboundGameEventPacket(ClientboundGameEventPacket.DEMO_EVENT, 0);
-        for (Player player : players) ((CraftPlayer) player).getHandle().connection.sendPacket(packet);
+        for (Player player : players) ((CraftPlayer) player).getHandle().connection.send(packet);
 
     }
 }

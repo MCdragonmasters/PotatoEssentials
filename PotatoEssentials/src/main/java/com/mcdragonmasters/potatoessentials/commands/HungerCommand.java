@@ -30,9 +30,12 @@ public class HungerCommand extends PotatoCommand {
     }
     private void execute(CommandSender sender, CommandArguments args) {
         hungerEnabled=!hungerEnabled;
+        //todo: smth needs to change here...
+        // and make this msg configurable
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!player.hasPermission(PotatoEssentials.NAMESPACE+".hunger")) continue;
-            sender.sendRichMessage("<gray>[<gold>Hunger</gold>] " +
+            player.sendRichMessage("<gray>[<gold>Hunger</gold>] " +
                     (hungerEnabled ? "<green>Enabled" : "<red>Disabled"));
         }
     }

@@ -4,7 +4,9 @@ linkRequiredToJoin: false
 
 botToken: "TOKEN_HERE"
 discordInvite: "https://discord.gg/CHANGEME"
-linkedRole: "" # leave blank for none
+# the role id of the role the user gets when linked
+# leave blank for none
+linkedRole: ""
 messages:
   discord:
     alreadyLinked: "You are already linked to <username> (<uuid>)"

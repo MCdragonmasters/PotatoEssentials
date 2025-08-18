@@ -4,7 +4,7 @@ authors: [ MCdragonmasters]
 website: https://github.com/MCdragonmasters/PotatoEssentials
 version: @version@
 main: com.mcdragonmasters.potatodiscordlink.PotatoDiscordLink
-api-version: '1.21.3'
+api-version: '1.21.7'
 load: STARTUP
 dependencies:
   server:

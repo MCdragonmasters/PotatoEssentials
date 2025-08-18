@@ -4,21 +4,18 @@ import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import com.mcdragonmasters.potatoessentials.objects.Replacer;
 import com.mcdragonmasters.potatoessentials.utils.Utils;
-import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
 import dev.jorel.commandapi.executors.CommandArguments;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-import static com.mcdragonmasters.potatoessentials.commands.messaging.MessageToggleCommand.messagesDisabled;
 import static com.mcdragonmasters.potatoessentials.commands.messaging.SocialSpyCommand.socialSpyList;
 
 public class MessageCommand extends PotatoCommand {
@@ -27,34 +24,33 @@ public class MessageCommand extends PotatoCommand {
     }
 
     @Getter
-    private static final Map<CommandSender, Player> messages = new HashMap<>();
-
+    private static final Map<CommandSender, CommandSender> messages = new DualHashBidiMap<>();
     private final Argument<Player> playerArgument = new EntitySelectorArgument.OnePlayer("player");
     private final Argument<String> stringArgument = new GreedyStringArgument("message");
 
     @Override
     public void register() {
-        new CommandAPICommand(name)
-                .withAliases(aliases)
-                .withPermission(permission)
-                .withArguments(playerArgument)
-                .withArguments(stringArgument)
+        createCommand()
+                .withArguments(playerArgument, stringArgument)
                 .executes(this::execute)
                 .register();
     }
 
     private void execute(CommandSender sender, CommandArguments args) {
-        Player receiver = Objects.requireNonNull(args.getByArgument(playerArgument));
-        if (messagesDisabled.contains(receiver.getUniqueId())&&
-                !sender.hasPermission(NAMESPACE+".messagetoggle.bypass")) {
-            sender.sendRichMessage("<red>"+receiver.getName()+"'s messages are disabled");
+        Player receiver = args.getOptionalByArgument(playerArgument).orElseThrow();
+        if (!sender.hasPermission(NAMESPACE+".messagetoggle.bypass")
+                && MessageToggleCommand.messagesDisabled.contains(receiver.getUniqueId())) {
+            var msg = Config.replaceFormat(getMsg("messagesDisabled"),
+                    new Replacer("receiver", receiver.getName())
+            );
+            sender.sendMessage(msg);
             return;
         }
-        String message = Objects.requireNonNull(args.getByArgument(stringArgument));
+        String message = args.getOptionalByArgument(stringArgument).orElseThrow();
         message(sender, message, receiver);
     }
 
-    public static void message(CommandSender sender, String message, Player receiver) {
+    public static void message(CommandSender sender, String message, CommandSender receiver) {
         message = Utils.formatChatMessage(sender, message);
         Replacer[] replacers = new Replacer[]{
                 new Replacer("sender", sender.getName()),
@@ -77,9 +73,9 @@ public class MessageCommand extends PotatoCommand {
             if(sender==potentialSocialSpyReceiver) continue;
             potentialSocialSpyReceiver.sendMessage(socialSpyMsg);
         }
-        if (sender instanceof Player senderP) {
-            messages.put(receiver, senderP);
-        }
+
+        messages.put(receiver, sender);
+
         messages.put(sender, receiver);
 
         sender.sendMessage(senderMsg);

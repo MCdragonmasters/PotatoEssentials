@@ -98,9 +98,7 @@ commands:
     receiver: "<gold><sender> <gray>»</gray> You<reset>: <message>"
 
     messagesDisabled: "<red><receiver>'s messages are disabled"
-  broadcast:
-    enabled: true
-    message: "<newline>  <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</red></bold>]<white> <message><newline>"
+
   messagetoggle:
     enabled: true
     toggledOff: "<gray>Private Messages have been<red> Disabled"
@@ -114,6 +112,9 @@ commands:
     socialSpyDisabled: "<gray>[<gold>SocialSpy<gray>] <red>Disabled"
     # same vars as /message
     message: "<gray>[<gold>SS</gold>] » <yellow><sender></yellow> -> <yellow><receiver></yellow>:</gray> <message>"
+  broadcast:
+    enabled: true
+    message: "<newline>  <dark_gray>[<bold><red>SERVER ANNOUNCEMENT</red></bold>]<white> <message><newline>"
   tp:
     tpall-enabled: true
     tphere-enabled: true
@@ -140,13 +141,14 @@ commands:
     enabled: true
   ping:
     enabled: true
+    pingMessage: "<yellow><player><gray>'s ping is <yellow><ping>"
   smite:
     enabled: true
     smiteMessage: "<gray>Smiting <yellow><targets>"
   vanish:
     enabled: true
-    vanishMsg: "<dark_gray>[<gold>Vanish</gold>]<yellow> <player><gray> is now in vanish."
-    unvanishMsg: "<dark_gray>[<gold>Vanish</gold>]<yellow> <player><gray> is no longer in vanish."
+    vanishMsg: "<yellow><player><gray> is now in vanish."
+    unvanishMsg: "<player><gray> is no longer in vanish."
   clearinventory:
     enabled: true
     clearInventory: "<gray>Cleared<yellow> <target></yellow>'s Inventory"

@@ -6,9 +6,11 @@ import com.mcdragonmasters.potatoessentials.utils.Utils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.ManyEntities;
 import dev.jorel.commandapi.executors.CommandArguments;
+import io.papermc.paper.entity.TeleportFlag.EntityState;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +38,7 @@ public class TeleportHereCommand extends PotatoCommand {
                 new Replacer("teleporter", sender.getName()));
 
         for (Entity player : entities) {
-            player.teleport(sender);
+            player.teleport(sender.getLocation(), TeleportCause.COMMAND, EntityState.RETAIN_PASSENGERS);
             player.sendMessage(tpedMsg);
         }
         Component tperMsg = Config.replaceFormat(Config.teleporterMsg(),

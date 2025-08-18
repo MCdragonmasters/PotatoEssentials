@@ -1,6 +1,8 @@
 package com.mcdragonmasters.potatoessentials.commands;
 
 import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
+import com.mcdragonmasters.potatoessentials.objects.Replacer;
+import com.mcdragonmasters.potatoessentials.utils.Config;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument.OnePlayer;
@@ -22,9 +24,11 @@ public class PingCommand extends PotatoCommand {
                 .executesPlayer(this::execute)
                 .register();
     }
-    private void execute(Player player, CommandArguments args) {
-        Player arg = args.getByArgumentOrDefault(playerArgument, player);
-        int ping = arg.getPing();
-        player.sendRichMessage("<yellow>"+arg.getName()+"<gray>'s ping is <yellow>" + ping);
+    private void execute(Player sender, CommandArguments args) {
+        Player arg = args.getByArgumentOrDefault(playerArgument, sender);
+        var msg = Config.replaceFormat(getMsg("pingMessage"),
+                new Replacer("player", arg.getName()), new Replacer("ping", arg.getPing()+"")
+        );
+        sender.sendMessage(msg);
     }
 }

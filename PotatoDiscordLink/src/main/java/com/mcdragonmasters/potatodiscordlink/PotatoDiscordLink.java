@@ -22,6 +22,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.*;
@@ -49,18 +50,18 @@ public class PotatoDiscordLink extends PotatoPlugin {
         config = getConfig();
         LOGGER = getLogger();
         String token = config.getString("botToken");
-        if (token == null || token.equals("TOKEN_HERE") || token.isEmpty()) {
+        if (token == null || token.equalsIgnoreCase("TOKEN_HERE") || token.isEmpty()) {
             disablePlugin("Disabling due to token being not set");
             return;
         }
 
         ForkJoinPool callbackThreadPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors(), pool -> {
             final ForkJoinWorkerThread worker = ForkJoinPool.defaultForkJoinWorkerThreadFactory.newThread(pool);
-            worker.setName("DiscordSRV - JDA Callback " + worker.getPoolIndex());
+            worker.setName("PotatoDiscordLink - JDA Callback " + worker.getPoolIndex());
             return worker;
         }, null, true);
 
-        ThreadFactory gatewayThreadFactory = new ThreadFactoryBuilder().setNameFormat("DiscordSRV - JDA Gateway").build();
+        ThreadFactory gatewayThreadFactory = new ThreadFactoryBuilder().setNameFormat("PotatoDiscordLink - JDA Gateway").build();
         ScheduledExecutorService gatewayThreadPool = Executors.newSingleThreadScheduledExecutor(gatewayThreadFactory);
         jda = JDABuilder.create(token, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES,
                         GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_EXPRESSIONS, GatewayIntent.SCHEDULED_EVENTS)
@@ -72,7 +73,6 @@ public class PotatoDiscordLink extends PotatoPlugin {
 
         jda.awaitReady();
         var linkedRoleId = config.getString("linkedRole");
-
         if (linkedRoleId!=null && !linkedRoleId.isEmpty()) {
             linkedRole = jda.getRoleById(linkedRoleId);
         }
@@ -80,6 +80,7 @@ public class PotatoDiscordLink extends PotatoPlugin {
 
 
         var commands = jda.updateCommands();
+        //noinspection ResultOfMethodCallIgnored
         commands.addCommands(
                 Commands.slash("link", "Links your Discord to your Minecraft")
                         .addOption(
@@ -117,12 +118,11 @@ public class PotatoDiscordLink extends PotatoPlugin {
         return config;
     }
     private static Role linkedRole;
+    @Nullable
     public static Role getLinkedRole() {
         return linkedRole;
     }
+    @Getter
     private static Guild primaryGuild;
-    public static Guild getPrimaryGuild() {
-        return primaryGuild;
-    }
 
 }

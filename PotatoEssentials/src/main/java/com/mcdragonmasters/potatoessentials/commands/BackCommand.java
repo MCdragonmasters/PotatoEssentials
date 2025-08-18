@@ -6,7 +6,9 @@ import com.mcdragonmasters.potatoessentials.utils.Config;
 import com.mcdragonmasters.potatoessentials.objects.PotatoCommand;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
+import io.papermc.paper.entity.TeleportFlag.EntityState;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import static com.mcdragonmasters.potatoessentials.PotatoEssentials.pluginManager;
 import static com.mcdragonmasters.potatoessentials.listeners.PlayerTeleportListener.lastLocation;
@@ -28,7 +30,7 @@ public class BackCommand extends PotatoCommand {
         if (lastLocation.get(player)!=null) {
             var msg = Config.replaceFormat(Config.getCmdMsg("back", "message"));
             player.sendMessage(msg);
-            player.teleport(lastLocation.get(player));
+            player.teleport(lastLocation.get(player), TeleportCause.COMMAND, EntityState.RETAIN_PASSENGERS);
         } else player.sendRichMessage("<red>No last location found!");
     }
 }

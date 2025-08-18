@@ -58,6 +58,7 @@ public class PlayerJoinQuitListener implements Listener {
         MessageCommand.getMessages().remove(quiter);
         PlayerTeleportListener.lastLocation.remove(quiter);
     }
+    
     @EventHandler
     public void alsoOnQuit(PlayerQuitEvent e) {
         Player quiter = e.getPlayer();
