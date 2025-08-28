@@ -107,6 +107,7 @@ public class LinkManager {
                 }
                 return;
             }
+            //noinspection ResultOfMethodCallIgnored
             file.delete();
             try {
                 FileUtils.moveFile(tempFile, file);
@@ -114,6 +115,7 @@ public class LinkManager {
                 PotatoDiscordLink.LOGGER.log(Level.SEVERE, "Failed moving linked.aof.tmp to linked.aof: ", e);
             }
         } finally {
+            //noinspection ResultOfMethodCallIgnored
             tempFile.delete();
         }
     }
@@ -146,10 +148,10 @@ public class LinkManager {
             link(discordId, linkingCodes.get(linkCode));
             linkingCodes.remove(linkCode);
 
-            OfflinePlayer player = Bukkit.getOfflinePlayer(getUUID(discordId));
-            Player onlinePlayer = player.getPlayer();
-            if (player.isOnline() && onlinePlayer != null) {
-                onlinePlayer.sendMessage(
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(getUUID(discordId));
+            Player player = offlinePlayer.getPlayer();
+            if (offlinePlayer.isOnline() && player != null) {
+                player.sendMessage(
                         Config.replaceFormat(
                                 PotatoDiscordLink.config().getString("messages.minecraft.linked"),
                                 new Replacer("username", user.getName()),
@@ -158,7 +160,7 @@ public class LinkManager {
             }
 
             return Objects.requireNonNull(PotatoDiscordLink.config().getString("messages.discord.linked"))
-                    .replace("<player>", Optional.ofNullable(player.getName()).orElse("Unknown"))
+                    .replace("<offlinePlayer>", Optional.ofNullable(offlinePlayer.getName()).orElse("Unknown"))
                     .replace("<uuid>", getUUID(discordId).toString());
         }
 

@@ -47,12 +47,13 @@ publishing.publications.create<MavenPublication>("maven") {
     version = project.version.toString()
     artifact(tasks.shadowJar)
 }
+
 tasks {
     build {
         dependsOn(shadowJar)
     }
     shadowJar {
-        archiveClassifier.set(null as String?)
+        archiveClassifier.set("")
         val libPrefix = "com.mcdragonmasters.potatoessentials.libs"
         relocate("dev.jorel.commandapi",
             "${libPrefix}.commandapi")

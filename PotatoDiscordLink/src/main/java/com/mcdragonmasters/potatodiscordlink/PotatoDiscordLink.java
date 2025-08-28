@@ -106,13 +106,10 @@ public class PotatoDiscordLink extends PotatoPlugin {
         linkManager.save();
     }
     public void disablePlugin(String msg) {
-        Bukkit.getScheduler().runTask(
-                this,
-                () -> {
-                    LOGGER.severe(msg);
-                    Bukkit.getPluginManager().disablePlugin(this);
-                }
-        );
+        Bukkit.getScheduler().runTask(this, () -> {
+            LOGGER.severe(msg);
+            Bukkit.getPluginManager().disablePlugin(this);
+        });
     }
     public static FileConfiguration config() {
         return config;
